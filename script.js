@@ -1,1902 +1,4 @@
 // ==========================================
-// CALORIETRACK - SCRIPT.JS
-// ==========================================
-
-// ==========================================
-// BASE DE DATOS DE ALIMENTOS
-// ==========================================
-
-const foods = {
-
-    // Carnes
-    asado: {
-        calories: 420,
-        protein: 30,
-        portion: 150,
-        unit: "g"
-    },
-
-    carne: {
-        calories: 350,
-        protein: 30,
-        portion: 150,
-        unit: "g"
-    },
-
-    vacio: {
-        calories: 400,
-        protein: 29,
-        portion: 150,
-        unit: "g"
-    },
-
-    entraña: {
-        calories: 380,
-        protein: 27,
-        portion: 150,
-        unit: "g"
-    },
-
-    costilla: {
-        calories: 420,
-        protein: 28,
-        portion: 150,
-        unit: "g"
-    },
-
-    chorizo: {
-        calories: 300,
-        protein: 15,
-        portion: 1,
-        unit: "unidad"
-    },
-
-    pollo: {
-        calories: 250,
-        protein: 31,
-        portion: 150,
-        unit: "g"
-    },
-
-    milanesaPollo: {
-        calories: 330,
-        protein: 27,
-        portion: 1,
-        unit: "unidad"
-    },
-
-    milanesaCarne: {
-        calories: 350,
-        protein: 25,
-        portion: 1,
-        unit: "unidad"
-    },
-
-    cerdo: {
-        calories: 300,
-        protein: 27,
-        portion: 150,
-        unit: "g"
-    },
-
-    bondiola: {
-        calories: 360,
-        protein: 25,
-        portion: 150,
-        unit: "g"
-    },
-
-        // Huevos
-    huevo: {
-        calories: 75,
-        protein: 6,
-        portion: 1,
-        unit: "unidad"
-    },
-
-    // Carbohidratos
-    arroz: {
-    calories: 210,
-    protein: 4,
-    portion: 1,
-    unit: "taza",
-
-    measures: {
-        taza: 1,
-        plato: 2
-        }
-    },
-
-    pasta: {
-        calories: 260,
-        protein: 9,
-        portion: 1,
-        unit: "porción"
-    },
-
-    fideos: {
-        calories: 260,
-        protein: 9,
-        portion: 1,
-        unit: "porción"
-    },
-
-    papa: {
-        calories: 160,
-        protein: 4,
-        portion: 1,
-        unit: "unidad"
-    },
-
-    purePapa: {
-        calories: 220,
-        protein: 4,
-        portion: 200,
-        unit: "g"
-    },
-
-    pureZapallo: {
-        calories: 90,
-        protein: 2,
-        portion: 200,
-        unit: "g"
-    },
-
-    pureMixto: {
-        calories: 150,
-        protein: 3,
-        portion: 200,
-        unit: "g"
-    },
-
-    lentejas: {
-    calories: 230,
-    protein: 16,
-    portion: 1,
-    unit: "taza",
-
-    measures: {
-        taza: 1,
-        plato: 2
-    }
-}, 
-
-    // Lácteos
-    queso: {
-        calories: 110,
-        protein: 7,
-        portion: 30,
-        unit: "g"
-    },
-
-    leche: {
-    calories: 120,
-    protein: 6,
-    portion: 1,
-    unit: "vaso",
-
-    measures: {
-        vaso: 1,
-        taza: 0.8
-    }
-},
-
-    yogur: {
-        calories: 120,
-        protein: 6,
-        portion: 1,
-        unit: "unidad"
-    },
-
-        quesoUntable: {
-        calories: 65,
-        protein: 2,
-        portion: 30,
-        unit: "g"
-    },
-
-    manteca: {
-        calories: 108,
-        protein: 0,
-        portion: 15,
-        unit: "g"
-    },
-
-    mermelada: {
-        calories: 50,
-        protein: 0,
-        portion: 20,
-        unit: "g"
-    },
-
-    dulceDeLeche: {
-        calories: 65,
-        protein: 1.5,
-        portion: 20,
-        unit: "g"
-    },
-
-
-
-
-
-    // Pan
-    pan: {
-        calories: 140,
-        protein: 5,
-        portion: 2,
-        unit: "rebanadas"
-    },
-
-    tostada: {
-    calories: 70,
-    protein: 2.5,
-    portion: 1,
-    unit: "unidad"
-},
-
-    // Frutas
-    banana: {
-        calories: 105,
-        protein: 1,
-        portion: 1,
-        unit: "unidad"
-    },
-
-    manzana: {
-        calories: 95,
-        protein: 0.5,
-        portion: 1,
-        unit: "unidad"
-    },
-
-    naranja: {
-        calories: 70,
-        protein: 1,
-        portion: 1,
-        unit: "unidad"
-    },
-
-    pera: {
-        calories: 100,
-        protein: 1,
-        portion: 1,
-        unit: "unidad"
-    },
-
-    // Verduras
-    tomate: {
-        calories: 25,
-        protein: 1,
-        portion: 1,
-        unit: "unidad"
-    },
-
-    cebolla: {
-        calories: 40,
-        protein: 1,
-        portion: 1,
-        unit: "unidad"
-    },
-
-    lechuga: {
-        calories: 15,
-        protein: 1,
-        portion: 1,
-        unit: "porción"
-    },
-
-    zanahoria: {
-        calories: 35,
-        protein: 1,
-        portion: 1,
-        unit: "unidad"
-    },
-
-    morron: {
-        calories: 30,
-        protein: 1,
-        portion: 1,
-        unit: "unidad"
-    },
-
-    palta: {
-        calories: 160,
-        protein: 2,
-        portion: 1,
-        unit: "unidad"
-    },
-
-        // Más alimentos
-    avena: {
-        calories: 150,
-        protein: 5,
-        portion: 40,
-        unit: "g"
-    },
-
-    panLactal: {
-        calories: 130,
-        protein: 5,
-        portion: 2,
-        unit: "rebanadas"
-    },
-
-    batata: {
-        calories: 180,
-        protein: 3,
-        portion: 1,
-        unit: "unidad"
-    },
-
-    zapallo: {
-        calories: 50,
-        protein: 1,
-        portion: 200,
-        unit: "g"
-    },
-
-    brocoli: {
-        calories: 70,
-        protein: 5,
-        portion: 200,
-        unit: "g"
-    },
-
-    espinaca: {
-        calories: 45,
-        protein: 6,
-        portion: 200,
-        unit: "g"
-    },
-
-    pepino: {
-        calories: 30,
-        protein: 1,
-        portion: 1,
-        unit: "unidad"
-    },
-
-    repollo: {
-        calories: 50,
-        protein: 3,
-        portion: 200,
-        unit: "g"
-    },
-
-    huevoFrito: {
-        calories: 110,
-        protein: 6,
-        portion: 1,
-        unit: "unidad"
-    },
-
-    huevoRevuelto: {
-        calories: 100,
-        protein: 7,
-        portion: 1,
-        unit: "unidad"
-    },
-
-    jamon: {
-        calories: 45,
-        protein: 7,
-        portion: 30,
-        unit: "g"
-    },
-
-    salame: {
-        calories: 120,
-        protein: 6,
-        portion: 30,
-        unit: "g"
-    },
-
-    mayonesa: {
-        calories: 100,
-        protein: 0,
-        portion: 1,
-        unit: "cucharada",
-
-        measures: {
-            cucharada: 1,
-            cucharadita: 0.33
-        }
-    },
-
-    ketchup: {
-        calories: 20,
-        protein: 0,
-        portion: 1,
-        unit: "cucharada",
-
-        measures: {
-            cucharada: 1,
-            cucharadita: 0.33
-        }
-    },
-
-    azucar: {
-        calories: 20,
-        protein: 0,
-        portion: 1,
-        unit: "cucharadita",
-
-        measures: {
-            cucharadita: 1,
-            cucharada: 3
-        }
-    },
-
-
-
-
-
-
-
-
-
-
-
-
-    // Otros
-    
-    aceite: {
-    calories: 120,
-    protein: 0,
-    portion: 1,
-    unit: "cucharada",
-
-    measures: {
-        cucharada: 1,
-        cucharadita: 0.33
-    }
-},
-    
-    
-    
-    atun: {
-        calories: 160,
-        protein: 28,
-        portion: 1,
-        unit: "lata"
-    },
-
-    galletitas: {
-        calories: 140,
-        protein: 2,
-        portion: 1,
-        unit: "porción"
-    }
-};
-
-
-// ==========================================
-// NÚMEROS EN ESPAÑOL
-// ==========================================
-
-const numbers = {
-
-    un: 1,
-    uno: 1,
-    una: 1,
-
-    dos: 2,
-    tres: 3,
-    cuatro: 4,
-    cinco: 5,
-    seis: 6,
-    siete: 7,
-    ocho: 8,
-    nueve: 9,
-    diez: 10
-
-};
-
-
-// ==========================================
-// NORMALIZAR TEXTO
-// ==========================================
-
-function normalize(text) {
-
-    return text
-        .toLowerCase()
-        .normalize("NFD")
-        .replace(/[\u0300-\u036f]/g, "");
-
-}
-
-
-// ==========================================
-// OBTENER CANTIDAD
-// ==========================================
-
-function getQuantity(text, position) {
-
-    const before = text.substring(
-        Math.max(0, position - 40),
-        position
-    );
-
-    // GRAMOS
-    const gramsMatch = before.match(
-        /(\d+(?:[.,]\d+)?)\s*(g|gr|gramo|gramos)\s*(?:de)?\s*$/
-    );
-
-    if (gramsMatch) {
-
-        return parseFloat(
-            gramsMatch[1].replace(",", ".")
-        );
-
-    }
-
-    // NÚMERO
-    const numberMatch = before.match(
-        /(\d+(?:[.,]\d+)?)\s*$/
-    );
-
-    if (numberMatch) {
-
-        return parseFloat(
-            numberMatch[1].replace(",", ".")
-        );
-
-    }
-
-    // NÚMEROS ESCRITOS
-    for (const word in numbers) {
-
-        const regex = new RegExp(
-            "\\b" + word + "\\s*$"
-        );
-
-        if (regex.test(before)) {
-
-            return numbers[word];
-
-        }
-
-    }
-
-    // MEDIA / MEDIO
-    if (
-        before.endsWith("media ") ||
-        before.endsWith("medio ")
-    ) {
-
-        return 0.5;
-
-    }
-
-    // POCO
-    if (
-        before.endsWith("poco ") ||
-        before.endsWith("un poco ")
-    ) {
-
-        return 0.5;
-
-    }
-
-    // BASTANTE / MUCHO
-    if (
-        before.endsWith("bastante ") ||
-        before.endsWith("mucho ")
-    ) {
-
-        return 1.35;
-
-    }
-
-    return 1;
-}
-
-
-// ==========================================
-// OBTENER MEDIDA
-// ==========================================
-
-// ==========================================
-// OBTENER MULTIPLICADOR SEGÚN MEDIDA
-// ==========================================
-
-function getMeasureMultiplier(text, position, food) {
-
-    // Si el alimento no tiene medidas
-    if (!food.measures) {
-        return null;
-    }
-
-    const before = text.substring(
-        Math.max(0, position - 50),
-        position
-    );
-
-    // ==========================================
-// CHORRITO
-// ==========================================
-
-if (
-    food === foods.aceite &&
-    (
-        before.includes("chorrito") ||
-        before.includes("un chorrito")
-    )
-) {
-
-    return 0.5;
-}
-
-    // ==========================================
-    // RECORRER LAS MEDIDAS
-    // ==========================================
-
-    for (const measure in food.measures) {
-
-        const baseValue =
-            food.measures[measure];
-
-        // ==========================================
-        // MEDIA / MEDIO
-        // ==========================================
-
-        if (
-            before.includes(`media ${measure}`) ||
-            before.includes(`medio ${measure}`)
-        ) {
-
-            return baseValue * 0.5;
-        }
-
-
-        // ==========================================
-        // NÚMEROS ESCRITOS
-        // ==========================================
-
-        for (const word in numbers) {
-
-            const value =
-                numbers[word];
-
-            const pattern =
-                new RegExp(
-                    `\\b${word}\\s+${measure}(?:s)?(?:\\s+de)?\\s*$`
-                );
-
-            if (
-                pattern.test(before)
-            ) {
-
-                return baseValue * value;
-            }
-        }
-
-
-        // ==========================================
-        // NÚMEROS DIGITALES
-        // ==========================================
-
-        const numberMatch =
-            before.match(
-                new RegExp(
-                    `(\\d+(?:[.,]\\d+)?)\\s+${measure}(?:s)?(?:\\s+de)?\\s*$`
-                )
-            );
-
-        if (numberMatch) {
-
-            const value =
-                parseFloat(
-                    numberMatch[1]
-                        .replace(",", ".")
-                );
-
-            return baseValue * value;
-        }
-
-    }
-
-    return null;
-}
-
-
-// ==========================================
-// MULTIPLICADOR DE PORCIÓN
-// ==========================================
-
-function getPortionMultiplier() {
-
-    const selected = document.querySelector(
-        'input[name="portion"]:checked'
-    );
-
-    if (!selected) {
-
-        return 1;
-
-    }
-
-    if (selected.value === "small") {
-
-        return 0.7;
-
-    }
-
-    if (selected.value === "large") {
-
-        return 1.35;
-
-    }
-
-    return 1;
-}
-
-
-// ==========================================
-// ANALIZAR COMIDA
-// ==========================================
-
-function analyzeFood(description) {
-
-    const originalText = normalize(description);
-
-    let text = originalText;
-
-    let calories = 0;
-    let protein = 0;
-
-    let found = [];
-
-    let detected = {};
-
-
-    // ==========================================
-    // MILANESA DE POLLO
-    // ==========================================
-
-    if (
-        text.includes("milanesa de pollo")
-    ) {
-
-        const position =
-            text.indexOf("milanesa de pollo");
-
-        const quantity =
-            getQuantity(
-                text,
-                position
-            );
-
-        calories +=
-            foods.milanesaPollo.calories *
-            quantity;
-
-        protein +=
-            foods.milanesaPollo.protein *
-            quantity;
-
-        found.push(
-            `${quantity}x milanesa de pollo`
-        );
-
-        detected.milanesaPollo = true;
-
-    }
-
-
-    // ==========================================
-    // MILANESA DE CARNE
-    // ==========================================
-
-    if (
-        text.includes("milanesa de carne")
-    ) {
-
-        const position =
-            text.indexOf("milanesa de carne");
-
-        const quantity =
-            getQuantity(
-                text,
-                position
-            );
-
-        calories +=
-            foods.milanesaCarne.calories *
-            quantity;
-
-        protein +=
-            foods.milanesaCarne.protein *
-            quantity;
-
-        found.push(
-            `${quantity}x milanesa de carne`
-        );
-
-        detected.milanesaCarne = true;
-
-    }
-
-
-    // ==========================================
-    // PURÉ MIXTO
-    // ==========================================
-
-    if (
-        text.includes("pure mixto") ||
-        (
-            text.includes("pure de papa") &&
-            text.includes("pure de zapallo")
-        ) ||
-        (
-            text.includes("pure papa") &&
-            text.includes("pure zapallo")
-        )
-    ) {
-
-        calories +=
-            foods.pureMixto.calories;
-
-        protein +=
-            foods.pureMixto.protein;
-
-        found.push(
-            "1x puré mixto de papa y zapallo"
-        );
-
-        detected.pure = true;
-
-    }
-
-
-    // ==========================================
-    // PURÉ DE ZAPALLO
-    // ==========================================
-
-    else if (
-        text.includes("pure de zapallo") ||
-        text.includes("pure zapallo")
-    ) {
-
-        const position =
-            text.indexOf("pure");
-
-        const quantity =
-            getQuantity(
-                text,
-                position
-            );
-
-        calories +=
-            foods.pureZapallo.calories *
-            quantity;
-
-        protein +=
-            foods.pureZapallo.protein *
-            quantity;
-
-        found.push(
-            `${quantity}x puré de zapallo`
-        );
-
-        detected.pure = true;
-
-    }
-
-
-    // ==========================================
-    // PURÉ DE PAPA
-    // ==========================================
-
-    else if (
-        text.includes("pure de papa") ||
-        text.includes("pure papa") ||
-        text.includes("pure")
-    ) {
-
-        const position =
-            text.indexOf("pure");
-
-        const quantity =
-            getQuantity(
-                text,
-                position
-            );
-
-        calories +=
-            foods.purePapa.calories *
-            quantity;
-
-        protein +=
-            foods.purePapa.protein *
-            quantity;
-
-        found.push(
-            `${quantity}x puré de papa`
-        );
-
-        detected.pure = true;
-
-    }
-
-    // ==========================================
-// ALIMENTOS ESPECÍFICOS
-// ==========================================
-
-// HUEVO FRITO
-if (
-    text.includes("huevo frito") ||
-    text.includes("huevos fritos")
-) {
-
-    const position =
-        text.indexOf("huevo");
-
-    const quantity =
-        getQuantity(
-            text,
-            position
-        );
-
-    calories +=
-        foods.huevoFrito.calories *
-        quantity;
-
-    protein +=
-        foods.huevoFrito.protein *
-        quantity;
-
-    found.push(
-        `${quantity}x huevo frito`
-    );
-
-    detected.huevoFrito = true;
-}
-
-
-// HUEVO REVUELTO
-if (
-    text.includes("huevo revuelto") ||
-    text.includes("huevos revueltos")
-) {
-
-    const position =
-        text.indexOf("huevo");
-
-    const quantity =
-        getQuantity(
-            text,
-            position
-        );
-
-    calories +=
-        foods.huevoRevuelto.calories *
-        quantity;
-
-    protein +=
-        foods.huevoRevuelto.protein *
-        quantity;
-
-    found.push(
-        `${quantity}x huevo revuelto`
-    );
-
-    detected.huevoRevuelto = true;
-}
-
-
-// PAN LACTAL
-if (
-    text.includes("pan lactal")
-) {
-
-    const position =
-        text.indexOf("pan lactal");
-
-    const quantity =
-        getQuantity(
-            text,
-            position
-        );
-
-    calories +=
-        foods.panLactal.calories *
-        quantity;
-
-    protein +=
-        foods.panLactal.protein *
-        quantity;
-
-    found.push(
-        `${quantity}x pan lactal`
-    );
-
-    detected.panLactal = true;
-}
-
-    // ==========================================
-// SINÓNIMOS
-// ==========================================
-
-const aliases = {
-
-    "queso untable": "quesoUntable",
-    "queso crema": "quesoUntable",
-
-    "dulce de leche": "dulceDeLeche",
-
-    "pan lactal": "panLactal",
-
-    "huevo frito": "huevoFrito",
-    "huevos fritos": "huevoFrito",
-
-    "huevo revuelto": "huevoRevuelto",
-    "huevos revueltos": "huevoRevuelto"
-
-};
-
-for (const alias in aliases) {
-
-    text =
-        text.replaceAll(
-            alias,
-            aliases[alias]
-        );
-}
-
-
-
-
-    // ==========================================
-    // ALIMENTOS SIMPLES
-    // ==========================================
-
-    const simpleFoods = [
-
-    // Carnes
-    "asado",
-    "carne",
-    "vacio",
-    "entraña",
-    "costilla",
-    "chorizo",
-    "pollo",
-    "cerdo",
-    "bondiola",
-
-    // Huevos
-    "huevo",
-    "huevoFrito",
-    "huevoRevuelto",
-
-    // Carbohidratos
-    "arroz",
-    "pasta",
-    "fideos",
-    "papa",
-    "batata",
-    "avena",
-    "lentejas",
-
-    // Panificados
-    "pan",
-    "panLactal",
-    "tostada",
-
-    // Lácteos
-    "queso",
-    "leche",
-    "yogur",
-    "quesoUntable",
-    "manteca",
-    "mermelada",
-    "dulceDeLeche",
-
-    // Frutas
-    "banana",
-    "manzana",
-    "naranja",
-    "pera",
-    "palta",
-
-    // Verduras
-    "tomate",
-    "cebolla",
-    "lechuga",
-    "zanahoria",
-    "morron",
-    "zapallo",
-    "brocoli",
-    "espinaca",
-    "pepino",
-    "repollo",
-
-    // Carnes / fiambres
-    "jamon",
-    "salame",
-
-    // Otros
-    "aceite",
-    "mayonesa",
-    "ketchup",
-    "azucar",
-    "atun",
-    "galletitas"
-
-];
-
-
-    simpleFoods.forEach(key => {
-
-        // Evitar duplicar pollo de la milanesa
-        if (
-            key === "pollo" &&
-            detected.milanesaPollo
-        ) {
-
-            return;
-
-        }
-
-        // Evitar duplicar carne de la milanesa
-        if (
-            key === "carne" &&
-            detected.milanesaCarne
-        ) {
-
-            return;
-
-        }
-
-        // Evitar duplicar huevo en preparaciones específicas
-if (
-    key === "huevo" &&
-    (
-        detected.huevoFrito ||
-        detected.huevoRevuelto
-    )
-) {
-
-    return;
-
-}
-
-
-        // Evitar papa cuando hay puré
-        if (
-            key === "papa" &&
-            detected.pure
-        ) {
-
-            return;
-
-        }
-
-
-        const normalizedKey =
-            normalize(key);
-
-        if (
-            text.includes(normalizedKey)
-        ) {
-
-            const position =
-                text.indexOf(normalizedKey);
-
-            const quantity =
-                getQuantity(
-                    text,
-                    position
-                );
-
-            let multiplier =
-                quantity;
-
-
-            // ==========================================
-            // MEDIDAS COMO TAZA
-            // ==========================================
-
-            const measureMultiplier =
-                getMeasureMultiplier(
-                    text,
-                    position,
-                    foods[key]
-                );
-
-            if (
-                measureMultiplier !== null
-            ) {
-
-                multiplier =
-                    measureMultiplier;
-
-            }
-
-
-            // ==========================================
-            // DETECTAR GRAMOS
-            // ==========================================
-
-            const before =
-                text.substring(
-                    Math.max(
-                        0,
-                        position - 40
-                    ),
-                    position
-                );
-
-            const gramsMatch =
-                before.match(
-                    /(\d+(?:[.,]\d+)?)\s*(g|gr|gramo|gramos)\s*(?:de)?\s*$/
-                );
-
-
-            if (
-                gramsMatch
-            ) {
-
-                const grams =
-                    parseFloat(
-                        gramsMatch[1]
-                            .replace(",", ".")
-                    );
-
-                multiplier =
-                    grams /
-                    foods[key].portion;
-
-            }
-
-
-            // ==========================================
-            // SUMAR CALORÍAS Y PROTEÍNA
-            // ==========================================
-
-            calories +=
-                foods[key].calories *
-                multiplier;
-
-            protein +=
-                foods[key].protein *
-                multiplier;
-
-
-            // ==========================================
-            // MOSTRAR LO DETECTADO
-            // ==========================================
-
-            if (
-                gramsMatch
-            ) {
-
-                found.push(
-                    `${gramsMatch[1]} g de ${key}`
-                );
-
-            }
-
-            else if (
-                measureMultiplier !== null
-            ) {
-
-                found.push(
-                    `${measureMultiplier}x ${key}`
-                );
-
-            }
-
-            else {
-
-                found.push(
-                    `${quantity}x ${key}`
-                );
-
-            }
-
-        }
-
-    });
-
-
-    // ==========================================
-    // ENSALADA
-    // ==========================================
-
-    if (
-        text.includes("ensalada") &&
-        !text.includes("tomate") &&
-        !text.includes("cebolla") &&
-        !text.includes("lechuga")
-    ) {
-
-        calories += 50;
-        protein += 2;
-
-        found.push(
-            "ensalada"
-        );
-
-    }
-
-
-    // ==========================================
-    // PORCIÓN SELECCIONADA
-    // ==========================================
-
-    const portionMultiplier =
-        getPortionMultiplier();
-
-    calories *=
-        portionMultiplier;
-
-    protein *=
-        portionMultiplier;
-
-
-    return {
-
-        found: found,
-
-        calories:
-            Math.round(calories),
-
-        protein:
-            Math.round(protein)
-
-    };
-
-}
-
-
-// ==========================================
-// MOSTRAR ESTIMACIÓN
-// ==========================================
-
-function showEstimate(description) {
-
-    const result =
-        analyzeFood(description);
-
-
-    const caloriesElement =
-        document.getElementById(
-            "estimatedCalories"
-        );
-
-    const proteinElement =
-        document.getElementById(
-            "estimatedProtein"
-        );
-
-    const foodsElement =
-        document.getElementById(
-            "estimatedFoods"
-        );
-
-    const mealResult =
-        document.getElementById(
-            "mealResult"
-        );
-
-
-    mealResult.classList.add(
-        "active"
-    );
-
-
-    if (
-        result.found.length === 0
-    ) {
-
-        caloriesElement.textContent =
-            "0";
-
-        proteinElement.textContent =
-            "0";
-
-        foodsElement.textContent =
-            "No pude reconocer los alimentos. Probá describirlos de otra manera.";
-
-        window.currentMeal =
-            null;
-
-        return;
-
-    }
-
-
-    const minimumCalories =
-        Math.round(
-            result.calories * 0.85
-        );
-
-    const maximumCalories =
-        Math.round(
-            result.calories * 1.15
-        );
-
-
-    caloriesElement.textContent =
-        `${minimumCalories} - ${maximumCalories}`;
-
-    proteinElement.textContent =
-        `${result.protein} g`;
-
-    foodsElement.textContent =
-        "Detecté: " +
-        result.found.join(", ");
-
-
-    window.currentMeal =
-        result;
-
-}
-
-
-// ==========================================
-// CUANDO CARGA LA PÁGINA
-// ==========================================
-
-document.addEventListener(
-    "DOMContentLoaded",
-    function () {
-
-
-        // ==========================================
-        // BOTÓN COMENZAR
-        // ==========================================
-
-        const startBtn =
-            document.getElementById(
-                "startBtn"
-            );
-
-        if (
-            startBtn
-        ) {
-
-            startBtn.addEventListener(
-                "click",
-                function () {
-
-                    document
-                        .getElementById(
-                            "comidas"
-                        )
-                        .scrollIntoView({
-                            behavior: "smooth"
-                        });
-
-                }
-            );
-
-        }
-
-
-        // ==========================================
-        // ABRIR MODAL
-        // ==========================================
-
-        const addMealBtn =
-            document.getElementById(
-                "addMealBtn"
-            );
-
-        const mealModal =
-            document.getElementById(
-                "mealModal"
-            );
-
-        if (
-            addMealBtn
-        ) {
-
-            addMealBtn.addEventListener(
-                "click",
-                function () {
-
-                    mealModal.classList.add(
-                        "active"
-                    );
-
-                }
-            );
-
-        }
-
-
-        // ==========================================
-        // CERRAR MODAL
-        // ==========================================
-
-        const closeModal =
-            document.getElementById(
-                "closeModal"
-            );
-
-        if (
-            closeModal
-        ) {
-
-            closeModal.addEventListener(
-                "click",
-                function () {
-
-                    mealModal.classList.remove(
-                        "active"
-                    );
-
-                }
-            );
-
-        }
-
-
-        // ==========================================
-        // FORMULARIO
-        // ==========================================
-
-        const mealForm =
-            document.getElementById(
-                "mealForm"
-            );
-
-        if (
-            mealForm
-        ) {
-
-            mealForm.addEventListener(
-                "submit",
-                function (event) {
-
-                    event.preventDefault();
-
-
-                    const description =
-                        document.getElementById(
-                            "mealDescription"
-                        ).value.trim();
-
-
-                    if (
-                        !description
-                    ) {
-
-                        alert(
-                            "Escribí qué comiste."
-                        );
-
-                        return;
-
-                    }
-
-
-                    showEstimate(
-                        description
-                    );
-
-                }
-            );
-
-        }
-
-
-        // ==========================================
-        // GUARDAR COMIDA
-        // ==========================================
-
-        const saveMealBtn =
-            document.getElementById(
-                "saveMealBtn"
-            );
-
-        if (
-            saveMealBtn
-        ) {
-
-            saveMealBtn.addEventListener(
-                "click",
-                function () {
-
-
-                   if (!window.currentMeal) {
-
-    alert("Primero escaneá un producto o analizá una comida.");
-
-    return;
-
-} 
-
-
-                    const meal =
-                        window.currentMeal;
-
-
-                    // ==========================================
-                    // CALORÍAS
-                    // ==========================================
-
-                    const caloriesConsumed =
-                        document.getElementById(
-                            "caloriesConsumed"
-                        );
-
-                    const currentCalories =
-                        parseInt(
-                            caloriesConsumed.textContent
-                        ) || 0;
-
-                    const newCalories =
-                        currentCalories +
-                        meal.calories;
-
-                    caloriesConsumed.textContent =
-                        newCalories;
-
-
-                    // ==========================================
-                    // PROTEÍNA
-                    // ==========================================
-
-                    const proteinConsumed =
-                        document.getElementById(
-                            "proteinConsumed"
-                        );
-
-                    const currentProtein =
-                        parseInt(
-                            proteinConsumed.textContent
-                        ) || 0;
-
-                    proteinConsumed.textContent =
-                        currentProtein +
-                        meal.protein;
-
-
-                    // ==========================================
-                    // COMIDAS
-                    // ==========================================
-
-                    const mealCount =
-                        document.getElementById(
-                            "mealCount"
-                        );
-
-                    const currentMealCount =
-                        parseInt(
-                            mealCount.textContent
-                        ) || 0;
-
-                    mealCount.textContent =
-                        currentMealCount + 1;
-
-
-                    // ==========================================
-                    // CALORÍAS RESTANTES
-                    // ==========================================
-
-                    const calorieGoal =
-                        parseInt(
-                            document.getElementById(
-                                "calorieGoal"
-                            ).textContent
-                        ) || 2200;
-
-
-                    const remainingCalories =
-                        document.getElementById(
-                            "remainingCalories"
-                        );
-
-
-                    remainingCalories.textContent =
-                        Math.max(
-                            calorieGoal -
-                            newCalories,
-                            0
-                        );
-
-
-                    // ==========================================
-                    // PROGRESO
-                    // ==========================================
-
-                    const progress =
-                        Math.min(
-                            (
-                                newCalories /
-                                calorieGoal
-                            ) * 100,
-                            100
-                        );
-
-
-                    document.getElementById(
-                        "calorieProgress"
-                    ).style.width =
-                        `${progress}%`;
-
-
-                    // ==========================================
-                    // ELIMINAR ESTADO VACÍO
-                    // ==========================================
-
-                    const emptyState =
-                        document.getElementById(
-                            "emptyState"
-                        );
-
-                    if (
-                        emptyState
-                    ) {
-
-                        emptyState.remove();
-
-                    }
-
-
-                    // ==========================================
-                    // CREAR TARJETA
-                    // ==========================================
-
-                    const mealList =
-                        document.getElementById(
-                            "mealList"
-                        );
-
-                    const mealCard =
-                        document.createElement(
-                            "div"
-                        );
-
-
-                    mealCard.classList.add(
-                        "meal-card"
-                    );
-
-
-                    const mealType =
-                        document.getElementById(
-                            "mealType"
-                        ).value;
-
-
-                    mealCard.innerHTML = `
-
-                        <div class="meal-card-info">
-
-                            <strong>
-                                ${mealType}
-                            </strong>
-
-                            <p>
-                                ${meal.found.join(", ")}
-                            </p>
-
-                        </div>
-
-                        <div class="meal-card-nutrition">
-
-                            <strong>
-                                ${meal.calories} kcal
-                            </strong>
-
-                            <span>
-                                ${meal.protein} g proteína
-                            </span>
-
-                        </div>
-
-                    `;
-
-
-                    mealList.appendChild(
-                        mealCard
-                    );
-
-
-                    // ==========================================
-                    // CERRAR MODAL
-                    // ==========================================
-
-                    mealModal.classList.remove(
-                        "active"
-                    );
-
-
-                    // ==========================================
-                    // LIMPIAR FORMULARIO
-                    // ==========================================
-                    window.scannedProduct = false;
-
-                    mealForm.reset();
-
-
-                    const normalPortion =
-                        document.querySelector(
-                            'input[name="portion"][value="normal"]'
-                        );
-
-
-                    if (
-                        normalPortion
-                    ) {
-
-                        normalPortion.checked =
-                            true;
-
-                    }
-
-
-                    document
-                        .getElementById(
-                            "mealResult"
-                        )
-                        .classList.remove(
-                            "active"
-                        );
-
-
-                    window.currentMeal =
-                        null;
-
-                }
-            );
-
-        }
-
-    }
-);
-
-
-
-
-
-
-
-
-
-async function buscarProductoOpenFoodFacts(codigoBarras) {
-
-    try {
-
-        const respuesta = await fetch(
-            `https://world.openfoodfacts.org/api/v2/product/${codigoBarras}.json`
-        );
-
-        const datos = await respuesta.json();
-
-        if (datos.status !== 1) {
-            console.log("Producto no encontrado");
-            return null;
-        }
-
-        const producto = datos.product;
-
-        console.log("PRODUCTO ENCONTRADO");
-        console.log("Nombre:", producto.product_name);
-        console.log("Marca:", producto.brands);
-        console.log("Calorías:", producto.nutriments?.["energy-kcal_100g"]);
-        console.log("Proteínas:", producto.nutriments?.proteins_100g);
-
-        return producto;
-
-    } catch (error) {
-
-        console.error(
-            "Error conectando con Open Food Facts:",
-            error
-        );
-
-        return null;
-    }
-}
-
-// ==========================================
 // ESCÁNER DE PRODUCTOS
 // ==========================================
 
@@ -1904,68 +6,287 @@ const scanButton = document.getElementById("scanButton");
 const scannerContainer = document.getElementById("scannerContainer");
 const scannerStatus = document.getElementById("scannerStatus");
 
+const scannedProductContainer =
+    document.getElementById("scannedProductContainer");
+
+const scannedProductName =
+    document.getElementById("scannedProductName");
+
+const scannedProductBrand =
+    document.getElementById("scannedProductBrand");
+
+const scannedProductCalories =
+    document.getElementById("scannedProductCalories");
+
+const scannedProductProtein =
+    document.getElementById("scannedProductProtein");
+
+const productAmount =
+    document.getElementById("productAmount");
+
+const productUnit =
+    document.getElementById("productUnit");
+
+const productConversionInfo =
+    document.getElementById("productConversionInfo");
+
+const scannedProductResult =
+    document.getElementById("scannedProductResult");
+
+const useScannedProduct =
+    document.getElementById("useScannedProduct");
+
 let html5QrCode = null;
+let scannedProduct = null;
 
 
 // ==========================================
-// BUSCAR PRODUCTO EN OPEN FOOD FACTS
+// EQUIVALENCIAS DE PRODUCTOS
 // ==========================================
 
-async function buscarProductoOpenFoodFacts(codigoBarras) {
+function getProductUnitGrams(product, unit) {
 
-    try {
+    const texto = (
+        (product.product_name || "") +
+        " " +
+        (product.brands || "") +
+        " " +
+        (product.categories || "")
+    ).toLowerCase();
 
-        const respuesta = await fetch(
-            `https://world.openfoodfacts.org/api/v2/product/${codigoBarras}.json`
-        );
 
-        const datos = await respuesta.json();
+    // AVENA
+    if (
+        texto.includes("avena") ||
+        texto.includes("oat")
+    ) {
 
-        if (datos.status !== 1) {
-
-            console.log("Producto no encontrado");
-
-            return null;
-
-        }
-
-        const producto = datos.product;
-
-        console.log("PRODUCTO ENCONTRADO");
-        console.log("Nombre:", producto.product_name);
-        console.log("Marca:", producto.brands);
-        console.log(
-            "Calorías:",
-            producto.nutriments?.["energy-kcal_100g"]
-        );
-        console.log(
-            "Proteínas:",
-            producto.nutriments?.proteins_100g
-        );
-
-        return producto;
-
-    } catch (error) {
-
-        console.error(
-            "Error conectando con Open Food Facts:",
-            error
-        );
-
-        return null;
+        if (unit === "tbsp") return 10;
+        if (unit === "tsp") return 3.3;
+        if (unit === "unit") return 40;
+        if (unit === "portion") return 40;
 
     }
 
+
+    // AZÚCAR
+    if (
+        texto.includes("azucar") ||
+        texto.includes("azúcar") ||
+        texto.includes("sugar")
+    ) {
+
+        if (unit === "tbsp") return 12;
+        if (unit === "tsp") return 4;
+        if (unit === "unit") return 100;
+        if (unit === "portion") return 12;
+
+    }
+
+
+    // HARINA
+    if (
+        texto.includes("harina") ||
+        texto.includes("flour")
+    ) {
+
+        if (unit === "tbsp") return 8;
+        if (unit === "tsp") return 2.7;
+        if (unit === "unit") return 100;
+        if (unit === "portion") return 30;
+
+    }
+
+
+    // ACEITE
+    if (
+        texto.includes("aceite") ||
+        texto.includes("oil")
+    ) {
+
+        if (unit === "tbsp") return 13.5;
+        if (unit === "tsp") return 4.5;
+        if (unit === "unit") return 13.5;
+        if (unit === "portion") return 13.5;
+
+    }
+
+
+    // LECHE
+    if (
+        texto.includes("leche") ||
+        texto.includes("milk")
+    ) {
+
+        if (unit === "tbsp") return 15;
+        if (unit === "tsp") return 5;
+        if (unit === "unit") return 200;
+        if (unit === "portion") return 200;
+
+    }
+
+
+    // YOGUR
+    if (
+        texto.includes("yogur") ||
+        texto.includes("yogurt")
+    ) {
+
+        if (unit === "tbsp") return 15;
+        if (unit === "tsp") return 5;
+        if (unit === "unit") return 125;
+        if (unit === "portion") return 125;
+
+    }
+
+
+    // GALLETITAS
+    if (
+        texto.includes("galleta") ||
+        texto.includes("cookie")
+    ) {
+
+        if (unit === "unit") return 10;
+        if (unit === "portion") return 30;
+
+    }
+
+
+    // DEFAULT
+    // Si no conocemos el producto,
+    // usamos equivalencias aproximadas.
+
+    if (unit === "tbsp") return 10;
+    if (unit === "tsp") return 3.3;
+    if (unit === "unit") return 30;
+    if (unit === "portion") return 30;
+
+    return 1;
 }
 
 
 // ==========================================
-// BOTÓN ESCANEAR
+// CALCULAR PRODUCTO ESCANEADO
+// ==========================================
+
+function calculateScannedProduct() {
+
+    if (!scannedProduct) return;
+
+
+    const cantidad =
+        parseFloat(productAmount.value) || 0;
+
+    const unidad =
+        productUnit.value;
+
+
+    const gramosPorUnidad =
+        getProductUnitGrams(
+            scannedProduct,
+            unidad
+        );
+
+
+    let gramos = 0;
+
+    if (unidad === "g") {
+
+        gramos = cantidad;
+
+    } else {
+
+        gramos =
+            cantidad *
+            gramosPorUnidad;
+
+    }
+
+
+    const calorias100 =
+        scannedProduct.nutriments?.["energy-kcal_100g"] || 0;
+
+    const proteinas100 =
+        scannedProduct.nutriments?.proteins_100g || 0;
+
+
+    const calorias =
+        (calorias100 * gramos) / 100;
+
+    const proteinas =
+        (proteinas100 * gramos) / 100;
+
+
+    scannedProductResult.innerHTML = `
+        <strong>${Math.round(calorias)} kcal</strong>
+        <br>
+        <span>${proteinas.toFixed(1)} g de proteína</span>
+    `;
+
+
+    if (unidad === "g") {
+
+        productConversionInfo.textContent =
+            `${gramos.toFixed(0)} g`;
+
+    } else {
+
+        productConversionInfo.textContent =
+            `≈ ${gramos.toFixed(1)} g (${gramosPorUnidad} g por ${getUnitName(unidad)})`;
+
+    }
+
+
+    // Guardamos el cálculo
+    window.scannedProductResult = {
+        nombre: scannedProduct.product_name || "Producto",
+        marca: scannedProduct.brands || "",
+        gramos: gramos,
+        calorias: calorias,
+        proteinas: proteinas
+    };
+}
+
+
+// ==========================================
+// NOMBRE DE LA UNIDAD
+// ==========================================
+
+function getUnitName(unit) {
+
+    if (unit === "tbsp") return "cucharada";
+    if (unit === "tsp") return "cucharadita";
+    if (unit === "unit") return "unidad";
+    if (unit === "portion") return "porción";
+
+    return "gramo";
+}
+
+
+// ==========================================
+// CAMBIAR CANTIDAD / UNIDAD
+// ==========================================
+
+productAmount.addEventListener(
+    "input",
+    calculateScannedProduct
+);
+
+productUnit.addEventListener(
+    "change",
+    calculateScannedProduct
+);
+
+
+// ==========================================
+// ESCANEAR
 // ==========================================
 
 scanButton.addEventListener("click", async () => {
 
     scannerContainer.style.display = "block";
+
+    scannedProductContainer.style.display = "none";
 
     scannerStatus.textContent =
         "Solicitando acceso a la cámara...";
@@ -1984,7 +305,6 @@ scanButton.addEventListener("click", async () => {
             },
 
             {
-
                 fps: 10,
 
                 qrbox: {
@@ -2003,13 +323,8 @@ scanButton.addEventListener("click", async () => {
                     Html5QrcodeSupportedFormats.UPC_E
 
                 ]
-
             },
 
-
-            // ==========================================
-            // CÓDIGO DETECTADO
-            // ==========================================
 
             async (codigo) => {
 
@@ -2038,9 +353,9 @@ scanButton.addEventListener("click", async () => {
                     "none";
 
 
-                // ==========================================
-                // BUSCAR PRODUCTO
-                // ==========================================
+                scannerStatus.textContent =
+                    "Buscando producto...";
+
 
                 const producto =
                     await buscarProductoOpenFoodFacts(
@@ -2055,394 +370,58 @@ scanButton.addEventListener("click", async () => {
                     );
 
                     return;
-
                 }
 
 
-                // ==========================================
-                // DATOS NUTRICIONALES
-                // ==========================================
+                // Guardamos producto
+                scannedProduct =
+                    producto;
 
-                const nombre =
+
+                // Mostrar información
+                scannedProductName.textContent =
                     producto.product_name ||
                     "Producto sin nombre";
 
 
-                const marca =
-                    producto.brands ||
-                    "";
+                scannedProductBrand.textContent =
+                    producto.brands
+                        ? "Marca: " + producto.brands
+                        : "";
 
 
-                const calorias100 =
-                    Number(
-                        producto.nutriments?.[
-                            "energy-kcal_100g"
-                        ]
-                    ) || 0;
+                scannedProductCalories.textContent =
+                    producto.nutriments?.[
+                        "energy-kcal_100g"
+                    ] || 0;
 
 
-                const proteinas100 =
-                    Number(
-                        producto.nutriments?.[
-                            "proteins_100g"
-                        ]
-                    ) || 0;
+                scannedProductProtein.textContent =
+                    producto.nutriments?.[
+                        "proteins_100g"
+                    ] || 0;
 
 
-                // ==========================================
-                // CREAR TARJETA DEL PRODUCTO
-                // ==========================================
+                // Mostrar panel
+                scannedProductContainer.style.display =
+                    "block";
 
-                let productCard =
-                    document.getElementById(
-                        "scannedProductCard"
-                    );
 
+                // Valores iniciales
+                productAmount.value = 1;
 
-                if (productCard) {
+                productUnit.value = "g";
 
-                    productCard.remove();
 
-                }
-
-
-                productCard =
-                    document.createElement("div");
-
-
-                productCard.id =
-                    "scannedProductCard";
-
-
-                productCard.style.marginTop =
-                    "20px";
-
-
-                productCard.style.padding =
-                    "20px";
-
-
-                productCard.style.borderRadius =
-                    "12px";
-
-
-                productCard.style.background =
-                    "#f5f5f5";
-
-
-                productCard.innerHTML = `
-
-                    <div>
-
-                        <span
-                            style="
-                                font-size:12px;
-                                font-weight:bold;
-                                opacity:0.6;
-                            "
-                        >
-                            PRODUCTO ESCANEADO
-                        </span>
-
-                        <h3
-                            style="
-                                margin:6px 0;
-                            "
-                        >
-                            ${nombre}
-                        </h3>
-
-                        ${
-                            marca
-                            ? `<p style="margin:4px 0;">
-                                ${marca}
-                               </p>`
-                            : ""
-                        }
-
-                    </div>
-
-
-                    <div
-                        style="
-                            display:flex;
-                            gap:20px;
-                            margin:15px 0;
-                            flex-wrap:wrap;
-                        "
-                    >
-
-                        <div>
-
-                            <strong>
-                                ${calorias100}
-                            </strong>
-
-                            kcal / 100 g
-
-                        </div>
-
-
-                        <div>
-
-                            <strong>
-                                ${proteinas100}
-                            </strong>
-
-                            g proteína / 100 g
-
-                        </div>
-
-                    </div>
-
-
-                    <label
-                        for="productGrams"
-                    >
-                        ¿Cuántos gramos consumiste?
-                    </label>
-
-
-                    <input
-                        id="productGrams"
-                        type="number"
-                        min="1"
-                        value="100"
-                        style="
-                            width:100%;
-                            margin-top:8px;
-                            padding:12px;
-                            font-size:16px;
-                            box-sizing:border-box;
-                        "
-                    >
-
-
-                    <div
-                        id="productCalculatedNutrition"
-                        style="
-                            margin-top:15px;
-                            font-weight:bold;
-                        "
-                    >
-                        100 g → ${calorias100} kcal ·
-                        ${proteinas100} g proteína
-                    </div>
-
-
-                    <button
-                        type="button"
-                        id="useScannedProduct"
-                        class="primary-btn full-width"
-                        style="margin-top:15px;"
-                    >
-                        Usar este producto
-                    </button>
-
-                `;
-
-
-                const scanner =
-                    document.getElementById(
-                        "scannerContainer"
-                    );
-
-
-                scanner.parentNode.insertBefore(
-                    productCard,
-                    scanner.nextSibling
-                );
-
-
-                // ==========================================
-                // CALCULAR AL CAMBIAR GRAMOS
-                // ==========================================
-
-                const gramsInput =
-                    document.getElementById(
-                        "productGrams"
-                    );
-
-
-                const nutrition =
-                    document.getElementById(
-                        "productCalculatedNutrition"
-                    );
-
-
-                function actualizarCalculo() {
-
-                    let gramos =
-                        Number(
-                            gramsInput.value
-                        ) || 0;
-
-
-                    if (gramos < 1) {
-
-                        gramos = 1;
-
-                        gramsInput.value = 1;
-
-                    }
-
-
-                    const calorias =
-                        Math.round(
-                            calorias100 *
-                            gramos /
-                            100
-                        );
-
-
-                    const proteinas =
-                        Math.round(
-                            proteinas100 *
-                            gramos /
-                            100
-                        );
-
-
-                    nutrition.textContent =
-                        `${gramos} g → ` +
-                        `${calorias} kcal · ` +
-                        `${proteinas} g proteína`;
-
-                }
-
-
-                gramsInput.addEventListener(
-                    "input",
-                    actualizarCalculo
-                );
-
-
-                // ==========================================
-                // USAR PRODUCTO
-                // ==========================================
-
-                document
-                    .getElementById(
-                        "useScannedProduct"
-                    )
-                    .addEventListener(
-                        "click",
-                        function () {
-
-                            const gramos =
-                                Number(
-                                    gramsInput.value
-                                ) || 100;
-
-
-                            const calorias =
-                                Math.round(
-                                    calorias100 *
-                                    gramos /
-                                    100
-                                );
-
-
-                            const proteinas =
-                                Math.round(
-                                    proteinas100 *
-                                    gramos /
-                                    100
-                                );
-
-
-                            // ==================================
-                            // CREAR COMIDA ACTUAL
-                            // ==================================
-
-                            window.currentMeal = {
-    found: [
-        `${nombre}${marca ? ` (${marca})` : ""} - ${gramos} g`
-    ],
-    calories: calorias,
-    protein: proteinas
-};
-
-// Guardamos que la comida viene del escáner
-window.scannedProduct = true;
-
-
-                            // ==================================
-                            // MOSTRAR RESULTADO
-                            // ==================================
-
-                            document
-                                .getElementById(
-                                    "estimatedCalories"
-                                )
-                                .textContent =
-                                    calorias;
-
-
-                            document
-                                .getElementById(
-                                    "estimatedProtein"
-                                )
-                                .textContent =
-                                    `${proteinas} g`;
-
-
-                            document
-                                .getElementById(
-                                    "estimatedFoods"
-                                )
-                                .textContent =
-                                    `Producto escaneado: ${nombre}` +
-                                    ` · ${gramos} g`;
-
-
-                            document
-                                .getElementById(
-                                    "mealResult"
-                                )
-                                .classList.add(
-                                    "active"
-                                );
-
-
-                            // ==================================
-                            // OCULTAR TARJETA
-                            // ==================================
-
-                            productCard.remove();
-
-
-                            // ==================================
-                            // PONER DESCRIPCIÓN
-                            // ==================================
-
-                            document
-                                .getElementById(
-                                    "mealDescription"
-                                )
-                                .value =
-                                `${gramos} g de ${nombre}`;
-
-
-                            console.log(
-                                "Producto listo para guardar:",
-                                window.currentMeal
-                            );
-
-                        }
-                    );
+                calculateScannedProduct();
 
             },
 
 
-            // ==========================================
-            // MIENTRAS BUSCA
-            // ==========================================
-
             (errorMessage) => {
 
-                // No mostramos errores individuales.
-                // El escáner sigue buscando.
+                // No hacemos nada con los errores
+                // normales de lectura.
 
             }
 
@@ -2468,3 +447,91 @@ window.scannedProduct = true;
     }
 
 });
+
+
+// ==========================================
+// USAR PRODUCTO ESCANEADO
+// ==========================================
+
+useScannedProduct.addEventListener(
+    "click",
+    () => {
+
+        if (!window.scannedProductResult) {
+
+            alert(
+                "Primero indicá cuánto consumiste."
+            );
+
+            return;
+        }
+
+
+        const producto =
+            window.scannedProductResult;
+
+
+        // Guardamos como comida actual
+        window.currentMeal = {
+
+            foods: [
+                {
+                    name: producto.nombre,
+                    calories: producto.calorias,
+                    protein: producto.proteinas
+                }
+            ],
+
+            calories:
+                producto.calorias,
+
+            protein:
+                producto.proteinas
+
+        };
+
+
+        // Mostrar el producto en el textarea
+        document.getElementById(
+            "mealDescription"
+        ).value =
+            `${producto.nombre} - ${producto.gramos.toFixed(0)} g`;
+
+
+        // Mostrar resultado
+        document.getElementById(
+            "estimatedCalories"
+        ).textContent =
+            Math.round(producto.calorias);
+
+
+        document.getElementById(
+            "estimatedProtein"
+        ).textContent =
+            producto.proteinas.toFixed(1);
+
+
+        // Mostrar sección de resultado
+        const resultSection =
+            document.getElementById(
+                "resultSection"
+            );
+
+        if (resultSection) {
+
+            resultSection.style.display =
+                "block";
+
+        }
+
+
+        scannedProductContainer.style.display =
+            "none";
+
+
+        alert(
+            "Producto agregado al análisis."
+        );
+
+    }
+);
