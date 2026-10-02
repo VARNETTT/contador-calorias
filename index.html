@@ -626,7 +626,7 @@
      MODAL - RECETAS SALUDABLES
 =========================================== -->
 
-<div id="recipesModal" class="recipes-modal">
+<div id="recipesModal" class="recipes-modal" style="display: none;"></div>
 
     <div
         id="recipesModalOverlay"
@@ -1875,12 +1875,146 @@
 
 
 
-    <script src="https://unpkg.com/html5-qrcode"></script>
+  <script>
 
-    <!-- TU JAVASCRIPT -->
+document.addEventListener("DOMContentLoaded", function () {
 
-    <script src="script.js?v=2"></script>
+    const recipesModal =
+        document.getElementById("recipesModal");
 
+    const goalModal =
+        document.getElementById("goalModal");
+
+
+    /* ==========================================
+       OCULTAR MODALES AL ABRIR LA PÁGINA
+    ========================================== */
+
+    if (recipesModal) {
+        recipesModal.style.display = "none";
+    }
+
+    if (goalModal) {
+        goalModal.style.display = "none";
+    }
+
+
+    /* ==========================================
+       PREPARAR MODAL PARA ABRIRSE
+    ========================================== */
+
+    function enableModal(modal) {
+
+        if (!modal) {
+            return;
+        }
+
+        modal.style.removeProperty("display");
+
+    }
+
+
+    /* ==========================================
+       RECETAS - COMPUTADORA
+    ========================================== */
+
+    const openRecipesModal =
+        document.getElementById("openRecipesModal");
+
+    if (openRecipesModal) {
+
+        openRecipesModal.addEventListener(
+            "click",
+            function () {
+
+                enableModal(recipesModal);
+
+            },
+            true
+        );
+
+    }
+
+
+    /* ==========================================
+       RECETAS - CELULAR
+    ========================================== */
+
+    const mobileOpenRecipesModal =
+        document.getElementById(
+            "mobileOpenRecipesModal"
+        );
+
+    if (mobileOpenRecipesModal) {
+
+        mobileOpenRecipesModal.addEventListener(
+            "click",
+            function () {
+
+                enableModal(recipesModal);
+
+            },
+            true
+        );
+
+    }
+
+
+    /* ==========================================
+       MI OBJETIVO - COMPUTADORA
+    ========================================== */
+
+    const openGoalModal =
+        document.getElementById("openGoalModal");
+
+    if (openGoalModal) {
+
+        openGoalModal.addEventListener(
+            "click",
+            function () {
+
+                enableModal(goalModal);
+
+            },
+            true
+        );
+
+    }
+
+
+    /* ==========================================
+       MI OBJETIVO - CELULAR
+    ========================================== */
+
+    const mobileOpenGoalModal =
+        document.getElementById(
+            "mobileOpenGoalModal"
+        );
+
+    if (mobileOpenGoalModal) {
+
+        mobileOpenGoalModal.addEventListener(
+            "click",
+            function () {
+
+                enableModal(goalModal);
+
+            },
+            true
+        );
+
+    }
+
+});
+
+</script>
+
+
+<script src="https://unpkg.com/html5-qrcode"></script>
+
+<!-- TU JAVASCRIPT -->
+
+<script src="script.js?v=2"></script>  
 </body>
 
 </html>
