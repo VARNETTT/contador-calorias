@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Contador de Calorías</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <header>
+        <div class="logo">Calorie<span>Track</span></div>
+
+        <nav>
+            <a href="#inicio">Inicio</a>
+            <a href="#comidas">Mis comidas</a>
+        </nav>
+    </header>
+
+
+    <main>
+
+        <!-- INICIO -->
+        <section id="inicio" class="hero">
+
+            <div class="hero-content">
+
+                <span class="badge">CONTADOR DE CALORÍAS</span>
+
+                <h1>
+                    Tu alimentación,<br>
+                    <span>bajo control.</span>
+                </h1>
+
+                <p>
+                    Registrá lo que comés y obtené una estimación
+                    de calorías y proteínas sin tener que pesar cada alimento.
+                </p>
+
+                <button id="startBtn" class="primary-btn">
+                    Comenzar
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <!-- DASHBOARD -->
+        <section class="dashboard">
+
+            <div class="dashboard-card">
+
+                <div>
+                    <p class="label">CALORÍAS DE HOY</p>
+
+                    <h2>
+                        <span id="caloriesConsumed">0</span>
+                        <small>/ <span id="calorieGoal">2200</span> kcal</small>
+                    </h2>
+                </div>
+
+                <div class="progress-container">
+                    <div id="calorieProgress"></div>
+                </div>
+
+                <p class="remaining">
+                    Te quedan <strong id="remainingCalories">2200</strong> kcal
+                </p>
+
+            </div>
+
+
+            <div class="dashboard-card">
+
+                <p class="label">PROTEÍNA</p>
+
+                <h2>
+                    <span id="proteinConsumed">0</span>
+                    <small>g</small>
+                </h2>
+
+                <p class="remaining">
+                    Objetivo: <strong>140 g</strong>
+                </p>
+
+            </div>
+
+
+            <div class="dashboard-card">
+
+                <p class="label">COMIDAS</p>
+
+                <h2 id="mealCount">0</h2>
+
+                <p class="remaining">
+                    comidas registradas
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <!-- COMIDAS -->
+        <section id="comidas" class="section">
+
+            <div class="section-header">
+
+                <div>
+                    <span class="badge">REGISTRO</span>
+
+                    <h2>¿Qué comiste?</h2>
+
+                    <p>
+                        Describí tu comida y nosotros estimamos
+                        las calorías y proteínas.
+                    </p>
+                </div>
+
+                <button id="addMealBtn" class="primary-btn">
+                    + Agregar comida
+                </button>
+
+            </div>
+
+
+            <div id="mealList" class="meal-list">
+
+                <div id="emptyState" class="empty-state">
+
+                    <div class="empty-icon">🍽️</div>
+
+                    <h3>Todavía no registraste comidas</h3>
+
+                    <p>
+                        Agregá tu primera comida para comenzar.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- MODAL -->
+
+    <div id="mealModal" class="modal">
+
+        <div class="modal-content">
+
+            <button id="closeModal" class="close-btn">
+                ×
+            </button>
+
+            <span class="badge">NUEVA COMIDA</span>
+
+            <h2>¿Qué comiste?</h2>
+
+            <p class="modal-description">
+                No necesitás pesar los alimentos.
+                Escribí aproximadamente qué comiste.
+            </p>
+
+
+            <form id="mealForm">
+
+                <label for="mealType">
+                    Momento del día
+                </label>
+
+                <select id="mealType" required>
+
+                    <option value="Desayuno">Desayuno</option>
+                    <option value="Almuerzo">Almuerzo</option>
+                    <option value="Merienda">Merienda</option>
+                    <option value="Cena">Cena</option>
+                    <option value="Snack">Snack</option>
+
+                </select>
+
+
+                <label for="mealDescription">
+                    ¿Qué comiste?
+                </label>
+
+                
+
+<textarea
+    id="mealDescription"
+    placeholder="Ej: 2 milanesas de pollo con puré y ensalada"
+    required
+></textarea>
+
+
+<button
+    type="button"
+    id="scanButton"
+    class="primary-btn full-width"
+>
+    📷 Escanear producto
+</button>
+
+<div id="scannerContainer" style="display: none;">
+
+    <video
+        id="scannerVideo"
+        autoplay
+        playsinline
+    ></video>
+
+    <p id="scannerStatus">
+        Apuntá la cámara al código de barras...
+    </p>
+
+</div>
+
+
+<label>
+    Cantidad aproximada
+</label>
+
+                <div class="portion-options">
+
+                    <label class="portion-option">
+
+                        <input
+                            type="radio"
+                            name="portion"
+                            value="small"
+                        >
+
+                        <span>
+                            Poco
+                        </span>
+
+                    </label>
+
+
+                    <label class="portion-option">
+
+                        <input
+                            type="radio"
+                            name="portion"
+                            value="normal"
+                            checked
+                        >
+
+                        <span>
+                            Normal
+                        </span>
+
+                    </label>
+
+
+                    <label class="portion-option">
+
+                        <input
+                            type="radio"
+                            name="portion"
+                            value="large"
+                        >
+
+                        <span>
+                            Abundante
+                        </span>
+
+                    </label>
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    class="primary-btn full-width"
+                >
+                    Calcular comida
+                </button>
+
+            </form>
+
+
+            <!-- RESULTADO -->
+
+            <div id="mealResult" class="meal-result">
+
+                <span class="result-label">
+                    ESTIMACIÓN
+                </span>
+
+                <div class="result-values">
+
+                    <div>
+                        <strong id="estimatedCalories">0</strong>
+                        <span>kcal</span>
+                    </div>
+
+                    <div>
+                        <strong id="estimatedProtein">0</strong>
+                        <span>g proteína</span>
+                    </div>
+
+                </div>
+
+                <p id="estimatedFoods"></p>
+
+                <button
+                    id="saveMealBtn"
+                    class="primary-btn full-width"
+                >
+                    Agregar al día
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <script src="script.js"></script>
+
+</body>
+</html>
