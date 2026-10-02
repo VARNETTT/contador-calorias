@@ -1899,11 +1899,72 @@ async function buscarProductoOpenFoodFacts(codigoBarras) {
     }
 }
 
+// ==========================================
+// ESCÁNER DE PRODUCTOS
+// ==========================================
+
 const scanButton = document.getElementById("scanButton");
 const scannerContainer = document.getElementById("scannerContainer");
 const scannerStatus = document.getElementById("scannerStatus");
 
 let html5QrCode = null;
+
+
+// ==========================================
+// BUSCAR PRODUCTO EN OPEN FOOD FACTS
+// ==========================================
+
+async function buscarProductoOpenFoodFacts(codigoBarras) {
+
+    try {
+
+        const respuesta = await fetch(
+            `https://world.openfoodfacts.org/api/v2/product/${codigoBarras}.json`
+        );
+
+        const datos = await respuesta.json();
+
+        if (datos.status !== 1) {
+
+            console.log("Producto no encontrado");
+
+            return null;
+
+        }
+
+        const producto = datos.product;
+
+        console.log("PRODUCTO ENCONTRADO");
+        console.log("Nombre:", producto.product_name);
+        console.log("Marca:", producto.brands);
+        console.log(
+            "Calorías:",
+            producto.nutriments?.["energy-kcal_100g"]
+        );
+        console.log(
+            "Proteínas:",
+            producto.nutriments?.proteins_100g
+        );
+
+        return producto;
+
+    } catch (error) {
+
+        console.error(
+            "Error conectando con Open Food Facts:",
+            error
+        );
+
+        return null;
+
+    }
+
+}
+
+
+// ==========================================
+// BOTÓN ESCANEAR
+// ==========================================
 
 scanButton.addEventListener("click", async () => {
 
@@ -1912,15 +1973,21 @@ scanButton.addEventListener("click", async () => {
     scannerStatus.textContent =
         "Solicitando acceso a la cámara...";
 
+
     try {
 
-        html5QrCode = new Html5Qrcode("scannerVideo");
+        html5QrCode =
+            new Html5Qrcode("scannerVideo");
+
 
         await html5QrCode.start(
 
-            { facingMode: "environment" },
+            {
+                facingMode: "environment"
+            },
 
             {
+
                 fps: 10,
 
                 qrbox: {
@@ -1929,72 +1996,488 @@ scanButton.addEventListener("click", async () => {
                 },
 
                 formatsToSupport: [
+
                     Html5QrcodeSupportedFormats.EAN_13,
+
                     Html5QrcodeSupportedFormats.EAN_8,
+
                     Html5QrcodeSupportedFormats.UPC_A,
+
                     Html5QrcodeSupportedFormats.UPC_E
+
                 ]
+
             },
+
+
+            // ==========================================
+            // CÓDIGO DETECTADO
+            // ==========================================
 
             async (codigo) => {
 
-                console.log("Código detectado:", codigo);
+                console.log(
+                    "Código detectado:",
+                    codigo
+                );
+
 
                 scannerStatus.textContent =
                     "Código detectado: " + codigo;
 
+
                 try {
+
                     await html5QrCode.stop();
+
                 } catch (e) {
+
                     console.log(e);
+
                 }
 
-                scannerContainer.style.display = "none";
+
+                scannerContainer.style.display =
+                    "none";
+
+
+                // ==========================================
+                // BUSCAR PRODUCTO
+                // ==========================================
 
                 const producto =
-                    await buscarProductoOpenFoodFacts(codigo);
+                    await buscarProductoOpenFoodFacts(
+                        codigo
+                    );
 
-                if (producto) {
 
-                    const nombre =
-                        producto.product_name || "Producto";
-
-                    const calorias =
-                        producto.nutriments?.["energy-kcal_100g"] || 0;
-
-                    const proteinas =
-                        producto.nutriments?.proteins_100g || 0;
-
-                    document.getElementById("mealDescription").value =
-                        `${nombre} - ${calorias} kcal/100g - ${proteinas}g proteína/100g`;
-
-                } else {
+                if (!producto) {
 
                     alert(
                         "No encontramos este producto en Open Food Facts."
                     );
 
+                    return;
+
                 }
+
+
+                // ==========================================
+                // DATOS NUTRICIONALES
+                // ==========================================
+
+                const nombre =
+                    producto.product_name ||
+                    "Producto sin nombre";
+
+
+                const marca =
+                    producto.brands ||
+                    "";
+
+
+                const calorias100 =
+                    Number(
+                        producto.nutriments?.[
+                            "energy-kcal_100g"
+                        ]
+                    ) || 0;
+
+
+                const proteinas100 =
+                    Number(
+                        producto.nutriments?.[
+                            "proteins_100g"
+                        ]
+                    ) || 0;
+
+
+                // ==========================================
+                // CREAR TARJETA DEL PRODUCTO
+                // ==========================================
+
+                let productCard =
+                    document.getElementById(
+                        "scannedProductCard"
+                    );
+
+
+                if (productCard) {
+
+                    productCard.remove();
+
+                }
+
+
+                productCard =
+                    document.createElement("div");
+
+
+                productCard.id =
+                    "scannedProductCard";
+
+
+                productCard.style.marginTop =
+                    "20px";
+
+
+                productCard.style.padding =
+                    "20px";
+
+
+                productCard.style.borderRadius =
+                    "12px";
+
+
+                productCard.style.background =
+                    "#f5f5f5";
+
+
+                productCard.innerHTML = `
+
+                    <div>
+
+                        <span
+                            style="
+                                font-size:12px;
+                                font-weight:bold;
+                                opacity:0.6;
+                            "
+                        >
+                            PRODUCTO ESCANEADO
+                        </span>
+
+                        <h3
+                            style="
+                                margin:6px 0;
+                            "
+                        >
+                            ${nombre}
+                        </h3>
+
+                        ${
+                            marca
+                            ? `<p style="margin:4px 0;">
+                                ${marca}
+                               </p>`
+                            : ""
+                        }
+
+                    </div>
+
+
+                    <div
+                        style="
+                            display:flex;
+                            gap:20px;
+                            margin:15px 0;
+                            flex-wrap:wrap;
+                        "
+                    >
+
+                        <div>
+
+                            <strong>
+                                ${calorias100}
+                            </strong>
+
+                            kcal / 100 g
+
+                        </div>
+
+
+                        <div>
+
+                            <strong>
+                                ${proteinas100}
+                            </strong>
+
+                            g proteína / 100 g
+
+                        </div>
+
+                    </div>
+
+
+                    <label
+                        for="productGrams"
+                    >
+                        ¿Cuántos gramos consumiste?
+                    </label>
+
+
+                    <input
+                        id="productGrams"
+                        type="number"
+                        min="1"
+                        value="100"
+                        style="
+                            width:100%;
+                            margin-top:8px;
+                            padding:12px;
+                            font-size:16px;
+                            box-sizing:border-box;
+                        "
+                    >
+
+
+                    <div
+                        id="productCalculatedNutrition"
+                        style="
+                            margin-top:15px;
+                            font-weight:bold;
+                        "
+                    >
+                        100 g → ${calorias100} kcal ·
+                        ${proteinas100} g proteína
+                    </div>
+
+
+                    <button
+                        type="button"
+                        id="useScannedProduct"
+                        class="primary-btn full-width"
+                        style="margin-top:15px;"
+                    >
+                        Usar este producto
+                    </button>
+
+                `;
+
+
+                const scanner =
+                    document.getElementById(
+                        "scannerContainer"
+                    );
+
+
+                scanner.parentNode.insertBefore(
+                    productCard,
+                    scanner.nextSibling
+                );
+
+
+                // ==========================================
+                // CALCULAR AL CAMBIAR GRAMOS
+                // ==========================================
+
+                const gramsInput =
+                    document.getElementById(
+                        "productGrams"
+                    );
+
+
+                const nutrition =
+                    document.getElementById(
+                        "productCalculatedNutrition"
+                    );
+
+
+                function actualizarCalculo() {
+
+                    let gramos =
+                        Number(
+                            gramsInput.value
+                        ) || 0;
+
+
+                    if (gramos < 1) {
+
+                        gramos = 1;
+
+                        gramsInput.value = 1;
+
+                    }
+
+
+                    const calorias =
+                        Math.round(
+                            calorias100 *
+                            gramos /
+                            100
+                        );
+
+
+                    const proteinas =
+                        Math.round(
+                            proteinas100 *
+                            gramos /
+                            100
+                        );
+
+
+                    nutrition.textContent =
+                        `${gramos} g → ` +
+                        `${calorias} kcal · ` +
+                        `${proteinas} g proteína`;
+
+                }
+
+
+                gramsInput.addEventListener(
+                    "input",
+                    actualizarCalculo
+                );
+
+
+                // ==========================================
+                // USAR PRODUCTO
+                // ==========================================
+
+                document
+                    .getElementById(
+                        "useScannedProduct"
+                    )
+                    .addEventListener(
+                        "click",
+                        function () {
+
+                            const gramos =
+                                Number(
+                                    gramsInput.value
+                                ) || 100;
+
+
+                            const calorias =
+                                Math.round(
+                                    calorias100 *
+                                    gramos /
+                                    100
+                                );
+
+
+                            const proteinas =
+                                Math.round(
+                                    proteinas100 *
+                                    gramos /
+                                    100
+                                );
+
+
+                            // ==================================
+                            // CREAR COMIDA ACTUAL
+                            // ==================================
+
+                            window.currentMeal = {
+
+                                found: [
+
+                                    `${nombre}` +
+                                    (
+                                        marca
+                                        ? ` (${marca})`
+                                        : ""
+                                    ) +
+                                    ` - ${gramos} g`
+
+                                ],
+
+                                calories:
+                                    calorias,
+
+                                protein:
+                                    proteinas
+
+                            };
+
+
+                            // ==================================
+                            // MOSTRAR RESULTADO
+                            // ==================================
+
+                            document
+                                .getElementById(
+                                    "estimatedCalories"
+                                )
+                                .textContent =
+                                    calorias;
+
+
+                            document
+                                .getElementById(
+                                    "estimatedProtein"
+                                )
+                                .textContent =
+                                    `${proteinas} g`;
+
+
+                            document
+                                .getElementById(
+                                    "estimatedFoods"
+                                )
+                                .textContent =
+                                    `Producto escaneado: ${nombre}` +
+                                    ` · ${gramos} g`;
+
+
+                            document
+                                .getElementById(
+                                    "mealResult"
+                                )
+                                .classList.add(
+                                    "active"
+                                );
+
+
+                            // ==================================
+                            // OCULTAR TARJETA
+                            // ==================================
+
+                            productCard.remove();
+
+
+                            // ==================================
+                            // PONER DESCRIPCIÓN
+                            // ==================================
+
+                            document
+                                .getElementById(
+                                    "mealDescription"
+                                )
+                                .value =
+                                `${gramos} g de ${nombre}`;
+
+
+                            console.log(
+                                "Producto listo para guardar:",
+                                window.currentMeal
+                            );
+
+                        }
+                    );
 
             },
 
+
+            // ==========================================
+            // MIENTRAS BUSCA
+            // ==========================================
+
             (errorMessage) => {
 
-                // No hacemos nada mientras busca el código.
+                // No mostramos errores individuales.
+                // El escáner sigue buscando.
 
             }
 
         );
 
+
         scannerStatus.textContent =
             "📷 Cámara activa. Apuntá al código de barras.";
 
+
     } catch (error) {
 
-        console.error("Error iniciando cámara:", error);
+        console.error(
+            "Error iniciando cámara:",
+            error
+        );
+
 
         scannerStatus.textContent =
-            "❌ No se pudo abrir la cámara: " + error.message;
+            "❌ No se pudo abrir la cámara: " +
+            error.message;
 
     }
 
