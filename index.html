@@ -190,41 +190,41 @@
                     ¿Qué comiste?
                 </label>
 
-                
-
-<textarea
-    id="mealDescription"
-    placeholder="Ej: 2 milanesas de pollo con puré y ensalada"
-    required
-></textarea>
+                <textarea
+                    id="mealDescription"
+                    placeholder="Ej: 2 milanesas de pollo con puré y ensalada"
+                    required
+                ></textarea>
 
 
-<button
-    type="button"
-    id="scanButton"
-    class="primary-btn full-width"
->
-    📷 Escanear producto
-</button>
+                <!-- ESCÁNER DE PRODUCTOS -->
 
-<div id="scannerContainer" style="display: none;">
-
-    <video
-        id="scannerVideo"
-        autoplay
-        playsinline
-    ></video>
-
-    <p id="scannerStatus">
-        Apuntá la cámara al código de barras...
-    </p>
-
-</div>
+                <button
+                    type="button"
+                    id="scanButton"
+                    class="primary-btn full-width"
+                >
+                    📷 Escanear producto
+                </button>
 
 
-<label>
-    Cantidad aproximada
-</label>
+                <div
+                    id="scannerContainer"
+                    style="display: none;"
+                >
+
+                    <div id="scannerVideo"></div>
+
+                    <p id="scannerStatus">
+                        Apuntá la cámara al código de barras...
+                    </p>
+
+                </div>
+
+
+                <label>
+                    Cantidad aproximada
+                </label>
 
                 <div class="portion-options">
 
@@ -323,6 +323,12 @@
 
     </div>
 
+
+    <!-- BIBLIOTECA DEL ESCÁNER -->
+
+    <script src="https://unpkg.com/html5-qrcode"></script>
+
+    <!-- TU JAVASCRIPT -->
 
     <script src="script.js"></script>
 
