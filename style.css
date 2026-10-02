@@ -2016,3 +2016,59 @@ textarea:focus {
     }
 
 }
+/* ==================================================
+   BARRA MÓVIL - ICONOS Y TEXTO MÁS GRANDES
+================================================== */
+
+@media (max-width: 700px) {
+
+    /* Barra inferior un poco más alta */
+    .mobile-nav {
+        height: 78px;
+
+        left: 10px;
+        right: 10px;
+        bottom: 10px;
+
+        padding: 7px 8px;
+
+        grid-template-columns:
+            1fr
+            1fr
+            76px
+            1fr
+            1fr;
+    }
+
+
+    /* Cada opción */
+    .mobile-nav-item {
+        gap: 5px;
+    }
+
+
+    /* ICONOS */
+    .mobile-nav-item > span {
+        font-size: 27px;
+        line-height: 1;
+    }
+
+
+    /* TEXTO */
+    .mobile-nav-item small {
+        font-size: 12px;
+        font-weight: 700;
+    }
+
+
+    /* Botón central + */
+    .mobile-add-button {
+        width: 62px;
+        height: 62px;
+
+        margin-top: -31px;
+
+        font-size: 37px;
+    }
+
+}
