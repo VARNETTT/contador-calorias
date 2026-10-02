@@ -1603,17 +1603,13 @@ document.addEventListener(
                 function () {
 
 
-                    if (
-                        !window.currentMeal
-                    ) {
+                   if (!window.currentMeal) {
 
-                        alert(
-                            "Primero analizá una comida."
-                        );
+    alert("Primero escaneá un producto o analizá una comida.");
 
-                        return;
+    return;
 
-                    }
+} 
 
 
                     const meal =
@@ -1815,6 +1811,7 @@ document.addEventListener(
                     // ==========================================
                     // LIMPIAR FORMULARIO
                     // ==========================================
+                    window.scannedProduct = false;
 
                     mealForm.reset();
 
@@ -2359,26 +2356,15 @@ scanButton.addEventListener("click", async () => {
                             // ==================================
 
                             window.currentMeal = {
+    found: [
+        `${nombre}${marca ? ` (${marca})` : ""} - ${gramos} g`
+    ],
+    calories: calorias,
+    protein: proteinas
+};
 
-                                found: [
-
-                                    `${nombre}` +
-                                    (
-                                        marca
-                                        ? ` (${marca})`
-                                        : ""
-                                    ) +
-                                    ` - ${gramos} g`
-
-                                ],
-
-                                calories:
-                                    calorias,
-
-                                protein:
-                                    proteinas
-
-                            };
+// Guardamos que la comida viene del escáner
+window.scannedProduct = true;
 
 
                             // ==================================
