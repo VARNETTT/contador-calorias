@@ -1,537 +1,619 @@
-// ==========================================
-// ESCÁNER DE PRODUCTOS
-// ==========================================
+<!DOCTYPE html>
+<html lang="es">
 
-const scanButton = document.getElementById("scanButton");
-const scannerContainer = document.getElementById("scannerContainer");
-const scannerStatus = document.getElementById("scannerStatus");
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-const scannedProductContainer =
-    document.getElementById("scannedProductContainer");
+    <title>CalorieTrack</title>
 
-const scannedProductName =
-    document.getElementById("scannedProductName");
+    <link rel="stylesheet" href="style.css">
+</head>
 
-const scannedProductBrand =
-    document.getElementById("scannedProductBrand");
+<body>
 
-const scannedProductCalories =
-    document.getElementById("scannedProductCalories");
+    <!-- ==========================================
+         HEADER
+    =========================================== -->
 
-const scannedProductProtein =
-    document.getElementById("scannedProductProtein");
+    <header class="header">
 
-const productAmount =
-    document.getElementById("productAmount");
+        <div class="logo">
+            CalorieTrack
+        </div>
 
-const productUnit =
-    document.getElementById("productUnit");
+        <nav class="nav">
+            <a href="#inicio">Inicio</a>
+            <a href="#resumen">Resumen</a>
+            <a href="#comidas">Comidas</a>
+        </nav>
 
-const productConversionInfo =
-    document.getElementById("productConversionInfo");
+    </header>
 
-const scannedProductResult =
-    document.getElementById("scannedProductResult");
 
-const useScannedProduct =
-    document.getElementById("useScannedProduct");
+    <!-- ==========================================
+         HERO
+    =========================================== -->
 
-let html5QrCode = null;
-let scannedProduct = null;
+    <main>
 
+        <section id="inicio" class="hero">
 
-// ==========================================
-// EQUIVALENCIAS DE PRODUCTOS
-// ==========================================
+            <div class="hero-content">
 
-function getProductUnitGrams(product, unit) {
+                <h1>
+                    Controlá tus calorías
+                    <span>sin complicarte.</span>
+                </h1>
 
-    const texto = (
-        (product.product_name || "") +
-        " " +
-        (product.brands || "") +
-        " " +
-        (product.categories || "")
-    ).toLowerCase();
+                <p>
+                    Contá qué comiste y CalorieTrack
+                    estima tus calorías y proteínas.
+                </p>
 
+                <button
+                    type="button"
+                    id="openMealModal"
+                    class="primary-btn"
+                >
+                    + Agregar comida
+                </button>
 
-    // AVENA
-    if (
-        texto.includes("avena") ||
-        texto.includes("oat")
-    ) {
+            </div>
 
-        if (unit === "tbsp") return 10;
-        if (unit === "tsp") return 3.3;
-        if (unit === "unit") return 40;
-        if (unit === "portion") return 40;
+        </section>
 
-    }
 
+        <!-- ==========================================
+             RESUMEN
+        =========================================== -->
 
-    // AZÚCAR
-    if (
-        texto.includes("azucar") ||
-        texto.includes("azúcar") ||
-        texto.includes("sugar")
-    ) {
+        <section id="resumen" class="dashboard">
 
-        if (unit === "tbsp") return 12;
-        if (unit === "tsp") return 4;
-        if (unit === "unit") return 100;
-        if (unit === "portion") return 12;
+            <h2>
+                Resumen de hoy
+            </h2>
 
-    }
+            <div class="dashboard-grid">
 
+                <div class="dashboard-card">
 
-    // HARINA
-    if (
-        texto.includes("harina") ||
-        texto.includes("flour")
-    ) {
+                    <span>
+                        Calorías
+                    </span>
 
-        if (unit === "tbsp") return 8;
-        if (unit === "tsp") return 2.7;
-        if (unit === "unit") return 100;
-        if (unit === "portion") return 30;
+                    <strong id="totalCalories">
+                        0
+                    </strong>
 
-    }
+                    <small>
+                        kcal
+                    </small>
 
+                </div>
 
-    // ACEITE
-    if (
-        texto.includes("aceite") ||
-        texto.includes("oil")
-    ) {
 
-        if (unit === "tbsp") return 13.5;
-        if (unit === "tsp") return 4.5;
-        if (unit === "unit") return 13.5;
-        if (unit === "portion") return 13.5;
+                <div class="dashboard-card">
 
-    }
+                    <span>
+                        Proteínas
+                    </span>
 
+                    <strong id="totalProtein">
+                        0
+                    </strong>
 
-    // LECHE
-    if (
-        texto.includes("leche") ||
-        texto.includes("milk")
-    ) {
+                    <small>
+                        g
+                    </small>
 
-        if (unit === "tbsp") return 15;
-        if (unit === "tsp") return 5;
-        if (unit === "unit") return 200;
-        if (unit === "portion") return 200;
+                </div>
 
-    }
 
+                <div class="dashboard-card">
 
-    // YOGUR
-    if (
-        texto.includes("yogur") ||
-        texto.includes("yogurt")
-    ) {
+                    <span>
+                        Comidas
+                    </span>
 
-        if (unit === "tbsp") return 15;
-        if (unit === "tsp") return 5;
-        if (unit === "unit") return 125;
-        if (unit === "portion") return 125;
+                    <strong id="totalMeals">
+                        0
+                    </strong>
 
-    }
+                    <small>
+                        comidas
+                    </small>
 
+                </div>
 
-    // GALLETITAS
-    if (
-        texto.includes("galleta") ||
-        texto.includes("cookie")
-    ) {
+            </div>
 
-        if (unit === "unit") return 10;
-        if (unit === "portion") return 30;
+        </section>
 
-    }
 
+        <!-- ==========================================
+             COMIDAS
+        =========================================== -->
 
-    // DEFAULT
-    // Si no conocemos el producto,
-    // usamos equivalencias aproximadas.
+        <section id="comidas" class="meals-section">
 
-    if (unit === "tbsp") return 10;
-    if (unit === "tsp") return 3.3;
-    if (unit === "unit") return 30;
-    if (unit === "portion") return 30;
+            <div class="section-header">
 
-    return 1;
-}
+                <div>
 
+                    <h2>
+                        Mis comidas
+                    </h2>
 
-// ==========================================
-// CALCULAR PRODUCTO ESCANEADO
-// ==========================================
+                    <p>
+                        Lo que consumiste hoy.
+                    </p>
 
-function calculateScannedProduct() {
+                </div>
 
-    if (!scannedProduct) return;
+                <button
+                    type="button"
+                    id="openMealModal2"
+                    class="secondary-btn"
+                >
+                    + Agregar
+                </button>
 
+            </div>
 
-    const cantidad =
-        parseFloat(productAmount.value) || 0;
 
-    const unidad =
-        productUnit.value;
+            <div
+                id="mealsList"
+                class="meals-list"
+            >
 
+                <div
+                    id="emptyMeals"
+                    class="empty-state"
+                >
+                    <p>
+                        Todavía no agregaste ninguna comida.
+                    </p>
+                </div>
 
-    const gramosPorUnidad =
-        getProductUnitGrams(
-            scannedProduct,
-            unidad
-        );
+            </div>
 
+        </section>
 
-    let gramos = 0;
+    </main>
 
-    if (unidad === "g") {
 
-        gramos = cantidad;
+    <!-- ==========================================
+         MODAL AGREGAR COMIDA
+    =========================================== -->
 
-    } else {
+    <div
+        id="mealModal"
+        class="modal"
+        style="display: none;"
+    >
 
-        gramos =
-            cantidad *
-            gramosPorUnidad;
+        <div class="modal-content">
 
-    }
+            <div class="modal-header">
 
+                <div>
 
-    const calorias100 =
-        scannedProduct.nutriments?.["energy-kcal_100g"] || 0;
+                    <h2>
+                        Agregar comida
+                    </h2>
 
-    const proteinas100 =
-        scannedProduct.nutriments?.proteins_100g || 0;
+                    <p>
+                        Contanos qué comiste.
+                    </p>
 
+                </div>
 
-    const calorias =
-        (calorias100 * gramos) / 100;
+                <button
+                    type="button"
+                    id="closeMealModal"
+                    class="close-btn"
+                >
+                    ×
+                </button>
 
-    const proteinas =
-        (proteinas100 * gramos) / 100;
+            </div>
 
 
-    scannedProductResult.innerHTML = `
-        <strong>${Math.round(calorias)} kcal</strong>
-        <br>
-        <span>${proteinas.toFixed(1)} g de proteína</span>
-    `;
+            <!-- ==================================
+                 FORMULARIO
+            =================================== -->
 
+            <form id="mealForm">
 
-    if (unidad === "g") {
+                <div class="form-group">
 
-        productConversionInfo.textContent =
-            `${gramos.toFixed(0)} g`;
+                    <label for="mealType">
+                        Tipo de comida
+                    </label>
 
-    } else {
+                    <select id="mealType">
 
-        productConversionInfo.textContent =
-            `≈ ${gramos.toFixed(1)} g (${gramosPorUnidad} g por ${getUnitName(unidad)})`;
+                        <option value="desayuno">
+                            Desayuno
+                        </option>
 
-    }
+                        <option value="almuerzo">
+                            Almuerzo
+                        </option>
 
+                        <option value="merienda">
+                            Merienda
+                        </option>
 
-    // Guardamos el cálculo
-    window.scannedProductResult = {
-        nombre: scannedProduct.product_name || "Producto",
-        marca: scannedProduct.brands || "",
-        gramos: gramos,
-        calorias: calorias,
-        proteinas: proteinas
-    };
-}
+                        <option value="cena">
+                            Cena
+                        </option>
 
+                        <option value="snack">
+                            Snack
+                        </option>
 
-// ==========================================
-// NOMBRE DE LA UNIDAD
-// ==========================================
+                    </select>
 
-function getUnitName(unit) {
+                </div>
 
-    if (unit === "tbsp") return "cucharada";
-    if (unit === "tsp") return "cucharadita";
-    if (unit === "unit") return "unidad";
-    if (unit === "portion") return "porción";
 
-    return "gramo";
-}
+                <div class="form-group">
 
+                    <label for="mealDescription">
+                        ¿Qué comiste?
+                    </label>
 
-// ==========================================
-// CAMBIAR CANTIDAD / UNIDAD
-// ==========================================
+                    <textarea
+                        id="mealDescription"
+                        rows="4"
+                        placeholder="Ej: 2 huevos con arroz y una banana"
+                    ></textarea>
 
-productAmount.addEventListener(
-    "input",
-    calculateScannedProduct
-);
+                </div>
 
-productUnit.addEventListener(
-    "change",
-    calculateScannedProduct
-);
 
+                <!-- ==================================
+                     ESCÁNER
+                =================================== -->
 
-// ==========================================
-// ESCANEAR
-// ==========================================
+                <button
+                    type="button"
+                    id="scanButton"
+                    class="primary-btn full-width"
+                >
+                    📷 Escanear producto
+                </button>
 
-scanButton.addEventListener("click", async () => {
 
-    scannerContainer.style.display = "block";
+                <div
+                    id="scannerContainer"
+                    style="display: none;"
+                >
 
-    scannedProductContainer.style.display = "none";
+                    <div id="scannerVideo"></div>
 
-    scannerStatus.textContent =
-        "Solicitando acceso a la cámara...";
+                    <p id="scannerStatus">
+                        Apuntá la cámara al código de barras...
+                    </p>
 
+                </div>
 
-    try {
 
-        html5QrCode =
-            new Html5Qrcode("scannerVideo");
+                <!-- ==================================
+                     PRODUCTO ESCANEADO
+                =================================== -->
 
+                <div
+                    id="scannedProductContainer"
+                    style="display: none;"
+                >
 
-        await html5QrCode.start(
+                    <div class="product-card">
 
-            {
-                facingMode: "environment"
-            },
+                        <h3 id="scannedProductName">
+                            Producto
+                        </h3>
 
-            {
-                fps: 10,
+                        <p id="scannedProductBrand"></p>
 
-                qrbox: {
-                    width: 300,
-                    height: 150
-                },
+                        <div class="product-nutrition">
 
-                formatsToSupport: [
+                            <div>
 
-                    Html5QrcodeSupportedFormats.EAN_13,
+                                <strong
+                                    id="scannedProductCalories"
+                                >
+                                    0
+                                </strong>
 
-                    Html5QrcodeSupportedFormats.EAN_8,
+                                <span>
+                                    kcal / 100 g
+                                </span>
 
-                    Html5QrcodeSupportedFormats.UPC_A,
+                            </div>
 
-                    Html5QrcodeSupportedFormats.UPC_E
 
-                ]
-            },
+                            <div>
 
+                                <strong
+                                    id="scannedProductProtein"
+                                >
+                                    0
+                                </strong>
 
-            async (codigo) => {
+                                <span>
+                                    g proteína / 100 g
+                                </span>
 
-                console.log(
-                    "Código detectado:",
-                    codigo
-                );
+                            </div>
 
+                        </div>
 
-                scannerStatus.textContent =
-                    "Código detectado: " + codigo;
+                    </div>
 
 
-                try {
+                    <!-- CANTIDAD -->
 
-                    await html5QrCode.stop();
+                    <div class="form-group">
 
-                } catch (e) {
+                        <label for="productAmount">
+                            ¿Cuánto consumiste?
+                        </label>
 
-                    console.log(e);
+                        <input
+                            type="number"
+                            id="productAmount"
+                            min="0"
+                            step="0.1"
+                            value="1"
+                            placeholder="Ej: 3"
+                        >
 
-                }
+                    </div>
 
 
-                scannerContainer.style.display =
-                    "none";
+                    <!-- UNIDAD -->
 
+                    <div class="form-group">
 
-                scannerStatus.textContent =
-                    "Buscando producto...";
+                        <label for="productUnit">
+                            Unidad
+                        </label>
 
+                        <select id="productUnit">
 
-                const producto =
-                    await buscarProductoOpenFoodFacts(
-                        codigo
-                    );
+                            <option value="g">
+                                Gramos
+                            </option>
 
+                            <option value="tbsp">
+                                Cucharadas
+                            </option>
 
-                if (!producto) {
+                            <option value="tsp">
+                                Cucharaditas
+                            </option>
 
-                    alert(
-                        "No encontramos este producto en Open Food Facts."
-                    );
+                            <option value="unit">
+                                Unidades
+                            </option>
 
-                    return;
-                }
+                            <option value="portion">
+                                Porción
+                            </option>
 
+                        </select>
 
-                // Guardamos producto
-                scannedProduct =
-                    producto;
+                    </div>
 
 
-                // Mostrar información
-                scannedProductName.textContent =
-                    producto.product_name ||
-                    "Producto sin nombre";
+                    <!-- CONVERSIÓN -->
 
+                    <p
+                        id="productConversionInfo"
+                        class="conversion-info"
+                    >
+                        1 g
+                    </p>
 
-                scannedProductBrand.textContent =
-                    producto.brands
-                        ? "Marca: " + producto.brands
-                        : "";
 
+                    <!-- RESULTADO -->
 
-                scannedProductCalories.textContent =
-                    producto.nutriments?.[
-                        "energy-kcal_100g"
-                    ] || 0;
+                    <div
+                        id="scannedProductResult"
+                        class="scanned-result"
+                    >
 
+                        <strong>
+                            0 kcal
+                        </strong>
 
-                scannedProductProtein.textContent =
-                    producto.nutriments?.[
-                        "proteins_100g"
-                    ] || 0;
+                        <br>
 
+                        <span>
+                            0 g de proteína
+                        </span>
 
-                // Mostrar panel
-                scannedProductContainer.style.display =
-                    "block";
+                    </div>
 
 
-                // Valores iniciales
-                productAmount.value = 1;
+                    <button
+                        type="button"
+                        id="useScannedProduct"
+                        class="primary-btn full-width"
+                    >
+                        Usar este producto
+                    </button>
 
-                productUnit.value = "g";
+                </div>
 
 
-                calculateScannedProduct();
+                <!-- ==================================
+                     PORCIÓN COMIDA NORMAL
+                =================================== -->
 
-            },
+                <div class="form-group">
 
+                    <label>
+                        Tamaño de la porción
+                    </label>
 
-            (errorMessage) => {
 
-                // No hacemos nada con los errores
-                // normales de lectura.
+                    <div class="portion-options">
 
-            }
+                        <label>
 
-        );
+                            <input
+                                type="radio"
+                                name="portion"
+                                value="poco"
+                            >
 
+                            Poco
 
-        scannerStatus.textContent =
-            "📷 Cámara activa. Apuntá al código de barras.";
+                        </label>
 
 
-    } catch (error) {
+                        <label>
 
-        console.error(
-            "Error iniciando cámara:",
-            error
-        );
+                            <input
+                                type="radio"
+                                name="portion"
+                                value="normal"
+                                checked
+                            >
 
+                            Normal
 
-        scannerStatus.textContent =
-            "❌ No se pudo abrir la cámara: " +
-            error.message;
+                        </label>
 
-    }
 
-});
+                        <label>
 
+                            <input
+                                type="radio"
+                                name="portion"
+                                value="abundante"
+                            >
 
-// ==========================================
-// USAR PRODUCTO ESCANEADO
-// ==========================================
+                            Abundante
 
-useScannedProduct.addEventListener(
-    "click",
-    () => {
+                        </label>
 
-        if (!window.scannedProductResult) {
+                    </div>
 
-            alert(
-                "Primero indicá cuánto consumiste."
-            );
+                </div>
 
-            return;
-        }
 
+                <!-- ==================================
+                     CALCULAR
+                =================================== -->
 
-        const producto =
-            window.scannedProductResult;
+                <button
+                    type="submit"
+                    class="primary-btn full-width"
+                >
+                    Calcular comida
+                </button>
 
+            </form>
 
-        // Guardamos como comida actual
-        window.currentMeal = {
 
-            foods: [
-                {
-                    name: producto.nombre,
-                    calories: producto.calorias,
-                    protein: producto.proteinas
-                }
-            ],
+            <!-- ==================================
+                 RESULTADO
+            =================================== -->
 
-            calories:
-                producto.calorias,
+            <div
+                id="resultSection"
+                class="result-section"
+                style="display: none;"
+            >
 
-            protein:
-                producto.proteinas
+                <h3>
+                    Resultado estimado
+                </h3>
 
-        };
 
+                <div class="result-grid">
 
-        // Mostrar el producto en el textarea
-        document.getElementById(
-            "mealDescription"
-        ).value =
-            `${producto.nombre} - ${producto.gramos.toFixed(0)} g`;
+                    <div>
 
+                        <span>
+                            Calorías
+                        </span>
 
-        // Mostrar resultado
-        document.getElementById(
-            "estimatedCalories"
-        ).textContent =
-            Math.round(producto.calorias);
+                        <strong>
 
+                            <span id="estimatedCalories">
+                                0
+                            </span>
 
-        document.getElementById(
-            "estimatedProtein"
-        ).textContent =
-            producto.proteinas.toFixed(1);
+                            kcal
 
+                        </strong>
 
-        // Mostrar sección de resultado
-        const resultSection =
-            document.getElementById(
-                "resultSection"
-            );
+                    </div>
 
-        if (resultSection) {
 
-            resultSection.style.display =
-                "block";
+                    <div>
 
-        }
+                        <span>
+                            Proteínas
+                        </span>
 
+                        <strong>
 
-        scannedProductContainer.style.display =
-            "none";
+                            <span id="estimatedProtein">
+                                0
+                            </span>
 
+                            g
 
-        alert(
-            "Producto agregado al análisis."
-        );
+                        </strong>
 
-    }
-);
+                    </div>
+
+                </div>
+
+
+                <div class="result-foods">
+
+                    <h4>
+                        Alimentos detectados
+                    </h4>
+
+                    <div id="estimatedFoods">
+                    </div>
+
+                </div>
+
+
+                <button
+                    type="button"
+                    id="saveMealBtn"
+                    class="primary-btn full-width"
+                >
+                    Agregar al día
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ==========================================
+         HTML5 QR CODE
+    =========================================== -->
+
+    <script src="https://unpkg.com/html5-qrcode"></script>
+
+    <!-- TU JAVASCRIPT -->
+    <script src="script.js"></script>
+
+</body>
+
+</html>
