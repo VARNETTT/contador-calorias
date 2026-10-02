@@ -3183,3 +3183,524 @@ document.addEventListener(
 
     }
 );
+
+
+
+/* ==================================================
+   CALORIETRACK - MEJORAS DE INTERFAZ
+================================================== */
+
+document.addEventListener("DOMContentLoaded", () => {
+
+    // ==================================================
+    // NUEVOS BOTONES "AGREGAR COMIDA"
+    // ==================================================
+
+    const mealModalUI = document.getElementById("mealModal");
+
+    const extraMealButtons = [
+        document.getElementById("headerAddMeal"),
+        document.getElementById("dashboardAddMeal"),
+        document.getElementById("mobileAddMeal")
+    ];
+
+    extraMealButtons.forEach((button) => {
+
+        if (!button) {
+            return;
+        }
+
+        button.addEventListener("click", () => {
+
+            if (!mealModalUI) {
+                console.warn("No se encontró el modal mealModal.");
+                return;
+            }
+
+            // Abrimos el modal de agregar comida
+            mealModalUI.style.display = "flex";
+
+            button.addEventListener("click", () => {
+
+    if (!mealModalUI) {
+        console.warn("No se encontró el modal mealModal.");
+        return;
+    }
+
+    // Abrimos el modal de agregar comida
+    mealModalUI.style.display = "flex";
+
+});
+
+        });
+
+    });
+
+
+    // ==================================================
+    // ELEMENTOS DEL PROGRESO DIARIO
+    // ==================================================
+
+    const consumedElement =
+        document.getElementById("dailyConsumedCalories");
+
+    const targetElement =
+        document.getElementById("dailyTargetCalories");
+
+    const percentageElement =
+        document.getElementById("dailyProgressPercentage");
+
+    const progressElement =
+        document.getElementById("dailyProgress");
+
+    const goalLabel =
+        document.getElementById("progressGoalLabel");
+
+    const remainingElement =
+        document.getElementById("dailyRemainingCalories");
+
+
+    // ==================================================
+    // CONVERTIR TEXTO A NÚMERO
+    // ==================================================
+
+    function textToNumber(element) {
+
+        if (!element) {
+            return 0;
+        }
+
+        /*
+         * Ejemplo:
+         *
+         * "2050"       -> 2050
+         * "2.050"      -> 2050
+         * "2,050 kcal" -> 2050
+         */
+
+        const text = element.textContent
+            .trim()
+            .replace(/[^\d]/g, "");
+
+        return Number(text) || 0;
+    }
+
+
+    // ==================================================
+    // ACTUALIZAR INTERFAZ DEL PROGRESO
+    // ==================================================
+
+    function updateProgressPercentageUI() {
+
+        if (
+            !consumedElement ||
+            !targetElement ||
+            !percentageElement ||
+            !progressElement
+        ) {
+            return;
+        }
+
+
+        const consumed =
+            textToNumber(consumedElement);
+
+        const target =
+            textToNumber(targetElement);
+
+
+        // ----------------------------------------------
+        // TODAVÍA NO HAY OBJETIVO
+        // ----------------------------------------------
+
+        if (target <= 0) {
+
+            percentageElement.textContent = "0%";
+
+            progressElement.style.width = "0%";
+
+            progressElement.style.background =
+                "linear-gradient(90deg, #2563eb, #60a5fa)";
+
+            percentageElement.style.color = "#2563eb";
+
+
+            if (goalLabel) {
+
+                goalLabel.textContent =
+                    "Configurá tu objetivo";
+
+            }
+
+
+            if (remainingElement) {
+
+                remainingElement.textContent =
+                    "Configurá tu objetivo para comenzar";
+
+                remainingElement.style.color =
+                    "#2563eb";
+
+            }
+
+            return;
+        }
+
+
+        // ==================================================
+        // CALCULAR PORCENTAJE
+        // ==================================================
+
+        const percentage =
+            Math.round((consumed / target) * 100);
+
+
+        percentageElement.textContent =
+            `${percentage}%`;
+
+
+        /*
+         * Si consume más del objetivo podemos mostrar
+         * 105%, 110%, etc.
+         *
+         * Pero la barra visual se detiene en 100%.
+         */
+
+        const visualPercentage =
+            Math.min(
+                Math.max(percentage, 0),
+                100
+            );
+
+
+        progressElement.style.width =
+            `${visualPercentage}%`;
+
+
+        // ==================================================
+        // MOSTRAR OBJETIVO ABAJO DE LA BARRA
+        // ==================================================
+
+        if (goalLabel) {
+
+            goalLabel.textContent =
+                `${target.toLocaleString("es-AR")} kcal`;
+
+        }
+
+
+        // ==================================================
+        // CALORÍAS RESTANTES
+        // ==================================================
+
+        if (remainingElement) {
+
+            const difference =
+                target - consumed;
+
+
+            if (difference > 0) {
+
+                remainingElement.textContent =
+                    `${difference.toLocaleString("es-AR")} kcal restantes`;
+
+            }
+
+            else if (difference === 0) {
+
+                remainingElement.textContent =
+                    "¡Llegaste a tu objetivo diario!";
+
+            }
+
+            else {
+
+                remainingElement.textContent =
+                    `Superaste tu objetivo por ${Math.abs(difference).toLocaleString("es-AR")} kcal`;
+
+            }
+
+        }
+
+
+        // ==================================================
+        // COLORES SEGÚN EL PROGRESO
+        // ==================================================
+
+        if (percentage >= 105) {
+
+            // ROJO
+            // Se pasó considerablemente del objetivo
+
+            progressElement.style.background =
+                "#dc2626";
+
+            percentageElement.style.color =
+                "#dc2626";
+
+            if (remainingElement) {
+                remainingElement.style.color =
+                    "#dc2626";
+            }
+
+        }
+
+        else if (percentage >= 100) {
+
+            // VERDE
+            // Llegó al objetivo
+
+            progressElement.style.background =
+                "#16a34a";
+
+            percentageElement.style.color =
+                "#16a34a";
+
+            if (remainingElement) {
+                remainingElement.style.color =
+                    "#16a34a";
+            }
+
+        }
+
+        else if (percentage >= 80) {
+
+            // NARANJA
+            // Está cerca del objetivo
+
+            progressElement.style.background =
+                "#f59e0b";
+
+            percentageElement.style.color =
+                "#f59e0b";
+
+            if (remainingElement) {
+                remainingElement.style.color =
+                    "#f59e0b";
+            }
+
+        }
+
+        else {
+
+            // AZUL
+            // Progreso normal
+
+            progressElement.style.background =
+                "linear-gradient(90deg, #2563eb, #60a5fa)";
+
+            percentageElement.style.color =
+                "#2563eb";
+
+            if (remainingElement) {
+                remainingElement.style.color =
+                    "#2563eb";
+            }
+
+        }
+
+    }
+
+
+    // ==================================================
+    // DETECTAR CAMBIOS AUTOMÁTICAMENTE
+    // ==================================================
+
+    /*
+     * Tu código original ya actualiza:
+     *
+     * dailyConsumedCalories
+     * dailyTargetCalories
+     *
+     * cuando agregás comidas o modificás el objetivo.
+     *
+     * MutationObserver observa esos números.
+     *
+     * Cada vez que cambian, recalculamos la interfaz.
+     */
+
+    const progressObserver =
+        new MutationObserver(() => {
+
+            updateProgressPercentageUI();
+
+        });
+
+
+    if (consumedElement) {
+
+        progressObserver.observe(
+            consumedElement,
+            {
+                childList: true,
+                characterData: true,
+                subtree: true
+            }
+        );
+
+    }
+
+
+    if (targetElement) {
+
+        progressObserver.observe(
+            targetElement,
+            {
+                childList: true,
+                characterData: true,
+                subtree: true
+            }
+        );
+
+    }
+
+
+    // ==================================================
+    // ACTUALIZACIÓN INICIAL
+    // ==================================================
+
+    updateProgressPercentageUI();
+
+});
+
+/* ==================================================
+   MODAL - MI OBJETIVO
+================================================== */
+
+document.addEventListener("DOMContentLoaded", () => {
+
+    const goalModal =
+        document.getElementById("goalModal");
+
+    const openGoalButton =
+        document.getElementById("openGoalModal");
+
+    const mobileOpenGoalButton =
+        document.getElementById("mobileOpenGoalModal");
+
+    const closeGoalButton =
+        document.getElementById("closeGoalModal");
+
+    const goalModalOverlay =
+        document.getElementById("goalModalOverlay");
+
+    const finishGoalButton =
+        document.getElementById("finishGoalBtn");
+
+
+    // ==============================================
+    // ABRIR
+    // ==============================================
+
+    function openGoalModal(event) {
+
+        if (event) {
+            event.preventDefault();
+        }
+
+        if (!goalModal) {
+            return;
+        }
+
+        goalModal.classList.add("active");
+
+    }
+
+
+    // ==============================================
+    // CERRAR
+    // ==============================================
+
+    function closeGoalModal() {
+
+        if (!goalModal) {
+            return;
+        }
+
+        goalModal.classList.remove("active");
+
+    }
+
+
+    // PC
+
+    if (openGoalButton) {
+
+        openGoalButton.addEventListener(
+            "click",
+            openGoalModal
+        );
+
+    }
+
+
+    // CELULAR
+
+    if (mobileOpenGoalButton) {
+
+        mobileOpenGoalButton.addEventListener(
+            "click",
+            openGoalModal
+        );
+
+    }
+
+
+    // X
+
+    if (closeGoalButton) {
+
+        closeGoalButton.addEventListener(
+            "click",
+            closeGoalModal
+        );
+
+    }
+
+
+    // CLICK EN EL FONDO
+
+    if (goalModalOverlay) {
+
+        goalModalOverlay.addEventListener(
+            "click",
+            closeGoalModal
+        );
+
+    }
+
+
+    // GUARDAR Y CERRAR
+
+    if (finishGoalButton) {
+
+        finishGoalButton.addEventListener(
+            "click",
+            closeGoalModal
+        );
+
+    }
+
+
+    // ==============================================
+    // TECLA ESC
+    // ==============================================
+
+    document.addEventListener(
+        "keydown",
+        (event) => {
+
+            if (
+                event.key === "Escape" &&
+                goalModal &&
+                goalModal.classList.contains("active")
+            ) {
+
+                closeGoalModal();
+
+            }
+
+        }
+    );
+
+});
