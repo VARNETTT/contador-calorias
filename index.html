@@ -26,7 +26,9 @@
     <nav class="nav">
         <a href="#inicio">Inicio</a>
         <a href="#resumen">Mi progreso</a>
-        <a href="#objetivo">Mi objetivo</a>
+        <a href="#" id="openGoalModal">
+    Mi objetivo
+</a>
         <a href="#recetas">Recetas</a>
         <a href="#comidas">Comidas</a>
     </nav>
@@ -74,296 +76,330 @@
              MI OBJETIVO
         =========================================== -->
 
-        <section id="objetivo" class="goal-section">
+        <!-- ==========================================
+     MODAL - MI OBJETIVO
+=========================================== -->
 
-            <div class="section-header">
+<div id="goalModal" class="goal-modal">
+
+    <div class="goal-modal-overlay" id="goalModalOverlay"></div>
+
+
+    <div class="goal-modal-content">
+
+        <!-- CABECERA -->
+
+        <div class="goal-modal-header">
+
+            <div>
+                <span class="goal-modal-label">
+                    🎯 TU PLAN
+                </span>
+
+                <h2>
+                    Mi objetivo
+                </h2>
+
+                <p>
+                    Calculá cuántas calorías necesitás consumir por día.
+                </p>
+            </div>
+
+
+            <button
+                type="button"
+                id="closeGoalModal"
+                class="goal-modal-close"
+                aria-label="Cerrar"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <!-- ======================================
+             FORMULARIO
+        ======================================= -->
+
+        <form id="goalForm">
+
+
+            <!-- PESO -->
+
+            <div class="form-group">
+
+                <label for="goalWeight">
+                    Peso actual
+                </label>
+
+                <div class="input-with-unit">
+
+                    <input
+                        type="number"
+                        id="goalWeight"
+                        min="20"
+                        max="500"
+                        step="0.1"
+                        placeholder="Ej: 75"
+                        required
+                    >
+
+                    <span>kg</span>
+
+                </div>
+
+            </div>
+
+
+            <!-- SEXO -->
+
+            <div class="form-group">
+
+                <label for="goalSex">
+                    Sexo biológico
+                </label>
+
+                <select id="goalSex" required>
+
+                    <option value="">
+                        Seleccioná una opción
+                    </option>
+
+                    <option value="male">
+                        Masculino
+                    </option>
+
+                    <option value="female">
+                        Femenino
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <!-- ALTURA -->
+
+            <div class="form-group">
+
+                <label for="goalHeight">
+                    Altura
+                </label>
+
+                <div class="input-with-unit">
+
+                    <input
+                        type="number"
+                        id="goalHeight"
+                        min="100"
+                        max="250"
+                        step="1"
+                        placeholder="Ej: 170"
+                        required
+                    >
+
+                    <span>cm</span>
+
+                </div>
+
+            </div>
+
+
+            <!-- EDAD -->
+
+            <div class="form-group">
+
+                <label for="goalAge">
+                    Edad
+                </label>
+
+                <div class="input-with-unit">
+
+                    <input
+                        type="number"
+                        id="goalAge"
+                        min="13"
+                        max="120"
+                        step="1"
+                        placeholder="Ej: 25"
+                        required
+                    >
+
+                    <span>años</span>
+
+                </div>
+
+            </div>
+
+
+            <!-- ACTIVIDAD -->
+
+            <div class="form-group">
+
+                <label for="goalActivity">
+                    Nivel de actividad física
+                </label>
+
+                <select id="goalActivity" required>
+
+                    <option value="">
+                        Seleccioná tu actividad
+                    </option>
+
+                    <option value="1.2">
+                        Sedentaria — poco o ningún ejercicio
+                    </option>
+
+                    <option value="1.375">
+                        Ligera — ejercicio 1 a 3 días/semana
+                    </option>
+
+                    <option value="1.55">
+                        Moderada — ejercicio 3 a 5 días/semana
+                    </option>
+
+                    <option value="1.725">
+                        Alta — ejercicio 6 a 7 días/semana
+                    </option>
+
+                    <option value="1.9">
+                        Muy alta — ejercicio intenso / trabajo físico
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <!-- OBJETIVO -->
+
+            <div class="form-group">
+
+                <label for="goalType">
+                    ¿Cuál es tu objetivo?
+                </label>
+
+                <select id="goalType" required>
+
+                    <option value="">
+                        Seleccioná tu objetivo
+                    </option>
+
+                    <option value="deficit">
+                        🔻 Perder peso — déficit calórico
+                    </option>
+
+                    <option value="maintenance">
+                        ⚖️ Mantener mi peso
+                    </option>
+
+                    <option value="surplus">
+                        🔺 Ganar peso — superávit / volumen
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <button
+                type="submit"
+                class="primary-btn full-width"
+            >
+                Calcular mi objetivo
+            </button>
+
+        </form>
+
+
+        <!-- ======================================
+             RESULTADO
+        ======================================= -->
+
+        <div
+            id="goalResult"
+            class="goal-result"
+            style="display: none;"
+        >
+
+            <h3>
+                Tu objetivo diario
+            </h3>
+
+
+            <div class="goal-calories">
+
+                <span>
+                    Calorías recomendadas
+                </span>
+
+                <strong id="goalCalories">
+                    0
+                </strong>
+
+                <small>
+                    kcal / día
+                </small>
+
+            </div>
+
+
+            <div class="goal-details">
 
                 <div>
 
-                    <h2>
-                        Mi objetivo
-                    </h2>
+                    <span>
+                        Metabolismo basal
+                    </span>
 
-                    <p>
-                        Calculá cuántas calorías necesitás consumir por día.
-                    </p>
+                    <strong id="goalBMR">
+                        0 kcal
+                    </strong>
+
+                </div>
+
+
+                <div>
+
+                    <span>
+                        Gasto diario estimado
+                    </span>
+
+                    <strong id="goalTDEE">
+                        0 kcal
+                    </strong>
 
                 </div>
 
             </div>
 
 
-            <div class="goal-card">
+            <p id="goalExplanation"></p>
 
-                <form id="goalForm">
 
-                    <!-- PESO -->
+            <button
+                type="button"
+                id="editGoalBtn"
+                class="secondary-btn full-width"
+            >
+                Modificar mis datos
+            </button>
 
-                    <div class="form-group">
 
-                        <label for="goalWeight">
-                            Peso actual
-                        </label>
+            <button
+                type="button"
+                id="finishGoalBtn"
+                class="primary-btn full-width goal-finish-btn"
+            >
+                Guardar y cerrar
+            </button>
 
-                        <div class="input-with-unit">
+        </div>
 
-                            <input
-                                type="number"
-                                id="goalWeight"
-                                min="20"
-                                max="500"
-                                step="0.1"
-                                placeholder="Ej: 75"
-                                required
-                            >
+    </div>
 
-                            <span>kg</span>
-
-                        </div>
-
-                    </div>
-
-
-                    <!-- SEXO BIOLÓGICO -->
-
-                    <div class="form-group">
-
-                        <label for="goalSex">
-                            Sexo biológico
-                        </label>
-
-                        <select id="goalSex" required>
-
-                            <option value="">
-                                Seleccioná una opción
-                            </option>
-
-                            <option value="male">
-                                Masculino
-                            </option>
-
-                            <option value="female">
-                                Femenino
-                            </option>
-
-                        </select>
-
-                    </div>
-
-
-                    <!-- ALTURA -->
-
-                    <div class="form-group">
-
-                        <label for="goalHeight">
-                            Altura
-                        </label>
-
-                        <div class="input-with-unit">
-
-                            <input
-                                type="number"
-                                id="goalHeight"
-                                min="100"
-                                max="250"
-                                step="1"
-                                placeholder="Ej: 170"
-                                required
-                            >
-
-                            <span>cm</span>
-
-                        </div>
-
-                    </div>
-
-
-                    <!-- EDAD -->
-
-                    <div class="form-group">
-
-                        <label for="goalAge">
-                            Edad
-                        </label>
-
-                        <div class="input-with-unit">
-
-                            <input
-                                type="number"
-                                id="goalAge"
-                                min="13"
-                                max="120"
-                                step="1"
-                                placeholder="Ej: 25"
-                                required
-                            >
-
-                            <span>años</span>
-
-                        </div>
-
-                    </div>
-
-
-                    <!-- ACTIVIDAD -->
-
-                    <div class="form-group">
-
-                        <label for="goalActivity">
-                            Nivel de actividad física
-                        </label>
-
-                        <select id="goalActivity" required>
-
-                            <option value="">
-                                Seleccioná tu actividad
-                            </option>
-
-                            <option value="1.2">
-                                Sedentaria — poco o ningún ejercicio
-                            </option>
-
-                            <option value="1.375">
-                                Ligera — ejercicio 1 a 3 días/semana
-                            </option>
-
-                            <option value="1.55">
-                                Moderada — ejercicio 3 a 5 días/semana
-                            </option>
-
-                            <option value="1.725">
-                                Alta — ejercicio 6 a 7 días/semana
-                            </option>
-
-                            <option value="1.9">
-                                Muy alta — ejercicio intenso / trabajo físico
-                            </option>
-
-                        </select>
-
-                    </div>
-
-
-                    <!-- OBJETIVO -->
-
-                    <div class="form-group">
-
-                        <label for="goalType">
-                            ¿Cuál es tu objetivo?
-                        </label>
-
-                        <select id="goalType" required>
-
-                            <option value="">
-                                Seleccioná tu objetivo
-                            </option>
-
-                            <option value="deficit">
-                                🔻 Perder peso — déficit calórico
-                            </option>
-
-                            <option value="maintenance">
-                                ⚖️ Mantener mi peso
-                            </option>
-
-                            <option value="surplus">
-                                🔺 Ganar peso — superávit / volumen
-                            </option>
-
-                        </select>
-
-                    </div>
-
-
-                    <button
-                        type="submit"
-                        class="primary-btn full-width"
-                    >
-                        Calcular mi objetivo
-                    </button>
-
-                </form>
-
-
-                <!-- ==================================
-                     RESULTADO DEL OBJETIVO
-                =================================== -->
-
-                <div
-                    id="goalResult"
-                    class="goal-result"
-                    style="display: none;"
-                >
-
-                    <h3>
-                        Tu objetivo diario
-                    </h3>
-
-
-                    <div class="goal-calories">
-
-                        <span>
-                            Calorías recomendadas
-                        </span>
-
-                        <strong id="goalCalories">
-                            0
-                        </strong>
-
-                        <small>
-                            kcal / día
-                        </small>
-
-                    </div>
-
-
-                    <div class="goal-details">
-
-                        <div>
-
-                            <span>
-                                Metabolismo basal
-                            </span>
-
-                            <strong id="goalBMR">
-                                0 kcal
-                            </strong>
-
-                        </div>
-
-
-                        <div>
-
-                            <span>
-                                Gasto diario estimado
-                            </span>
-
-                            <strong id="goalTDEE">
-                                0 kcal
-                            </strong>
-
-                        </div>
-
-                    </div>
-
-
-                    <p id="goalExplanation">
-                    </p>
-
-
-                    <button
-                        type="button"
-                        id="editGoalBtn"
-                        class="secondary-btn full-width"
-                    >
-                        Modificar mis datos
-                    </button>
-
-                </div>
-
-            </div>
-
-        </section>
+</div>
 
 
         <!-- ==========================================
@@ -1667,10 +1703,15 @@
         <small>Recetas</small>
     </a>
 
-    <a href="#objetivo" class="mobile-nav-item">
-        <span>◎</span>
-        <small>Objetivo</small>
-    </a>
+    
+    <a
+    href="#"
+    id="mobileOpenGoalModal"
+    class="mobile-nav-item"
+>
+    <span>◎</span>
+    <small>Objetivo</small>
+</a>
 
 </nav>
 
