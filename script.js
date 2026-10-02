@@ -1909,35 +1909,74 @@ async function buscarProductoOpenFoodFacts(codigoBarras) {
 
 const scanButton = document.getElementById("scanButton");
 const scannerContainer = document.getElementById("scannerContainer");
-const scannerVideo = document.getElementById("scannerVideo");
 const scannerStatus = document.getElementById("scannerStatus");
 
-let scannerStream = null;
+let html5QrCode = null;
 
 scanButton.addEventListener("click", async () => {
 
+    scannerContainer.style.display = "block";
+
+    scannerStatus.textContent =
+        "Apuntá la cámara al código de barras...";
+
+    html5QrCode = new Html5Qrcode("scannerVideo");
+
     try {
 
-        scannerStream = await navigator.mediaDevices.getUserMedia({
-            video: {
-                facingMode: {
-                    ideal: "environment"
-                }
+        await html5QrCode.start(
+            {
+                facingMode: "environment"
+            },
+
+            {
+                fps: 10,
+
+                qrbox: {
+                    width: 300,
+                    height: 150
+                },
+
+                formatsToSupport: [
+                    Html5QrcodeSupportedFormats.EAN_13,
+                    Html5QrcodeSupportedFormats.EAN_8,
+                    Html5QrcodeSupportedFormats.UPC_A,
+                    Html5QrcodeSupportedFormats.UPC_E
+                ]
+            },
+
+            async (codigo) => {
+
+                console.log("Código detectado:", codigo);
+
+                scannerStatus.textContent =
+                    "Código detectado: " + codigo;
+
+                await html5QrCode.stop();
+
+                scannerContainer.style.display = "none";
+
+                buscarProductoOpenFoodFacts(codigo);
+
+            },
+
+            (errorMessage) => {
+
+                // No hacemos nada.
+                // Este mensaje aparece mientras busca el código.
+
             }
-        });
-
-        scannerVideo.srcObject = scannerStream;
-        scannerContainer.style.display = "block";
-
-        scannerStatus.textContent =
-            "Apuntá la cámara al código de barras...";
+        );
 
     } catch (error) {
 
-        console.error(error);
+        console.error(
+            "Error iniciando el escáner:",
+            error
+        );
 
         scannerStatus.textContent =
-            "No se pudo acceder a la cámara.";
+            "No se pudo iniciar el escáner.";
 
     }
 
