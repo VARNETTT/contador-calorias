@@ -1,336 +1,537 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+// ==========================================
+// ESCÁNER DE PRODUCTOS
+// ==========================================
 
-    <title>Contador de Calorías</title>
+const scanButton = document.getElementById("scanButton");
+const scannerContainer = document.getElementById("scannerContainer");
+const scannerStatus = document.getElementById("scannerStatus");
 
-    <link rel="stylesheet" href="style.css">
-</head>
+const scannedProductContainer =
+    document.getElementById("scannedProductContainer");
 
-<body>
+const scannedProductName =
+    document.getElementById("scannedProductName");
 
-    <header>
-        <div class="logo">Calorie<span>Track</span></div>
+const scannedProductBrand =
+    document.getElementById("scannedProductBrand");
 
-        <nav>
-            <a href="#inicio">Inicio</a>
-            <a href="#comidas">Mis comidas</a>
-        </nav>
-    </header>
+const scannedProductCalories =
+    document.getElementById("scannedProductCalories");
 
+const scannedProductProtein =
+    document.getElementById("scannedProductProtein");
 
-    <main>
+const productAmount =
+    document.getElementById("productAmount");
 
-        <!-- INICIO -->
-        <section id="inicio" class="hero">
+const productUnit =
+    document.getElementById("productUnit");
 
-            <div class="hero-content">
+const productConversionInfo =
+    document.getElementById("productConversionInfo");
 
-                <span class="badge">CONTADOR DE CALORÍAS</span>
+const scannedProductResult =
+    document.getElementById("scannedProductResult");
 
-                <h1>
-                    Tu alimentación,<br>
-                    <span>bajo control.</span>
-                </h1>
+const useScannedProduct =
+    document.getElementById("useScannedProduct");
 
-                <p>
-                    Registrá lo que comés y obtené una estimación
-                    de calorías y proteínas sin tener que pesar cada alimento.
-                </p>
+let html5QrCode = null;
+let scannedProduct = null;
 
-                <button id="startBtn" class="primary-btn">
-                    Comenzar
-                </button>
 
-            </div>
+// ==========================================
+// EQUIVALENCIAS DE PRODUCTOS
+// ==========================================
 
-        </section>
+function getProductUnitGrams(product, unit) {
 
+    const texto = (
+        (product.product_name || "") +
+        " " +
+        (product.brands || "") +
+        " " +
+        (product.categories || "")
+    ).toLowerCase();
 
-        <!-- DASHBOARD -->
-        <section class="dashboard">
 
-            <div class="dashboard-card">
+    // AVENA
+    if (
+        texto.includes("avena") ||
+        texto.includes("oat")
+    ) {
 
-                <div>
-                    <p class="label">CALORÍAS DE HOY</p>
+        if (unit === "tbsp") return 10;
+        if (unit === "tsp") return 3.3;
+        if (unit === "unit") return 40;
+        if (unit === "portion") return 40;
 
-                    <h2>
-                        <span id="caloriesConsumed">0</span>
-                        <small>/ <span id="calorieGoal">2200</span> kcal</small>
-                    </h2>
-                </div>
+    }
 
-                <div class="progress-container">
-                    <div id="calorieProgress"></div>
-                </div>
 
-                <p class="remaining">
-                    Te quedan <strong id="remainingCalories">2200</strong> kcal
-                </p>
+    // AZÚCAR
+    if (
+        texto.includes("azucar") ||
+        texto.includes("azúcar") ||
+        texto.includes("sugar")
+    ) {
 
-            </div>
+        if (unit === "tbsp") return 12;
+        if (unit === "tsp") return 4;
+        if (unit === "unit") return 100;
+        if (unit === "portion") return 12;
 
+    }
 
-            <div class="dashboard-card">
 
-                <p class="label">PROTEÍNA</p>
+    // HARINA
+    if (
+        texto.includes("harina") ||
+        texto.includes("flour")
+    ) {
 
-                <h2>
-                    <span id="proteinConsumed">0</span>
-                    <small>g</small>
-                </h2>
+        if (unit === "tbsp") return 8;
+        if (unit === "tsp") return 2.7;
+        if (unit === "unit") return 100;
+        if (unit === "portion") return 30;
 
-                <p class="remaining">
-                    Objetivo: <strong>140 g</strong>
-                </p>
+    }
 
-            </div>
 
+    // ACEITE
+    if (
+        texto.includes("aceite") ||
+        texto.includes("oil")
+    ) {
 
-            <div class="dashboard-card">
+        if (unit === "tbsp") return 13.5;
+        if (unit === "tsp") return 4.5;
+        if (unit === "unit") return 13.5;
+        if (unit === "portion") return 13.5;
 
-                <p class="label">COMIDAS</p>
+    }
 
-                <h2 id="mealCount">0</h2>
 
-                <p class="remaining">
-                    comidas registradas
-                </p>
+    // LECHE
+    if (
+        texto.includes("leche") ||
+        texto.includes("milk")
+    ) {
 
-            </div>
+        if (unit === "tbsp") return 15;
+        if (unit === "tsp") return 5;
+        if (unit === "unit") return 200;
+        if (unit === "portion") return 200;
 
-        </section>
+    }
 
 
-        <!-- COMIDAS -->
-        <section id="comidas" class="section">
+    // YOGUR
+    if (
+        texto.includes("yogur") ||
+        texto.includes("yogurt")
+    ) {
 
-            <div class="section-header">
+        if (unit === "tbsp") return 15;
+        if (unit === "tsp") return 5;
+        if (unit === "unit") return 125;
+        if (unit === "portion") return 125;
 
-                <div>
-                    <span class="badge">REGISTRO</span>
+    }
 
-                    <h2>¿Qué comiste?</h2>
 
-                    <p>
-                        Describí tu comida y nosotros estimamos
-                        las calorías y proteínas.
-                    </p>
-                </div>
+    // GALLETITAS
+    if (
+        texto.includes("galleta") ||
+        texto.includes("cookie")
+    ) {
 
-                <button id="addMealBtn" class="primary-btn">
-                    + Agregar comida
-                </button>
+        if (unit === "unit") return 10;
+        if (unit === "portion") return 30;
 
-            </div>
+    }
 
 
-            <div id="mealList" class="meal-list">
+    // DEFAULT
+    // Si no conocemos el producto,
+    // usamos equivalencias aproximadas.
 
-                <div id="emptyState" class="empty-state">
+    if (unit === "tbsp") return 10;
+    if (unit === "tsp") return 3.3;
+    if (unit === "unit") return 30;
+    if (unit === "portion") return 30;
 
-                    <div class="empty-icon">🍽️</div>
+    return 1;
+}
 
-                    <h3>Todavía no registraste comidas</h3>
 
-                    <p>
-                        Agregá tu primera comida para comenzar.
-                    </p>
+// ==========================================
+// CALCULAR PRODUCTO ESCANEADO
+// ==========================================
 
-                </div>
+function calculateScannedProduct() {
 
-            </div>
+    if (!scannedProduct) return;
 
-        </section>
 
-    </main>
+    const cantidad =
+        parseFloat(productAmount.value) || 0;
 
+    const unidad =
+        productUnit.value;
 
-    <!-- MODAL -->
 
-    <div id="mealModal" class="modal">
+    const gramosPorUnidad =
+        getProductUnitGrams(
+            scannedProduct,
+            unidad
+        );
 
-        <div class="modal-content">
 
-            <button id="closeModal" class="close-btn">
-                ×
-            </button>
+    let gramos = 0;
 
-            <span class="badge">NUEVA COMIDA</span>
+    if (unidad === "g") {
 
-            <h2>¿Qué comiste?</h2>
+        gramos = cantidad;
 
-            <p class="modal-description">
-                No necesitás pesar los alimentos.
-                Escribí aproximadamente qué comiste.
-            </p>
+    } else {
 
+        gramos =
+            cantidad *
+            gramosPorUnidad;
 
-            <form id="mealForm">
+    }
 
-                <label for="mealType">
-                    Momento del día
-                </label>
 
-                <select id="mealType" required>
+    const calorias100 =
+        scannedProduct.nutriments?.["energy-kcal_100g"] || 0;
 
-                    <option value="Desayuno">Desayuno</option>
-                    <option value="Almuerzo">Almuerzo</option>
-                    <option value="Merienda">Merienda</option>
-                    <option value="Cena">Cena</option>
-                    <option value="Snack">Snack</option>
+    const proteinas100 =
+        scannedProduct.nutriments?.proteins_100g || 0;
 
-                </select>
 
+    const calorias =
+        (calorias100 * gramos) / 100;
 
-                <label for="mealDescription">
-                    ¿Qué comiste?
-                </label>
+    const proteinas =
+        (proteinas100 * gramos) / 100;
 
-                <textarea
-                    id="mealDescription"
-                    placeholder="Ej: 2 milanesas de pollo con puré y ensalada"
-                    required
-                ></textarea>
 
+    scannedProductResult.innerHTML = `
+        <strong>${Math.round(calorias)} kcal</strong>
+        <br>
+        <span>${proteinas.toFixed(1)} g de proteína</span>
+    `;
 
-                <!-- ESCÁNER DE PRODUCTOS -->
 
-                <button
-                    type="button"
-                    id="scanButton"
-                    class="primary-btn full-width"
-                >
-                    📷 Escanear producto
-                </button>
+    if (unidad === "g") {
 
+        productConversionInfo.textContent =
+            `${gramos.toFixed(0)} g`;
 
-                <div
-                    id="scannerContainer"
-                    style="display: none;"
-                >
+    } else {
 
-                    <div id="scannerVideo"></div>
+        productConversionInfo.textContent =
+            `≈ ${gramos.toFixed(1)} g (${gramosPorUnidad} g por ${getUnitName(unidad)})`;
 
-                    <p id="scannerStatus">
-                        Apuntá la cámara al código de barras...
-                    </p>
+    }
 
-                </div>
 
+    // Guardamos el cálculo
+    window.scannedProductResult = {
+        nombre: scannedProduct.product_name || "Producto",
+        marca: scannedProduct.brands || "",
+        gramos: gramos,
+        calorias: calorias,
+        proteinas: proteinas
+    };
+}
 
-                <label>
-                    Cantidad aproximada
-                </label>
 
-                <div class="portion-options">
+// ==========================================
+// NOMBRE DE LA UNIDAD
+// ==========================================
 
-                    <label class="portion-option">
+function getUnitName(unit) {
 
-                        <input
-                            type="radio"
-                            name="portion"
-                            value="small"
-                        >
+    if (unit === "tbsp") return "cucharada";
+    if (unit === "tsp") return "cucharadita";
+    if (unit === "unit") return "unidad";
+    if (unit === "portion") return "porción";
 
-                        <span>
-                            Poco
-                        </span>
+    return "gramo";
+}
 
-                    </label>
 
+// ==========================================
+// CAMBIAR CANTIDAD / UNIDAD
+// ==========================================
 
-                    <label class="portion-option">
+productAmount.addEventListener(
+    "input",
+    calculateScannedProduct
+);
 
-                        <input
-                            type="radio"
-                            name="portion"
-                            value="normal"
-                            checked
-                        >
+productUnit.addEventListener(
+    "change",
+    calculateScannedProduct
+);
 
-                        <span>
-                            Normal
-                        </span>
 
-                    </label>
+// ==========================================
+// ESCANEAR
+// ==========================================
 
+scanButton.addEventListener("click", async () => {
 
-                    <label class="portion-option">
+    scannerContainer.style.display = "block";
 
-                        <input
-                            type="radio"
-                            name="portion"
-                            value="large"
-                        >
+    scannedProductContainer.style.display = "none";
 
-                        <span>
-                            Abundante
-                        </span>
+    scannerStatus.textContent =
+        "Solicitando acceso a la cámara...";
 
-                    </label>
 
-                </div>
+    try {
 
+        html5QrCode =
+            new Html5Qrcode("scannerVideo");
 
-                <button
-                    type="submit"
-                    class="primary-btn full-width"
-                >
-                    Calcular comida
-                </button>
 
-            </form>
+        await html5QrCode.start(
 
+            {
+                facingMode: "environment"
+            },
 
-            <!-- RESULTADO -->
+            {
+                fps: 10,
 
-            <div id="mealResult" class="meal-result">
+                qrbox: {
+                    width: 300,
+                    height: 150
+                },
 
-                <span class="result-label">
-                    ESTIMACIÓN
-                </span>
+                formatsToSupport: [
 
-                <div class="result-values">
+                    Html5QrcodeSupportedFormats.EAN_13,
 
-                    <div>
-                        <strong id="estimatedCalories">0</strong>
-                        <span>kcal</span>
-                    </div>
+                    Html5QrcodeSupportedFormats.EAN_8,
 
-                    <div>
-                        <strong id="estimatedProtein">0</strong>
-                        <span>g proteína</span>
-                    </div>
+                    Html5QrcodeSupportedFormats.UPC_A,
 
-                </div>
+                    Html5QrcodeSupportedFormats.UPC_E
 
-                <p id="estimatedFoods"></p>
+                ]
+            },
 
-                <button
-                    id="saveMealBtn"
-                    class="primary-btn full-width"
-                >
-                    Agregar al día
-                </button>
 
-            </div>
+            async (codigo) => {
 
-        </div>
+                console.log(
+                    "Código detectado:",
+                    codigo
+                );
 
-    </div>
 
+                scannerStatus.textContent =
+                    "Código detectado: " + codigo;
 
-    <!-- BIBLIOTECA DEL ESCÁNER -->
 
-    <script src="https://unpkg.com/html5-qrcode"></script>
+                try {
 
-    <!-- TU JAVASCRIPT -->
+                    await html5QrCode.stop();
 
-    <script src="script.js"></script>
+                } catch (e) {
 
-</body>
-</html>
+                    console.log(e);
+
+                }
+
+
+                scannerContainer.style.display =
+                    "none";
+
+
+                scannerStatus.textContent =
+                    "Buscando producto...";
+
+
+                const producto =
+                    await buscarProductoOpenFoodFacts(
+                        codigo
+                    );
+
+
+                if (!producto) {
+
+                    alert(
+                        "No encontramos este producto en Open Food Facts."
+                    );
+
+                    return;
+                }
+
+
+                // Guardamos producto
+                scannedProduct =
+                    producto;
+
+
+                // Mostrar información
+                scannedProductName.textContent =
+                    producto.product_name ||
+                    "Producto sin nombre";
+
+
+                scannedProductBrand.textContent =
+                    producto.brands
+                        ? "Marca: " + producto.brands
+                        : "";
+
+
+                scannedProductCalories.textContent =
+                    producto.nutriments?.[
+                        "energy-kcal_100g"
+                    ] || 0;
+
+
+                scannedProductProtein.textContent =
+                    producto.nutriments?.[
+                        "proteins_100g"
+                    ] || 0;
+
+
+                // Mostrar panel
+                scannedProductContainer.style.display =
+                    "block";
+
+
+                // Valores iniciales
+                productAmount.value = 1;
+
+                productUnit.value = "g";
+
+
+                calculateScannedProduct();
+
+            },
+
+
+            (errorMessage) => {
+
+                // No hacemos nada con los errores
+                // normales de lectura.
+
+            }
+
+        );
+
+
+        scannerStatus.textContent =
+            "📷 Cámara activa. Apuntá al código de barras.";
+
+
+    } catch (error) {
+
+        console.error(
+            "Error iniciando cámara:",
+            error
+        );
+
+
+        scannerStatus.textContent =
+            "❌ No se pudo abrir la cámara: " +
+            error.message;
+
+    }
+
+});
+
+
+// ==========================================
+// USAR PRODUCTO ESCANEADO
+// ==========================================
+
+useScannedProduct.addEventListener(
+    "click",
+    () => {
+
+        if (!window.scannedProductResult) {
+
+            alert(
+                "Primero indicá cuánto consumiste."
+            );
+
+            return;
+        }
+
+
+        const producto =
+            window.scannedProductResult;
+
+
+        // Guardamos como comida actual
+        window.currentMeal = {
+
+            foods: [
+                {
+                    name: producto.nombre,
+                    calories: producto.calorias,
+                    protein: producto.proteinas
+                }
+            ],
+
+            calories:
+                producto.calorias,
+
+            protein:
+                producto.proteinas
+
+        };
+
+
+        // Mostrar el producto en el textarea
+        document.getElementById(
+            "mealDescription"
+        ).value =
+            `${producto.nombre} - ${producto.gramos.toFixed(0)} g`;
+
+
+        // Mostrar resultado
+        document.getElementById(
+            "estimatedCalories"
+        ).textContent =
+            Math.round(producto.calorias);
+
+
+        document.getElementById(
+            "estimatedProtein"
+        ).textContent =
+            producto.proteinas.toFixed(1);
+
+
+        // Mostrar sección de resultado
+        const resultSection =
+            document.getElementById(
+                "resultSection"
+            );
+
+        if (resultSection) {
+
+            resultSection.style.display =
+                "block";
+
+        }
+
+
+        scannedProductContainer.style.display =
+            "none";
+
+
+        alert(
+            "Producto agregado al análisis."
+        );
+
+    }
+);
