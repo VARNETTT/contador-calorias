@@ -3704,3 +3704,318 @@ document.addEventListener("DOMContentLoaded", () => {
     );
 
 });
+
+/* ==================================================
+   RECETAS SALUDABLES - MODAL Y CATEGORÍAS
+================================================== */
+
+document.addEventListener("DOMContentLoaded", () => {
+
+    const recipesModal =
+        document.getElementById("recipesModal");
+
+    const openRecipesButton =
+        document.getElementById("openRecipesModal");
+
+    const mobileOpenRecipesButton =
+        document.getElementById("mobileOpenRecipesModal");
+
+    const closeRecipesButton =
+        document.getElementById("closeRecipesModal");
+
+    const recipesOverlay =
+        document.getElementById("recipesModalOverlay");
+
+    const categoriesView =
+        document.getElementById("recipeCategories");
+
+    const recipeListView =
+        document.getElementById("recipeListView");
+
+    const backButton =
+        document.getElementById("backToRecipeCategories");
+
+    const categoryButtons =
+        document.querySelectorAll("[data-recipe-category]");
+
+    const recipeCards =
+        document.querySelectorAll(
+            "#recipeListView .recipe-card[data-category]"
+        );
+
+    const selectedTitle =
+        document.getElementById("selectedRecipeTitle");
+
+    const selectedIcon =
+        document.getElementById("selectedRecipeIcon");
+
+
+    const categoryInfo = {
+
+        desayuno: {
+            title: "Desayuno",
+            icon: "☀️"
+        },
+
+        almuerzo: {
+            title: "Almuerzo",
+            icon: "🍽️"
+        },
+
+        merienda: {
+            title: "Merienda",
+            icon: "☕"
+        },
+
+        cena: {
+            title: "Cena",
+            icon: "🌙"
+        }
+
+    };
+
+
+    // ==============================================
+    // ABRIR RECETAS
+    // ==============================================
+
+    function openRecipesModal(event) {
+
+        if (event) {
+            event.preventDefault();
+        }
+
+        if (!recipesModal) {
+            return;
+        }
+
+        recipesModal.classList.add("active");
+
+        showCategories();
+
+    }
+
+
+    // ==============================================
+    // CERRAR
+    // ==============================================
+
+    function closeRecipesModal() {
+
+        if (!recipesModal) {
+            return;
+        }
+
+        recipesModal.classList.remove("active");
+
+        showCategories();
+
+    }
+
+
+    // ==============================================
+    // MOSTRAR CATEGORÍAS
+    // ==============================================
+
+    function showCategories() {
+
+        if (categoriesView) {
+            categoriesView.style.display = "block";
+        }
+
+        if (recipeListView) {
+            recipeListView.style.display = "none";
+        }
+
+
+        /*
+         * Cerramos cualquier receta que haya
+         * quedado desplegada anteriormente.
+         */
+
+        document
+            .querySelectorAll("#recipeListView details")
+            .forEach((detail) => {
+
+                detail.removeAttribute("open");
+
+            });
+
+    }
+
+
+    // ==============================================
+    // MOSTRAR RECETAS DE UNA CATEGORÍA
+    // ==============================================
+
+    function showRecipeCategory(category) {
+
+        const info =
+            categoryInfo[category];
+
+        if (!info) {
+            return;
+        }
+
+
+        if (categoriesView) {
+            categoriesView.style.display = "none";
+        }
+
+        if (recipeListView) {
+            recipeListView.style.display = "block";
+        }
+
+
+        if (selectedTitle) {
+            selectedTitle.textContent =
+                info.title;
+        }
+
+        if (selectedIcon) {
+            selectedIcon.textContent =
+                info.icon;
+        }
+
+
+        recipeCards.forEach((card) => {
+
+            if (
+                card.dataset.category === category
+            ) {
+
+                card.style.display = "";
+
+            }
+
+            else {
+
+                card.style.display = "none";
+
+            }
+
+        });
+
+
+        /*
+         * Volvemos arriba dentro de la ventana
+         * al cambiar de categoría.
+         */
+
+        const modalContent =
+            recipesModal?.querySelector(
+                ".recipes-modal-content"
+            );
+
+        if (modalContent) {
+            modalContent.scrollTop = 0;
+        }
+
+    }
+
+
+    // ==============================================
+    // EVENTOS DE CATEGORÍAS
+    // ==============================================
+
+    categoryButtons.forEach((button) => {
+
+        button.addEventListener(
+            "click",
+            () => {
+
+                const category =
+                    button.dataset.recipeCategory;
+
+                showRecipeCategory(category);
+
+            }
+        );
+
+    });
+
+
+    // ==============================================
+    // BOTONES ABRIR
+    // ==============================================
+
+    if (openRecipesButton) {
+
+        openRecipesButton.addEventListener(
+            "click",
+            openRecipesModal
+        );
+
+    }
+
+
+    if (mobileOpenRecipesButton) {
+
+        mobileOpenRecipesButton.addEventListener(
+            "click",
+            openRecipesModal
+        );
+
+    }
+
+
+    // ==============================================
+    // VOLVER
+    // ==============================================
+
+    if (backButton) {
+
+        backButton.addEventListener(
+            "click",
+            showCategories
+        );
+
+    }
+
+
+    // ==============================================
+    // CERRAR
+    // ==============================================
+
+    if (closeRecipesButton) {
+
+        closeRecipesButton.addEventListener(
+            "click",
+            closeRecipesModal
+        );
+
+    }
+
+
+    if (recipesOverlay) {
+
+        recipesOverlay.addEventListener(
+            "click",
+            closeRecipesModal
+        );
+
+    }
+
+
+    // ==============================================
+    // ESC
+    // ==============================================
+
+    document.addEventListener(
+        "keydown",
+        (event) => {
+
+            if (
+                event.key === "Escape" &&
+                recipesModal &&
+                recipesModal.classList.contains("active")
+            ) {
+
+                closeRecipesModal();
+
+            }
+
+        }
+    );
+
+});
