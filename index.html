@@ -29,7 +29,9 @@
         <a href="#" id="openGoalModal">
     Mi objetivo
 </a>
-        <a href="#recetas">Recetas</a>
+        <a href="#" id="openRecipesModal">
+    Recetas
+</a>
         <a href="#comidas">Comidas</a>
     </nav>
 
@@ -620,596 +622,744 @@
      RECETAS SALUDABLES
 =========================================== -->
 
-<section id="recetas" class="recipes-section">
+<!-- ==========================================
+     MODAL - RECETAS SALUDABLES
+=========================================== -->
 
-    <div class="section-header">
+<div id="recipesModal" class="recipes-modal">
 
-        <div>
-            <span class="recipes-label">🥗 COMÉ MEJOR</span>
-            <h2>Recetas saludables</h2>
+    <div
+        id="recipesModalOverlay"
+        class="recipes-modal-overlay"
+    ></div>
 
-            <p>
-                Ideas simples, ricas y nutritivas para cuidar tu alimentación.
-            </p>
+
+    <div class="recipes-modal-content">
+
+        <!-- CABECERA -->
+
+        <div class="recipes-modal-header">
+
+            <div>
+                <span class="recipes-modal-label">
+                    🥗 COMÉ MEJOR
+                </span>
+
+                <h2>
+                    Recetas saludables
+                </h2>
+
+                <p>
+                    Elegí un momento del día y encontrá ideas simples y nutritivas.
+                </p>
+            </div>
+
+
+            <button
+                type="button"
+                id="closeRecipesModal"
+                class="recipes-modal-close"
+                aria-label="Cerrar"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <!-- ==========================================
+             CATEGORÍAS
+        =========================================== -->
+
+        <div id="recipeCategories">
+
+            <h3 class="recipe-question">
+                ¿Qué querés preparar?
+            </h3>
+
+
+            <div class="recipe-category-grid">
+
+
+                <!-- DESAYUNO -->
+
+                <button
+                    type="button"
+                    class="recipe-category-card"
+                    data-recipe-category="desayuno"
+                >
+
+                    <span class="recipe-category-icon">
+                        ☀️
+                    </span>
+
+                    <strong>
+                        Desayuno
+                    </strong>
+
+                    <small>
+                        2 recetas
+                    </small>
+
+                    <span class="recipe-category-arrow">
+                        →
+                    </span>
+
+                </button>
+
+
+                <!-- ALMUERZO -->
+
+                <button
+                    type="button"
+                    class="recipe-category-card"
+                    data-recipe-category="almuerzo"
+                >
+
+                    <span class="recipe-category-icon">
+                        🍽️
+                    </span>
+
+                    <strong>
+                        Almuerzo
+                    </strong>
+
+                    <small>
+                        2 recetas
+                    </small>
+
+                    <span class="recipe-category-arrow">
+                        →
+                    </span>
+
+                </button>
+
+
+                <!-- MERIENDA -->
+
+                <button
+                    type="button"
+                    class="recipe-category-card"
+                    data-recipe-category="merienda"
+                >
+
+                    <span class="recipe-category-icon">
+                        ☕
+                    </span>
+
+                    <strong>
+                        Merienda
+                    </strong>
+
+                    <small>
+                        1 receta
+                    </small>
+
+                    <span class="recipe-category-arrow">
+                        →
+                    </span>
+
+                </button>
+
+
+                <!-- CENA -->
+
+                <button
+                    type="button"
+                    class="recipe-category-card"
+                    data-recipe-category="cena"
+                >
+
+                    <span class="recipe-category-icon">
+                        🌙
+                    </span>
+
+                    <strong>
+                        Cena
+                    </strong>
+
+                    <small>
+                        1 receta
+                    </small>
+
+                    <span class="recipe-category-arrow">
+                        →
+                    </span>
+
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- ==========================================
+             LISTA DE RECETAS
+        =========================================== -->
+
+        <div
+            id="recipeListView"
+            class="recipe-list-view"
+            style="display: none;"
+        >
+
+            <button
+                type="button"
+                id="backToRecipeCategories"
+                class="recipes-back-button"
+            >
+                ← Volver
+            </button>
+
+
+            <div class="recipe-list-heading">
+
+                <span id="selectedRecipeIcon">
+                    ☀️
+                </span>
+
+                <div>
+                    <small>
+                        RECETAS PARA
+                    </small>
+
+                    <h3 id="selectedRecipeTitle">
+                        Desayuno
+                    </h3>
+                </div>
+
+            </div>
+
+
+            <div class="recipes-grid">
+
+
+                <!-- ==================================
+                     PANCAKES
+                =================================== -->
+
+                <article
+                    class="recipe-card"
+                    data-category="desayuno"
+                >
+
+                    <div class="recipe-icon">
+                        🥞
+                    </div>
+
+                    <div class="recipe-content">
+
+                        <span class="recipe-category">
+                            DESAYUNO
+                        </span>
+
+                        <h3>
+                            Pancakes de avena y banana
+                        </h3>
+
+                        <p class="recipe-description">
+                            Desayuno rápido con avena, banana y huevo.
+                        </p>
+
+
+                        <div class="recipe-stats">
+
+                            <div>
+                                <strong>280</strong>
+                                <span>kcal</span>
+                            </div>
+
+                            <div>
+                                <strong>13 g</strong>
+                                <span>proteína</span>
+                            </div>
+
+                            <div>
+                                <strong>15 min</strong>
+                                <span>tiempo</span>
+                            </div>
+
+                        </div>
+
+
+                        <details class="recipe-details">
+
+                            <summary>
+                                Ver receta
+                            </summary>
+
+                            <div class="recipe-instructions">
+
+                                <h4>Ingredientes</h4>
+
+                                <ul>
+                                    <li>1 banana</li>
+                                    <li>1 huevo</li>
+                                    <li>4 cucharadas de avena</li>
+                                    <li>Esencia de vainilla</li>
+                                    <li>Canela opcional</li>
+                                </ul>
+
+
+                                <h4>Preparación</h4>
+
+                                <ol>
+                                    <li>Pisá la banana.</li>
+                                    <li>Agregá el huevo y mezclá.</li>
+                                    <li>Incorporá la avena y la vainilla.</li>
+                                    <li>Cociná pequeñas porciones en una sartén antiadherente.</li>
+                                    <li>Doralas de ambos lados.</li>
+                                </ol>
+
+                            </div>
+
+                        </details>
+
+                    </div>
+
+                </article>
+
+
+                <!-- ==================================
+                     AVENA
+                =================================== -->
+
+                <article
+                    class="recipe-card"
+                    data-category="desayuno"
+                >
+
+                    <div class="recipe-icon">
+                        🥣
+                    </div>
+
+                    <div class="recipe-content">
+
+                        <span class="recipe-category">
+                            DESAYUNO
+                        </span>
+
+                        <h3>
+                            Avena con banana
+                        </h3>
+
+                        <p class="recipe-description">
+                            Un desayuno rápido con buena cantidad de fibra.
+                        </p>
+
+
+                        <div class="recipe-stats">
+
+                            <div>
+                                <strong>310</strong>
+                                <span>kcal</span>
+                            </div>
+
+                            <div>
+                                <strong>12 g</strong>
+                                <span>proteína</span>
+                            </div>
+
+                            <div>
+                                <strong>5 min</strong>
+                                <span>tiempo</span>
+                            </div>
+
+                        </div>
+
+
+                        <details class="recipe-details">
+
+                            <summary>
+                                Ver receta
+                            </summary>
+
+                            <div class="recipe-instructions">
+
+                                <h4>Ingredientes</h4>
+
+                                <ul>
+                                    <li>40 g de avena</li>
+                                    <li>200 ml de leche</li>
+                                    <li>1 banana</li>
+                                    <li>Canela opcional</li>
+                                </ul>
+
+
+                                <h4>Preparación</h4>
+
+                                <ol>
+                                    <li>Colocá la avena y la leche en un recipiente.</li>
+                                    <li>Cociná hasta que la avena absorba parte de la leche.</li>
+                                    <li>Agregá la banana cortada.</li>
+                                    <li>Terminá con canela a gusto.</li>
+                                </ol>
+
+                            </div>
+
+                        </details>
+
+                    </div>
+
+                </article>
+
+
+                <!-- ==================================
+                     TORTILLA DE LENTEJAS
+                =================================== -->
+
+                <article
+                    class="recipe-card"
+                    data-category="almuerzo"
+                >
+
+                    <div class="recipe-icon">
+                        🥚
+                    </div>
+
+                    <div class="recipe-content">
+
+                        <span class="recipe-category">
+                            ALMUERZO
+                        </span>
+
+                        <h3>
+                            Tortilla de lentejas
+                        </h3>
+
+                        <p class="recipe-description">
+                            Una tortilla rica en proteínas y fibra, ideal para acompañar con una ensalada.
+                        </p>
+
+
+                        <div class="recipe-stats">
+
+                            <div>
+                                <strong>320</strong>
+                                <span>kcal</span>
+                            </div>
+
+                            <div>
+                                <strong>22 g</strong>
+                                <span>proteína</span>
+                            </div>
+
+                            <div>
+                                <strong>25 min</strong>
+                                <span>tiempo</span>
+                            </div>
+
+                        </div>
+
+
+                        <details class="recipe-details">
+
+                            <summary>
+                                Ver receta
+                            </summary>
+
+                            <div class="recipe-instructions">
+
+                                <h4>Ingredientes</h4>
+
+                                <ul>
+                                    <li>2 latas de lentejas</li>
+                                    <li>4 huevos</li>
+                                    <li>2 cebollas</li>
+                                    <li>1 morrón grande</li>
+                                    <li>1 cabeza pequeña de ajo</li>
+                                    <li>Perejil</li>
+                                    <li>Orégano</li>
+                                    <li>Provenzal</li>
+                                    <li>Condimento para pizza</li>
+                                    <li>Sal a gusto</li>
+                                </ul>
+
+
+                                <h4>Preparación</h4>
+
+                                <ol>
+                                    <li>Cortá la cebolla, el morrón y el ajo.</li>
+                                    <li>Salteá los vegetales hasta que estén cocidos.</li>
+                                    <li>Batí los 4 huevos.</li>
+                                    <li>Agregá los condimentos y sal a gusto.</li>
+                                    <li>Mezclá las lentejas y los vegetales con los huevos batidos.</li>
+                                    <li>Cociná la tortilla de ambos lados hasta que esté dorada.</li>
+                                </ol>
+
+                            </div>
+
+                        </details>
+
+                    </div>
+
+                </article>
+
+
+                <!-- ==================================
+                     POLLO CON VERDURAS
+                =================================== -->
+
+                <article
+                    class="recipe-card"
+                    data-category="almuerzo"
+                >
+
+                    <div class="recipe-icon">
+                        🍗
+                    </div>
+
+                    <div class="recipe-content">
+
+                        <span class="recipe-category">
+                            ALMUERZO
+                        </span>
+
+                        <h3>
+                            Pollo con verduras
+                        </h3>
+
+                        <p class="recipe-description">
+                            Una comida simple, alta en proteínas y fácil de preparar.
+                        </p>
+
+
+                        <div class="recipe-stats">
+
+                            <div>
+                                <strong>410</strong>
+                                <span>kcal</span>
+                            </div>
+
+                            <div>
+                                <strong>38 g</strong>
+                                <span>proteína</span>
+                            </div>
+
+                            <div>
+                                <strong>30 min</strong>
+                                <span>tiempo</span>
+                            </div>
+
+                        </div>
+
+
+                        <details class="recipe-details">
+
+                            <summary>
+                                Ver receta
+                            </summary>
+
+                            <div class="recipe-instructions">
+
+                                <h4>Ingredientes</h4>
+
+                                <ul>
+                                    <li>200 g de pechuga de pollo</li>
+                                    <li>1/2 morrón</li>
+                                    <li>1 cebolla</li>
+                                    <li>1 zanahoria</li>
+                                    <li>Brócoli</li>
+                                    <li>Condimentos a gusto</li>
+                                </ul>
+
+
+                                <h4>Preparación</h4>
+
+                                <ol>
+                                    <li>Cortá el pollo en cubos.</li>
+                                    <li>Cortá todas las verduras.</li>
+                                    <li>Cociná el pollo en una sartén.</li>
+                                    <li>Incorporá las verduras.</li>
+                                    <li>Condimentá y cociná hasta que todo esté listo.</li>
+                                </ol>
+
+                            </div>
+
+                        </details>
+
+                    </div>
+
+                </article>
+
+
+                <!-- ==================================
+                     MERIENDA
+                =================================== -->
+
+                <article
+                    class="recipe-card"
+                    data-category="merienda"
+                >
+
+                    <div class="recipe-icon">
+                        🥑
+                    </div>
+
+                    <div class="recipe-content">
+
+                        <span class="recipe-category">
+                            MERIENDA
+                        </span>
+
+                        <h3>
+                            Tostadas con palta y huevo
+                        </h3>
+
+                        <p class="recipe-description">
+                            Una merienda sencilla con grasas, carbohidratos y proteínas.
+                        </p>
+
+
+                        <div class="recipe-stats">
+
+                            <div>
+                                <strong>330</strong>
+                                <span>kcal</span>
+                            </div>
+
+                            <div>
+                                <strong>15 g</strong>
+                                <span>proteína</span>
+                            </div>
+
+                            <div>
+                                <strong>10 min</strong>
+                                <span>tiempo</span>
+                            </div>
+
+                        </div>
+
+
+                        <details class="recipe-details">
+
+                            <summary>
+                                Ver receta
+                            </summary>
+
+                            <div class="recipe-instructions">
+
+                                <h4>Ingredientes</h4>
+
+                                <ul>
+                                    <li>2 tostadas integrales</li>
+                                    <li>1/2 palta</li>
+                                    <li>1 huevo</li>
+                                    <li>Sal a gusto</li>
+                                </ul>
+
+
+                                <h4>Preparación</h4>
+
+                                <ol>
+                                    <li>Tostá el pan.</li>
+                                    <li>Pisá la palta.</li>
+                                    <li>Cociná el huevo.</li>
+                                    <li>Colocá la palta y el huevo sobre las tostadas.</li>
+                                </ol>
+
+                            </div>
+
+                        </details>
+
+                    </div>
+
+                </article>
+
+
+                <!-- ==================================
+                     CENA
+                =================================== -->
+
+                <article
+                    class="recipe-card"
+                    data-category="cena"
+                >
+
+                    <div class="recipe-icon">
+                        🥗
+                    </div>
+
+                    <div class="recipe-content">
+
+                        <span class="recipe-category">
+                            CENA
+                        </span>
+
+                        <h3>
+                            Ensalada con pollo y huevo
+                        </h3>
+
+                        <p class="recipe-description">
+                            Una opción fresca con vegetales y una buena fuente de proteínas.
+                        </p>
+
+
+                        <div class="recipe-stats">
+
+                            <div>
+                                <strong>350</strong>
+                                <span>kcal</span>
+                            </div>
+
+                            <div>
+                                <strong>35 g</strong>
+                                <span>proteína</span>
+                            </div>
+
+                            <div>
+                                <strong>20 min</strong>
+                                <span>tiempo</span>
+                            </div>
+
+                        </div>
+
+
+                        <details class="recipe-details">
+
+                            <summary>
+                                Ver receta
+                            </summary>
+
+                            <div class="recipe-instructions">
+
+                                <h4>Ingredientes</h4>
+
+                                <ul>
+                                    <li>150 g de pollo</li>
+                                    <li>1 huevo</li>
+                                    <li>Lechuga</li>
+                                    <li>Tomate</li>
+                                    <li>Cebolla</li>
+                                    <li>Zanahoria</li>
+                                </ul>
+
+
+                                <h4>Preparación</h4>
+
+                                <ol>
+                                    <li>Cociná el pollo.</li>
+                                    <li>Herví el huevo.</li>
+                                    <li>Cortá los vegetales.</li>
+                                    <li>Mezclá todos los ingredientes en un recipiente.</li>
+                                    <li>Condimentá a gusto.</li>
+                                </ol>
+
+                            </div>
+
+                        </details>
+
+                    </div>
+
+                </article>
+
+            </div>
+
         </div>
 
     </div>
 
-
-    <div class="recipes-grid">
-
-
-        <!-- TORTILLA DE LENTEJAS -->
-
-        <article class="recipe-card">
-
-            <div class="recipe-icon">
-                🥚
-            </div>
-
-            <div class="recipe-content">
-
-                <span class="recipe-category">
-                    ALMUERZO
-                </span>
-
-                <h3>
-                    Tortilla de lentejas
-                </h3>
-
-                <p class="recipe-description">
-                    Una tortilla rica en proteínas y fibra, ideal para
-                    acompañar con una ensalada.
-                </p>
-
-
-                <div class="recipe-stats">
-
-                    <div>
-                        <strong>320</strong>
-                        <span>kcal</span>
-                    </div>
-
-                    <div>
-                        <strong>22 g</strong>
-                        <span>proteína</span>
-                    </div>
-
-                    <div>
-                        <strong>25 min</strong>
-                        <span>tiempo</span>
-                    </div>
-
-                </div>
-
-
-                <details class="recipe-details">
-
-                    <summary>
-                        Ver receta
-                    </summary>
-
-                    <div class="recipe-instructions">
-
-                        <h4>Ingredientes</h4>
-
-                        <ul>
-                            <li>2 latas de lentejas</li>
-                            <li>4 huevos</li>
-                            <li>2 cebollas</li>
-                            <li>1 morrón grande</li>
-                            <li>1 cabeza pequeña de ajo</li>
-                            <li>Perejil</li>
-                            <li>Orégano</li>
-                            <li>Provenzal</li>
-                            <li>Condimento para pizza</li>
-                            <li>Sal a gusto</li>
-                        </ul>
-
-
-                        <h4>Preparación</h4>
-
-                        <ol>
-                            <li>
-                                Cortá la cebolla, el morrón y el ajo.
-                            </li>
-
-                            <li>
-                                Salteá los vegetales hasta que estén cocidos.
-                            </li>
-
-                            <li>
-                                Batí los 4 huevos.
-                            </li>
-
-                            <li>
-                                Agregá los condimentos y sal a gusto.
-                            </li>
-
-                            <li>
-                                Mezclá las lentejas y los vegetales
-                                con los huevos batidos.
-                            </li>
-
-                            <li>
-                                Cociná la tortilla de ambos lados
-                                hasta que esté dorada.
-                            </li>
-                        </ol>
-
-                    </div>
-
-                </details>
-
-            </div>
-
-        </article>
-
-
-
-        <!-- PANCAKES -->
-
-        <article class="recipe-card">
-
-            <div class="recipe-icon">
-                🥞
-            </div>
-
-            <div class="recipe-content">
-
-                <span class="recipe-category">
-                    DESAYUNO
-                </span>
-
-                <h3>
-                    Pancakes de avena y banana
-                </h3>
-
-                <p class="recipe-description">
-                    Desayuno rápido con avena, banana y huevo.
-                </p>
-
-
-                <div class="recipe-stats">
-
-                    <div>
-                        <strong>280</strong>
-                        <span>kcal</span>
-                    </div>
-
-                    <div>
-                        <strong>13 g</strong>
-                        <span>proteína</span>
-                    </div>
-
-                    <div>
-                        <strong>15 min</strong>
-                        <span>tiempo</span>
-                    </div>
-
-                </div>
-
-
-                <details class="recipe-details">
-
-                    <summary>
-                        Ver receta
-                    </summary>
-
-                    <div class="recipe-instructions">
-
-                        <h4>Ingredientes</h4>
-
-                        <ul>
-                            <li>1 banana</li>
-                            <li>1 huevo</li>
-                            <li>4 cucharadas de avena</li>
-                            <li>Esencia de vainilla</li>
-                            <li>Canela opcional</li>
-                        </ul>
-
-
-                        <h4>Preparación</h4>
-
-                        <ol>
-                            <li>Pisá la banana.</li>
-
-                            <li>
-                                Agregá el huevo y mezclá.
-                            </li>
-
-                            <li>
-                                Incorporá la avena y la vainilla.
-                            </li>
-
-                            <li>
-                                Cociná pequeñas porciones en una sartén
-                                antiadherente.
-                            </li>
-
-                            <li>
-                                Doralas de ambos lados.
-                            </li>
-                        </ol>
-
-                    </div>
-
-                </details>
-
-            </div>
-
-        </article>
-
-
-
-        <!-- POLLO -->
-
-        <article class="recipe-card">
-
-            <div class="recipe-icon">
-                🍗
-            </div>
-
-            <div class="recipe-content">
-
-                <span class="recipe-category">
-                    ALMUERZO
-                </span>
-
-                <h3>
-                    Pollo con verduras
-                </h3>
-
-                <p class="recipe-description">
-                    Una comida simple, alta en proteínas y fácil de preparar.
-                </p>
-
-
-                <div class="recipe-stats">
-
-                    <div>
-                        <strong>410</strong>
-                        <span>kcal</span>
-                    </div>
-
-                    <div>
-                        <strong>38 g</strong>
-                        <span>proteína</span>
-                    </div>
-
-                    <div>
-                        <strong>30 min</strong>
-                        <span>tiempo</span>
-                    </div>
-
-                </div>
-
-
-                <details class="recipe-details">
-
-                    <summary>
-                        Ver receta
-                    </summary>
-
-                    <div class="recipe-instructions">
-
-                        <h4>Ingredientes</h4>
-
-                        <ul>
-                            <li>200 g de pechuga de pollo</li>
-                            <li>1/2 morrón</li>
-                            <li>1 cebolla</li>
-                            <li>1 zanahoria</li>
-                            <li>Brócoli</li>
-                            <li>Condimentos a gusto</li>
-                        </ul>
-
-
-                        <h4>Preparación</h4>
-
-                        <ol>
-                            <li>
-                                Cortá el pollo en cubos.
-                            </li>
-
-                            <li>
-                                Cortá todas las verduras.
-                            </li>
-
-                            <li>
-                                Cociná el pollo en una sartén.
-                            </li>
-
-                            <li>
-                                Incorporá las verduras.
-                            </li>
-
-                            <li>
-                                Condimentá y cociná hasta que todo esté listo.
-                            </li>
-                        </ol>
-
-                    </div>
-
-                </details>
-
-            </div>
-
-        </article>
-
-
-
-        <!-- AVENA -->
-
-        <article class="recipe-card">
-
-            <div class="recipe-icon">
-                🥣
-            </div>
-
-            <div class="recipe-content">
-
-                <span class="recipe-category">
-                    DESAYUNO
-                </span>
-
-                <h3>
-                    Avena con banana
-                </h3>
-
-                <p class="recipe-description">
-                    Un desayuno rápido con buena cantidad de fibra.
-                </p>
-
-
-                <div class="recipe-stats">
-
-                    <div>
-                        <strong>310</strong>
-                        <span>kcal</span>
-                    </div>
-
-                    <div>
-                        <strong>12 g</strong>
-                        <span>proteína</span>
-                    </div>
-
-                    <div>
-                        <strong>5 min</strong>
-                        <span>tiempo</span>
-                    </div>
-
-                </div>
-
-
-                <details class="recipe-details">
-
-                    <summary>
-                        Ver receta
-                    </summary>
-
-                    <div class="recipe-instructions">
-
-                        <h4>Ingredientes</h4>
-
-                        <ul>
-                            <li>40 g de avena</li>
-                            <li>200 ml de leche</li>
-                            <li>1 banana</li>
-                            <li>Canela opcional</li>
-                        </ul>
-
-
-                        <h4>Preparación</h4>
-
-                        <ol>
-                            <li>
-                                Colocá la avena y la leche en un recipiente.
-                            </li>
-
-                            <li>
-                                Cociná hasta que la avena absorba parte
-                                de la leche.
-                            </li>
-
-                            <li>
-                                Agregá la banana cortada.
-                            </li>
-
-                            <li>
-                                Terminá con canela a gusto.
-                            </li>
-                        </ol>
-
-                    </div>
-
-                </details>
-
-            </div>
-
-        </article>
-
-
-
-        <!-- ENSALADA -->
-
-        <article class="recipe-card">
-
-            <div class="recipe-icon">
-                🥗
-            </div>
-
-            <div class="recipe-content">
-
-                <span class="recipe-category">
-                    CENA
-                </span>
-
-                <h3>
-                    Ensalada con pollo y huevo
-                </h3>
-
-                <p class="recipe-description">
-                    Una opción fresca con vegetales y una buena fuente
-                    de proteínas.
-                </p>
-
-
-                <div class="recipe-stats">
-
-                    <div>
-                        <strong>350</strong>
-                        <span>kcal</span>
-                    </div>
-
-                    <div>
-                        <strong>35 g</strong>
-                        <span>proteína</span>
-                    </div>
-
-                    <div>
-                        <strong>20 min</strong>
-                        <span>tiempo</span>
-                    </div>
-
-                </div>
-
-
-                <details class="recipe-details">
-
-                    <summary>
-                        Ver receta
-                    </summary>
-
-                    <div class="recipe-instructions">
-
-                        <h4>Ingredientes</h4>
-
-                        <ul>
-                            <li>150 g de pollo</li>
-                            <li>1 huevo</li>
-                            <li>Lechuga</li>
-                            <li>Tomate</li>
-                            <li>Cebolla</li>
-                            <li>Zanahoria</li>
-                        </ul>
-
-
-                        <h4>Preparación</h4>
-
-                        <ol>
-                            <li>Cociná el pollo.</li>
-                            <li>Herví el huevo.</li>
-                            <li>Cortá los vegetales.</li>
-
-                            <li>
-                                Mezclá todos los ingredientes
-                                en un recipiente.
-                            </li>
-
-                            <li>
-                                Condimentá a gusto.
-                            </li>
-                        </ol>
-
-                    </div>
-
-                </details>
-
-            </div>
-
-        </article>
-
-
-
-        <!-- TOSTADAS -->
-
-        <article class="recipe-card">
-
-            <div class="recipe-icon">
-                🥑
-            </div>
-
-            <div class="recipe-content">
-
-                <span class="recipe-category">
-                    MERIENDA
-                </span>
-
-                <h3>
-                    Tostadas con palta y huevo
-                </h3>
-
-                <p class="recipe-description">
-                    Una merienda sencilla con grasas, carbohidratos
-                    y proteínas.
-                </p>
-
-
-                <div class="recipe-stats">
-
-                    <div>
-                        <strong>330</strong>
-                        <span>kcal</span>
-                    </div>
-
-                    <div>
-                        <strong>15 g</strong>
-                        <span>proteína</span>
-                    </div>
-
-                    <div>
-                        <strong>10 min</strong>
-                        <span>tiempo</span>
-                    </div>
-
-                </div>
-
-
-                <details class="recipe-details">
-
-                    <summary>
-                        Ver receta
-                    </summary>
-
-                    <div class="recipe-instructions">
-
-                        <h4>Ingredientes</h4>
-
-                        <ul>
-                            <li>2 tostadas integrales</li>
-                            <li>1/2 palta</li>
-                            <li>1 huevo</li>
-                            <li>Sal a gusto</li>
-                        </ul>
-
-
-                        <h4>Preparación</h4>
-
-                        <ol>
-                            <li>Tostá el pan.</li>
-                            <li>Pisá la palta.</li>
-                            <li>Cociná el huevo.</li>
-
-                            <li>
-                                Colocá la palta y el huevo
-                                sobre las tostadas.
-                            </li>
-                        </ol>
-
-                    </div>
-
-                </details>
-
-            </div>
-
-        </article>
-
-
-    </div>
-
-</section>
-
+</div>
 
         <!-- ==========================================
              COMIDAS
@@ -1698,11 +1848,14 @@
         +
     </button>
 
-    <a href="#recetas" class="mobile-nav-item">
-        <span>🥗</span>
-        <small>Recetas</small>
-    </a>
-
+    <a
+    href="#"
+    id="mobileOpenRecipesModal"
+    class="mobile-nav-item"
+>
+    <span>🥗</span>
+    <small>Recetas</small>
+</a>
     
     <a
     href="#"
