@@ -18,18 +18,24 @@
 
     <header class="header">
 
-        <div class="logo">
-            CalorieTrack
-        </div>
+    <a href="#inicio" class="logo">
+        <span class="logo-icon">🔥</span>
+        CalorieTrack
+    </a>
 
-        <nav class="nav">
-            <a href="#inicio">Inicio</a>
-            <a href="#resumen">Resumen</a>
-            <a href="#comidas">Comidas</a>
-        </nav>
+    <nav class="nav">
+        <a href="#inicio">Inicio</a>
+        <a href="#resumen">Mi progreso</a>
+        <a href="#objetivo">Mi objetivo</a>
+        <a href="#recetas">Recetas</a>
+        <a href="#comidas">Comidas</a>
+    </nav>
 
-    </header>
+    <button type="button" class="header-add-btn" id="headerAddMeal">
+        + Agregar comida
+    </button>
 
+</header>
 
     <!-- ==========================================
          HERO
@@ -65,70 +71,1108 @@
 
 
         <!-- ==========================================
-             RESUMEN
+             MI OBJETIVO
         =========================================== -->
 
-        <section id="resumen" class="dashboard">
+        <section id="objetivo" class="goal-section">
 
-            <h2>
-                Resumen de hoy
-            </h2>
+            <div class="section-header">
 
-            <div class="dashboard-grid">
+                <div>
 
-                <div class="dashboard-card">
+                    <h2>
+                        Mi objetivo
+                    </h2>
 
-                    <span>
-                        Calorías
-                    </span>
-
-                    <strong id="totalCalories">
-                        0
-                    </strong>
-
-                    <small>
-                        kcal
-                    </small>
+                    <p>
+                        Calculá cuántas calorías necesitás consumir por día.
+                    </p>
 
                 </div>
 
-
-                <div class="dashboard-card">
-
-                    <span>
-                        Proteínas
-                    </span>
-
-                    <strong id="totalProtein">
-                        0
-                    </strong>
-
-                    <small>
-                        g
-                    </small>
-
-                </div>
+            </div>
 
 
-                <div class="dashboard-card">
+            <div class="goal-card">
 
-                    <span>
-                        Comidas
-                    </span>
+                <form id="goalForm">
 
-                    <strong id="totalMeals">
-                        0
-                    </strong>
+                    <!-- PESO -->
 
-                    <small>
-                        comidas
-                    </small>
+                    <div class="form-group">
+
+                        <label for="goalWeight">
+                            Peso actual
+                        </label>
+
+                        <div class="input-with-unit">
+
+                            <input
+                                type="number"
+                                id="goalWeight"
+                                min="20"
+                                max="500"
+                                step="0.1"
+                                placeholder="Ej: 75"
+                                required
+                            >
+
+                            <span>kg</span>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- SEXO BIOLÓGICO -->
+
+                    <div class="form-group">
+
+                        <label for="goalSex">
+                            Sexo biológico
+                        </label>
+
+                        <select id="goalSex" required>
+
+                            <option value="">
+                                Seleccioná una opción
+                            </option>
+
+                            <option value="male">
+                                Masculino
+                            </option>
+
+                            <option value="female">
+                                Femenino
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- ALTURA -->
+
+                    <div class="form-group">
+
+                        <label for="goalHeight">
+                            Altura
+                        </label>
+
+                        <div class="input-with-unit">
+
+                            <input
+                                type="number"
+                                id="goalHeight"
+                                min="100"
+                                max="250"
+                                step="1"
+                                placeholder="Ej: 170"
+                                required
+                            >
+
+                            <span>cm</span>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- EDAD -->
+
+                    <div class="form-group">
+
+                        <label for="goalAge">
+                            Edad
+                        </label>
+
+                        <div class="input-with-unit">
+
+                            <input
+                                type="number"
+                                id="goalAge"
+                                min="13"
+                                max="120"
+                                step="1"
+                                placeholder="Ej: 25"
+                                required
+                            >
+
+                            <span>años</span>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- ACTIVIDAD -->
+
+                    <div class="form-group">
+
+                        <label for="goalActivity">
+                            Nivel de actividad física
+                        </label>
+
+                        <select id="goalActivity" required>
+
+                            <option value="">
+                                Seleccioná tu actividad
+                            </option>
+
+                            <option value="1.2">
+                                Sedentaria — poco o ningún ejercicio
+                            </option>
+
+                            <option value="1.375">
+                                Ligera — ejercicio 1 a 3 días/semana
+                            </option>
+
+                            <option value="1.55">
+                                Moderada — ejercicio 3 a 5 días/semana
+                            </option>
+
+                            <option value="1.725">
+                                Alta — ejercicio 6 a 7 días/semana
+                            </option>
+
+                            <option value="1.9">
+                                Muy alta — ejercicio intenso / trabajo físico
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- OBJETIVO -->
+
+                    <div class="form-group">
+
+                        <label for="goalType">
+                            ¿Cuál es tu objetivo?
+                        </label>
+
+                        <select id="goalType" required>
+
+                            <option value="">
+                                Seleccioná tu objetivo
+                            </option>
+
+                            <option value="deficit">
+                                🔻 Perder peso — déficit calórico
+                            </option>
+
+                            <option value="maintenance">
+                                ⚖️ Mantener mi peso
+                            </option>
+
+                            <option value="surplus">
+                                🔺 Ganar peso — superávit / volumen
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <button
+                        type="submit"
+                        class="primary-btn full-width"
+                    >
+                        Calcular mi objetivo
+                    </button>
+
+                </form>
+
+
+                <!-- ==================================
+                     RESULTADO DEL OBJETIVO
+                =================================== -->
+
+                <div
+                    id="goalResult"
+                    class="goal-result"
+                    style="display: none;"
+                >
+
+                    <h3>
+                        Tu objetivo diario
+                    </h3>
+
+
+                    <div class="goal-calories">
+
+                        <span>
+                            Calorías recomendadas
+                        </span>
+
+                        <strong id="goalCalories">
+                            0
+                        </strong>
+
+                        <small>
+                            kcal / día
+                        </small>
+
+                    </div>
+
+
+                    <div class="goal-details">
+
+                        <div>
+
+                            <span>
+                                Metabolismo basal
+                            </span>
+
+                            <strong id="goalBMR">
+                                0 kcal
+                            </strong>
+
+                        </div>
+
+
+                        <div>
+
+                            <span>
+                                Gasto diario estimado
+                            </span>
+
+                            <strong id="goalTDEE">
+                                0 kcal
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+
+                    <p id="goalExplanation">
+                    </p>
+
+
+                    <button
+                        type="button"
+                        id="editGoalBtn"
+                        class="secondary-btn full-width"
+                    >
+                        Modificar mis datos
+                    </button>
 
                 </div>
 
             </div>
 
         </section>
+
+
+        <!-- ==========================================
+             RESUMEN
+        =========================================== -->
+
+        <!-- ==========================================
+     RESUMEN / PROGRESO DE HOY
+=========================================== -->
+
+<section id="resumen" class="dashboard">
+
+    <div class="dashboard-heading">
+
+        <div>
+            <span class="section-eyebrow">
+                TU DÍA
+            </span>
+
+            <h2>
+                Tu progreso de hoy
+            </h2>
+
+            <p>
+                Seguí tus calorías y proteínas durante el día.
+            </p>
+        </div>
+
+        <button
+            type="button"
+            class="primary-btn dashboard-add-btn"
+            id="dashboardAddMeal"
+        >
+            + Agregar comida
+        </button>
+
+    </div>
+
+
+    <!-- ==========================================
+         PROGRESO PRINCIPAL
+    =========================================== -->
+
+    <div
+        id="dailyGoalCard"
+        class="main-progress-card"
+    >
+
+        <div class="progress-main-info">
+
+            <div>
+
+                <span class="progress-label">
+                    Calorías consumidas
+                </span>
+
+                <div class="calorie-total">
+
+                    <strong id="dailyConsumedCalories">
+                        0
+                    </strong>
+
+                    <span>
+                        /
+                        <span id="dailyTargetCalories">
+                            0
+                        </span>
+                        kcal
+                    </span>
+
+                </div>
+
+                <p
+                    id="dailyRemainingCalories"
+                    class="remaining-calories"
+                >
+                    Configurá tu objetivo para comenzar
+                </p>
+
+            </div>
+
+
+            <div class="progress-percentage-box">
+
+                <strong id="dailyProgressPercentage">
+                    0%
+                </strong>
+
+                <span>
+                    del objetivo
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <!-- BARRA DE PROGRESO -->
+
+        <div class="modern-progress-bar">
+
+            <div
+                id="dailyProgress"
+                class="modern-progress-fill"
+                style="width: 0%;"
+            ></div>
+
+        </div>
+
+
+        <div class="progress-scale">
+
+            <span>
+                0 kcal
+            </span>
+
+            <span id="progressGoalLabel">
+                Objetivo
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <!-- ==========================================
+         ESTADÍSTICAS
+    =========================================== -->
+
+    <div class="dashboard-grid modern-dashboard-grid">
+
+
+        <!-- CALORÍAS -->
+
+        <div class="dashboard-card stat-card">
+
+            <div class="stat-icon">
+                🔥
+            </div>
+
+            <div>
+
+                <span>
+                    Calorías
+                </span>
+
+                <strong id="totalCalories">
+                    0
+                </strong>
+
+                <small>
+                    kcal consumidas
+                </small>
+
+            </div>
+
+        </div>
+
+
+        <!-- PROTEÍNAS -->
+
+        <div class="dashboard-card stat-card">
+
+            <div class="stat-icon">
+                💪
+            </div>
+
+            <div>
+
+                <span>
+                    Proteínas
+                </span>
+
+                <strong id="totalProtein">
+                    0
+                </strong>
+
+                <small>
+                    gramos consumidos
+                </small>
+
+            </div>
+
+        </div>
+
+
+        <!-- COMIDAS -->
+
+        <div class="dashboard-card stat-card">
+
+            <div class="stat-icon">
+                🍽️
+            </div>
+
+            <div>
+
+                <span>
+                    Comidas
+                </span>
+
+                <strong id="totalMeals">
+                    0
+                </strong>
+
+                <small>
+                    registradas hoy
+                </small>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+        <!-- ==========================================
+     RECETAS SALUDABLES
+=========================================== -->
+
+<section id="recetas" class="recipes-section">
+
+    <div class="section-header">
+
+        <div>
+            <span class="recipes-label">🥗 COMÉ MEJOR</span>
+            <h2>Recetas saludables</h2>
+
+            <p>
+                Ideas simples, ricas y nutritivas para cuidar tu alimentación.
+            </p>
+        </div>
+
+    </div>
+
+
+    <div class="recipes-grid">
+
+
+        <!-- TORTILLA DE LENTEJAS -->
+
+        <article class="recipe-card">
+
+            <div class="recipe-icon">
+                🥚
+            </div>
+
+            <div class="recipe-content">
+
+                <span class="recipe-category">
+                    ALMUERZO
+                </span>
+
+                <h3>
+                    Tortilla de lentejas
+                </h3>
+
+                <p class="recipe-description">
+                    Una tortilla rica en proteínas y fibra, ideal para
+                    acompañar con una ensalada.
+                </p>
+
+
+                <div class="recipe-stats">
+
+                    <div>
+                        <strong>320</strong>
+                        <span>kcal</span>
+                    </div>
+
+                    <div>
+                        <strong>22 g</strong>
+                        <span>proteína</span>
+                    </div>
+
+                    <div>
+                        <strong>25 min</strong>
+                        <span>tiempo</span>
+                    </div>
+
+                </div>
+
+
+                <details class="recipe-details">
+
+                    <summary>
+                        Ver receta
+                    </summary>
+
+                    <div class="recipe-instructions">
+
+                        <h4>Ingredientes</h4>
+
+                        <ul>
+                            <li>2 latas de lentejas</li>
+                            <li>4 huevos</li>
+                            <li>2 cebollas</li>
+                            <li>1 morrón grande</li>
+                            <li>1 cabeza pequeña de ajo</li>
+                            <li>Perejil</li>
+                            <li>Orégano</li>
+                            <li>Provenzal</li>
+                            <li>Condimento para pizza</li>
+                            <li>Sal a gusto</li>
+                        </ul>
+
+
+                        <h4>Preparación</h4>
+
+                        <ol>
+                            <li>
+                                Cortá la cebolla, el morrón y el ajo.
+                            </li>
+
+                            <li>
+                                Salteá los vegetales hasta que estén cocidos.
+                            </li>
+
+                            <li>
+                                Batí los 4 huevos.
+                            </li>
+
+                            <li>
+                                Agregá los condimentos y sal a gusto.
+                            </li>
+
+                            <li>
+                                Mezclá las lentejas y los vegetales
+                                con los huevos batidos.
+                            </li>
+
+                            <li>
+                                Cociná la tortilla de ambos lados
+                                hasta que esté dorada.
+                            </li>
+                        </ol>
+
+                    </div>
+
+                </details>
+
+            </div>
+
+        </article>
+
+
+
+        <!-- PANCAKES -->
+
+        <article class="recipe-card">
+
+            <div class="recipe-icon">
+                🥞
+            </div>
+
+            <div class="recipe-content">
+
+                <span class="recipe-category">
+                    DESAYUNO
+                </span>
+
+                <h3>
+                    Pancakes de avena y banana
+                </h3>
+
+                <p class="recipe-description">
+                    Desayuno rápido con avena, banana y huevo.
+                </p>
+
+
+                <div class="recipe-stats">
+
+                    <div>
+                        <strong>280</strong>
+                        <span>kcal</span>
+                    </div>
+
+                    <div>
+                        <strong>13 g</strong>
+                        <span>proteína</span>
+                    </div>
+
+                    <div>
+                        <strong>15 min</strong>
+                        <span>tiempo</span>
+                    </div>
+
+                </div>
+
+
+                <details class="recipe-details">
+
+                    <summary>
+                        Ver receta
+                    </summary>
+
+                    <div class="recipe-instructions">
+
+                        <h4>Ingredientes</h4>
+
+                        <ul>
+                            <li>1 banana</li>
+                            <li>1 huevo</li>
+                            <li>4 cucharadas de avena</li>
+                            <li>Esencia de vainilla</li>
+                            <li>Canela opcional</li>
+                        </ul>
+
+
+                        <h4>Preparación</h4>
+
+                        <ol>
+                            <li>Pisá la banana.</li>
+
+                            <li>
+                                Agregá el huevo y mezclá.
+                            </li>
+
+                            <li>
+                                Incorporá la avena y la vainilla.
+                            </li>
+
+                            <li>
+                                Cociná pequeñas porciones en una sartén
+                                antiadherente.
+                            </li>
+
+                            <li>
+                                Doralas de ambos lados.
+                            </li>
+                        </ol>
+
+                    </div>
+
+                </details>
+
+            </div>
+
+        </article>
+
+
+
+        <!-- POLLO -->
+
+        <article class="recipe-card">
+
+            <div class="recipe-icon">
+                🍗
+            </div>
+
+            <div class="recipe-content">
+
+                <span class="recipe-category">
+                    ALMUERZO
+                </span>
+
+                <h3>
+                    Pollo con verduras
+                </h3>
+
+                <p class="recipe-description">
+                    Una comida simple, alta en proteínas y fácil de preparar.
+                </p>
+
+
+                <div class="recipe-stats">
+
+                    <div>
+                        <strong>410</strong>
+                        <span>kcal</span>
+                    </div>
+
+                    <div>
+                        <strong>38 g</strong>
+                        <span>proteína</span>
+                    </div>
+
+                    <div>
+                        <strong>30 min</strong>
+                        <span>tiempo</span>
+                    </div>
+
+                </div>
+
+
+                <details class="recipe-details">
+
+                    <summary>
+                        Ver receta
+                    </summary>
+
+                    <div class="recipe-instructions">
+
+                        <h4>Ingredientes</h4>
+
+                        <ul>
+                            <li>200 g de pechuga de pollo</li>
+                            <li>1/2 morrón</li>
+                            <li>1 cebolla</li>
+                            <li>1 zanahoria</li>
+                            <li>Brócoli</li>
+                            <li>Condimentos a gusto</li>
+                        </ul>
+
+
+                        <h4>Preparación</h4>
+
+                        <ol>
+                            <li>
+                                Cortá el pollo en cubos.
+                            </li>
+
+                            <li>
+                                Cortá todas las verduras.
+                            </li>
+
+                            <li>
+                                Cociná el pollo en una sartén.
+                            </li>
+
+                            <li>
+                                Incorporá las verduras.
+                            </li>
+
+                            <li>
+                                Condimentá y cociná hasta que todo esté listo.
+                            </li>
+                        </ol>
+
+                    </div>
+
+                </details>
+
+            </div>
+
+        </article>
+
+
+
+        <!-- AVENA -->
+
+        <article class="recipe-card">
+
+            <div class="recipe-icon">
+                🥣
+            </div>
+
+            <div class="recipe-content">
+
+                <span class="recipe-category">
+                    DESAYUNO
+                </span>
+
+                <h3>
+                    Avena con banana
+                </h3>
+
+                <p class="recipe-description">
+                    Un desayuno rápido con buena cantidad de fibra.
+                </p>
+
+
+                <div class="recipe-stats">
+
+                    <div>
+                        <strong>310</strong>
+                        <span>kcal</span>
+                    </div>
+
+                    <div>
+                        <strong>12 g</strong>
+                        <span>proteína</span>
+                    </div>
+
+                    <div>
+                        <strong>5 min</strong>
+                        <span>tiempo</span>
+                    </div>
+
+                </div>
+
+
+                <details class="recipe-details">
+
+                    <summary>
+                        Ver receta
+                    </summary>
+
+                    <div class="recipe-instructions">
+
+                        <h4>Ingredientes</h4>
+
+                        <ul>
+                            <li>40 g de avena</li>
+                            <li>200 ml de leche</li>
+                            <li>1 banana</li>
+                            <li>Canela opcional</li>
+                        </ul>
+
+
+                        <h4>Preparación</h4>
+
+                        <ol>
+                            <li>
+                                Colocá la avena y la leche en un recipiente.
+                            </li>
+
+                            <li>
+                                Cociná hasta que la avena absorba parte
+                                de la leche.
+                            </li>
+
+                            <li>
+                                Agregá la banana cortada.
+                            </li>
+
+                            <li>
+                                Terminá con canela a gusto.
+                            </li>
+                        </ol>
+
+                    </div>
+
+                </details>
+
+            </div>
+
+        </article>
+
+
+
+        <!-- ENSALADA -->
+
+        <article class="recipe-card">
+
+            <div class="recipe-icon">
+                🥗
+            </div>
+
+            <div class="recipe-content">
+
+                <span class="recipe-category">
+                    CENA
+                </span>
+
+                <h3>
+                    Ensalada con pollo y huevo
+                </h3>
+
+                <p class="recipe-description">
+                    Una opción fresca con vegetales y una buena fuente
+                    de proteínas.
+                </p>
+
+
+                <div class="recipe-stats">
+
+                    <div>
+                        <strong>350</strong>
+                        <span>kcal</span>
+                    </div>
+
+                    <div>
+                        <strong>35 g</strong>
+                        <span>proteína</span>
+                    </div>
+
+                    <div>
+                        <strong>20 min</strong>
+                        <span>tiempo</span>
+                    </div>
+
+                </div>
+
+
+                <details class="recipe-details">
+
+                    <summary>
+                        Ver receta
+                    </summary>
+
+                    <div class="recipe-instructions">
+
+                        <h4>Ingredientes</h4>
+
+                        <ul>
+                            <li>150 g de pollo</li>
+                            <li>1 huevo</li>
+                            <li>Lechuga</li>
+                            <li>Tomate</li>
+                            <li>Cebolla</li>
+                            <li>Zanahoria</li>
+                        </ul>
+
+
+                        <h4>Preparación</h4>
+
+                        <ol>
+                            <li>Cociná el pollo.</li>
+                            <li>Herví el huevo.</li>
+                            <li>Cortá los vegetales.</li>
+
+                            <li>
+                                Mezclá todos los ingredientes
+                                en un recipiente.
+                            </li>
+
+                            <li>
+                                Condimentá a gusto.
+                            </li>
+                        </ol>
+
+                    </div>
+
+                </details>
+
+            </div>
+
+        </article>
+
+
+
+        <!-- TOSTADAS -->
+
+        <article class="recipe-card">
+
+            <div class="recipe-icon">
+                🥑
+            </div>
+
+            <div class="recipe-content">
+
+                <span class="recipe-category">
+                    MERIENDA
+                </span>
+
+                <h3>
+                    Tostadas con palta y huevo
+                </h3>
+
+                <p class="recipe-description">
+                    Una merienda sencilla con grasas, carbohidratos
+                    y proteínas.
+                </p>
+
+
+                <div class="recipe-stats">
+
+                    <div>
+                        <strong>330</strong>
+                        <span>kcal</span>
+                    </div>
+
+                    <div>
+                        <strong>15 g</strong>
+                        <span>proteína</span>
+                    </div>
+
+                    <div>
+                        <strong>10 min</strong>
+                        <span>tiempo</span>
+                    </div>
+
+                </div>
+
+
+                <details class="recipe-details">
+
+                    <summary>
+                        Ver receta
+                    </summary>
+
+                    <div class="recipe-instructions">
+
+                        <h4>Ingredientes</h4>
+
+                        <ul>
+                            <li>2 tostadas integrales</li>
+                            <li>1/2 palta</li>
+                            <li>1 huevo</li>
+                            <li>Sal a gusto</li>
+                        </ul>
+
+
+                        <h4>Preparación</h4>
+
+                        <ol>
+                            <li>Tostá el pan.</li>
+                            <li>Pisá la palta.</li>
+                            <li>Cociná el huevo.</li>
+
+                            <li>
+                                Colocá la palta y el huevo
+                                sobre las tostadas.
+                            </li>
+                        </ol>
+
+                    </div>
+
+                </details>
+
+            </div>
+
+        </article>
+
+
+    </div>
+
+</section>
 
 
         <!-- ==========================================
@@ -171,9 +1215,11 @@
                     id="emptyMeals"
                     class="empty-state"
                 >
+
                     <p>
                         Todavía no agregaste ninguna comida.
                     </p>
+
                 </div>
 
             </div>
@@ -220,9 +1266,7 @@
             </div>
 
 
-            <!-- ==================================
-                 FORMULARIO
-            =================================== -->
+            <!-- FORMULARIO -->
 
             <form id="mealForm">
 
@@ -274,9 +1318,7 @@
                 </div>
 
 
-                <!-- ==================================
-                     ESCÁNER
-                =================================== -->
+                <!-- ESCÁNER -->
 
                 <button
                     type="button"
@@ -301,9 +1343,7 @@
                 </div>
 
 
-                <!-- ==================================
-                     PRODUCTO ESCANEADO
-                =================================== -->
+                <!-- PRODUCTO ESCANEADO -->
 
                 <div
                     id="scannedProductContainer"
@@ -322,9 +1362,7 @@
 
                             <div>
 
-                                <strong
-                                    id="scannedProductCalories"
-                                >
+                                <strong id="scannedProductCalories">
                                     0
                                 </strong>
 
@@ -337,9 +1375,7 @@
 
                             <div>
 
-                                <strong
-                                    id="scannedProductProtein"
-                                >
+                                <strong id="scannedProductProtein">
                                     0
                                 </strong>
 
@@ -450,9 +1486,7 @@
                 </div>
 
 
-                <!-- ==================================
-                     PORCIÓN COMIDA NORMAL
-                =================================== -->
+                <!-- PORCIÓN COMIDA NORMAL -->
 
                 <div class="form-group">
 
@@ -507,9 +1541,7 @@
                 </div>
 
 
-                <!-- ==================================
-                     CALCULAR
-                =================================== -->
+                <!-- CALCULAR -->
 
                 <button
                     type="submit"
@@ -521,9 +1553,7 @@
             </form>
 
 
-            <!-- ==================================
-                 RESULTADO
-            =================================== -->
+            <!-- RESULTADO -->
 
             <div
                 id="resultSection"
@@ -608,10 +1638,53 @@
     <!-- ==========================================
          HTML5 QR CODE
     =========================================== -->
+<!-- ==========================================
+     NAVEGACIÓN MÓVIL
+=========================================== -->
+
+<nav class="mobile-nav">
+
+    <a href="#inicio" class="mobile-nav-item">
+        <span>⌂</span>
+        <small>Inicio</small>
+    </a>
+
+    <a href="#resumen" class="mobile-nav-item">
+        <span>▥</span>
+        <small>Progreso</small>
+    </a>
+
+    <button
+        type="button"
+        id="mobileAddMeal"
+        class="mobile-add-button"
+    >
+        +
+    </button>
+
+    <a href="#recetas" class="mobile-nav-item">
+        <span>🥗</span>
+        <small>Recetas</small>
+    </a>
+
+    <a href="#objetivo" class="mobile-nav-item">
+        <span>◎</span>
+        <small>Objetivo</small>
+    </a>
+
+</nav>
+
+
+
+
+
+
+
 
     <script src="https://unpkg.com/html5-qrcode"></script>
 
     <!-- TU JAVASCRIPT -->
+
     <script src="script.js?v=2"></script>
 
 </body>
