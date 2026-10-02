@@ -1047,14 +1047,6 @@ for (const alias in aliases) {
 }
 
 
-// ==========================================
-// ALIMENTOS SIMPLES
-// ==========================================
-
-
-
-
-
 
 
     // ==========================================
@@ -1918,16 +1910,15 @@ scanButton.addEventListener("click", async () => {
     scannerContainer.style.display = "block";
 
     scannerStatus.textContent =
-        "Apuntá la cámara al código de barras...";
-
-    html5QrCode = new Html5Qrcode("scannerVideo");
+        "Solicitando acceso a la cámara...";
 
     try {
 
+        html5QrCode = new Html5Qrcode("scannerVideo");
+
         await html5QrCode.start(
-            {
-                facingMode: "environment"
-            },
+
+            { facingMode: "environment" },
 
             {
                 fps: 10,
@@ -1952,31 +1943,58 @@ scanButton.addEventListener("click", async () => {
                 scannerStatus.textContent =
                     "Código detectado: " + codigo;
 
-                await html5QrCode.stop();
+                try {
+                    await html5QrCode.stop();
+                } catch (e) {
+                    console.log(e);
+                }
 
                 scannerContainer.style.display = "none";
 
-                buscarProductoOpenFoodFacts(codigo);
+                const producto =
+                    await buscarProductoOpenFoodFacts(codigo);
+
+                if (producto) {
+
+                    const nombre =
+                        producto.product_name || "Producto";
+
+                    const calorias =
+                        producto.nutriments?.["energy-kcal_100g"] || 0;
+
+                    const proteinas =
+                        producto.nutriments?.proteins_100g || 0;
+
+                    document.getElementById("mealDescription").value =
+                        `${nombre} - ${calorias} kcal/100g - ${proteinas}g proteína/100g`;
+
+                } else {
+
+                    alert(
+                        "No encontramos este producto en Open Food Facts."
+                    );
+
+                }
 
             },
 
             (errorMessage) => {
 
-                // No hacemos nada.
-                // Este mensaje aparece mientras busca el código.
+                // No hacemos nada mientras busca el código.
 
             }
-        );
 
-    } catch (error) {
-
-        console.error(
-            "Error iniciando el escáner:",
-            error
         );
 
         scannerStatus.textContent =
-            "No se pudo iniciar el escáner.";
+            "📷 Cámara activa. Apuntá al código de barras.";
+
+    } catch (error) {
+
+        console.error("Error iniciando cámara:", error);
+
+        scannerStatus.textContent =
+            "❌ No se pudo abrir la cámara: " + error.message;
 
     }
 
