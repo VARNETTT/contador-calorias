@@ -745,3 +745,991 @@ textarea:focus {
     }
 
 }
+
+/* ==========================================
+   RECETAS SALUDABLES
+========================================== */
+
+.recipes-section {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 30px 7% 80px;
+}
+
+.recipes-section .section-header {
+    margin-bottom: 30px;
+}
+
+.recipes-section h2 {
+    font-size: 30px;
+    margin-top: 6px;
+    margin-bottom: 5px;
+}
+
+.recipes-section .section-header p {
+    color: #697386;
+}
+
+.recipes-label {
+    display: inline-block;
+    color: #2563eb;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 1px;
+}
+
+
+/* GRID */
+
+.recipes-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+
+/* TARJETA */
+
+.recipe-card {
+    background: #ffffff;
+    border: 1px solid #e7eaf0;
+    border-radius: 20px;
+    overflow: hidden;
+
+    display: flex;
+    flex-direction: column;
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.recipe-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 14px 35px rgba(15, 23, 42, 0.08);
+}
+
+
+/* ICONO */
+
+.recipe-icon {
+    min-height: 135px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #f1f5ff;
+
+    font-size: 65px;
+}
+
+
+/* CONTENIDO */
+
+.recipe-content {
+    padding: 22px;
+}
+
+.recipe-category {
+    display: inline-block;
+
+    margin-bottom: 8px;
+
+    color: #2563eb;
+
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.8px;
+}
+
+.recipe-content h3 {
+    margin-bottom: 10px;
+
+    color: #172033;
+
+    font-size: 20px;
+}
+
+.recipe-description {
+    min-height: 63px;
+
+    margin-bottom: 20px;
+
+    color: #697386;
+
+    font-size: 14px;
+}
+
+
+/* INFORMACIÓN NUTRICIONAL */
+
+.recipe-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+
+    gap: 7px;
+
+    margin-bottom: 20px;
+}
+
+.recipe-stats > div {
+    padding: 10px 5px;
+
+    background: #f7f9fc;
+
+    border-radius: 10px;
+
+    text-align: center;
+}
+
+.recipe-stats strong {
+    display: block;
+
+    color: #172033;
+
+    font-size: 14px;
+}
+
+.recipe-stats span {
+    display: block;
+
+    margin-top: 2px;
+
+    color: #7b8495;
+
+    font-size: 10px;
+}
+
+
+/* BOTÓN VER RECETA */
+
+.recipe-details {
+    border-top: 1px solid #e7eaf0;
+    padding-top: 15px;
+}
+
+.recipe-details summary {
+    list-style: none;
+
+    padding: 12px;
+
+    background: #eaf0ff;
+
+    border-radius: 10px;
+
+    color: #2563eb;
+
+    text-align: center;
+
+    font-size: 14px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition: 0.15s ease;
+}
+
+.recipe-details summary:hover {
+    background: #dce7ff;
+}
+
+.recipe-details summary::-webkit-details-marker {
+    display: none;
+}
+
+.recipe-details[open] summary {
+    margin-bottom: 18px;
+}
+
+
+/* INGREDIENTES Y PREPARACIÓN */
+
+.recipe-instructions {
+    color: #4d5668;
+
+    font-size: 14px;
+}
+
+.recipe-instructions h4 {
+    margin-top: 16px;
+    margin-bottom: 8px;
+
+    color: #172033;
+
+    font-size: 14px;
+}
+
+.recipe-instructions ul,
+.recipe-instructions ol {
+    padding-left: 20px;
+}
+
+.recipe-instructions li {
+    margin-bottom: 6px;
+}
+
+
+/* ==========================================
+   RESPONSIVE RECETAS
+========================================== */
+
+@media (max-width: 900px) {
+
+    .recipes-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+}
+
+
+@media (max-width: 700px) {
+
+    .recipes-section {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+
+    .recipes-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .recipe-description {
+        min-height: auto;
+    }
+
+    .recipe-icon {
+        min-height: 115px;
+        font-size: 55px;
+    }
+
+}
+/* ==========================================
+   MI OBJETIVO - CENTRADO
+========================================== */
+
+.goal-section {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 70px 7%;
+}
+
+.goal-section .section-header {
+    margin-bottom: 25px;
+}
+
+.goal-card {
+    width: 100%;
+    max-width: 750px;
+    margin: 0 auto;
+
+    background: #ffffff;
+    border: 1px solid #e7eaf0;
+    border-radius: 20px;
+
+    padding: 32px;
+}
+
+.goal-section h2 {
+    font-size: 30px;
+    margin-bottom: 5px;
+}
+
+.goal-section .section-header p {
+    color: #697386;
+}
+
+
+/* Resultado del objetivo */
+
+.goal-result {
+    width: 100%;
+}
+
+.goal-calories {
+    margin: 25px 0;
+    padding: 25px;
+
+    background: #eef4ff;
+    border: 1px solid #d6e3ff;
+    border-radius: 16px;
+
+    text-align: center;
+}
+
+.goal-calories span {
+    display: block;
+    color: #697386;
+    font-size: 14px;
+}
+
+.goal-calories strong {
+    display: block;
+
+    margin: 5px 0;
+
+    color: #2563eb;
+    font-size: 42px;
+}
+
+.goal-calories small {
+    color: #697386;
+}
+
+
+/* Metabolismo y gasto diario */
+
+.goal-details {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+
+    gap: 14px;
+
+    margin-bottom: 20px;
+}
+
+.goal-details > div {
+    padding: 18px;
+
+    background: #f7f9fc;
+    border: 1px solid #e3e7ef;
+    border-radius: 14px;
+}
+
+.goal-details span {
+    display: block;
+
+    margin-bottom: 5px;
+
+    color: #697386;
+    font-size: 13px;
+}
+
+.goal-details strong {
+    color: #172033;
+    font-size: 18px;
+}
+
+
+/* CELULAR */
+
+@media (max-width: 700px) {
+
+    .goal-section {
+        padding: 50px 20px;
+    }
+
+    .goal-card {
+        padding: 22px;
+    }
+
+    .goal-details {
+        grid-template-columns: 1fr;
+    }
+
+    .goal-calories strong {
+        font-size: 36px;
+    }
+
+}
+
+/* ==================================================
+   CALORIETRACK - NUEVA INTERFAZ
+================================================== */
+
+:root {
+    --ct-primary: #2563eb;
+    --ct-primary-dark: #1d4ed8;
+    --ct-primary-soft: #eef4ff;
+
+    --ct-background: #f5f7fb;
+    --ct-surface: #ffffff;
+
+    --ct-text: #172033;
+    --ct-text-soft: #697386;
+
+    --ct-border: #e7eaf0;
+
+    --ct-green: #16a34a;
+    --ct-orange: #f59e0b;
+    --ct-red: #dc2626;
+
+    --ct-shadow: 0 12px 35px rgba(15, 23, 42, 0.07);
+}
+
+
+/* ==================================================
+   HEADER
+================================================== */
+
+.header {
+    min-height: 76px;
+    padding: 0 max(5%, 25px);
+
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(14px);
+
+    border-bottom: 1px solid var(--ct-border);
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 25px;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+
+    gap: 8px;
+
+    color: var(--ct-text);
+    text-decoration: none;
+
+    font-size: 22px;
+    font-weight: 800;
+}
+
+.logo-icon {
+    font-size: 24px;
+}
+
+.nav {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+}
+
+.nav a {
+    position: relative;
+
+    padding: 27px 0;
+
+    color: var(--ct-text-soft);
+
+    font-size: 14px;
+    font-weight: 600;
+
+    text-decoration: none;
+}
+
+.nav a::after {
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+    bottom: 18px;
+
+    width: 0;
+    height: 2px;
+
+    background: var(--ct-primary);
+
+    border-radius: 10px;
+
+    transition: width 0.2s ease;
+}
+
+.nav a:hover {
+    color: var(--ct-primary);
+}
+
+.nav a:hover::after {
+    width: 100%;
+}
+
+.header-add-btn {
+    min-height: 42px;
+
+    padding: 10px 17px;
+
+    border: none;
+    border-radius: 10px;
+
+    background: var(--ct-primary);
+    color: white;
+
+    font-weight: 700;
+    font-size: 13px;
+
+    cursor: pointer;
+
+    transition: 0.2s ease;
+}
+
+.header-add-btn:hover {
+    background: var(--ct-primary-dark);
+    transform: translateY(-1px);
+}
+
+
+/* ==================================================
+   DASHBOARD
+================================================== */
+
+.dashboard {
+    max-width: 1100px;
+
+    margin: 0 auto;
+
+    padding: 75px 7%;
+}
+
+.dashboard-heading {
+    display: flex;
+
+    align-items: flex-end;
+    justify-content: space-between;
+
+    gap: 25px;
+
+    margin-bottom: 28px;
+}
+
+.dashboard-heading h2 {
+    margin: 4px 0 5px;
+    font-size: 32px;
+}
+
+.dashboard-heading p {
+    color: var(--ct-text-soft);
+}
+
+.section-eyebrow {
+    color: var(--ct-primary);
+
+    font-size: 12px;
+    font-weight: 800;
+
+    letter-spacing: 1.2px;
+}
+
+
+/* ==================================================
+   PROGRESO PRINCIPAL
+================================================== */
+
+.main-progress-card {
+    display: block;
+
+    margin-bottom: 20px;
+    padding: 30px;
+
+    background: linear-gradient(
+        135deg,
+        #ffffff 0%,
+        #f5f8ff 100%
+    );
+
+    border: 1px solid #dfe7f5;
+    border-radius: 22px;
+
+    box-shadow: var(--ct-shadow);
+}
+
+.progress-main-info {
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 20px;
+
+    margin-bottom: 25px;
+}
+
+.progress-label {
+    display: block;
+
+    margin-bottom: 6px;
+
+    color: var(--ct-text-soft);
+
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.calorie-total {
+    display: flex;
+    align-items: baseline;
+    gap: 7px;
+}
+
+.calorie-total > strong {
+    color: var(--ct-text);
+
+    font-size: 44px;
+    line-height: 1;
+}
+
+.calorie-total > span {
+    color: var(--ct-text-soft);
+    font-size: 17px;
+}
+
+.remaining-calories {
+    margin-top: 10px;
+
+    color: var(--ct-primary);
+
+    font-size: 14px;
+    font-weight: 700;
+}
+
+
+/* PORCENTAJE */
+
+.progress-percentage-box {
+    min-width: 105px;
+
+    padding: 16px;
+
+    background: white;
+
+    border: 1px solid var(--ct-border);
+    border-radius: 15px;
+
+    text-align: center;
+}
+
+.progress-percentage-box strong {
+    display: block;
+
+    color: var(--ct-primary);
+
+    font-size: 25px;
+}
+
+.progress-percentage-box span {
+    color: var(--ct-text-soft);
+    font-size: 11px;
+}
+
+
+/* BARRA DE PROGRESO */
+
+.modern-progress-bar {
+    width: 100%;
+    height: 14px;
+
+    background: #e5eaf3;
+
+    border-radius: 100px;
+
+    overflow: hidden;
+}
+
+.modern-progress-fill {
+    width: 0%;
+    height: 100%;
+
+    background: linear-gradient(
+        90deg,
+        #2563eb,
+        #60a5fa
+    );
+
+    border-radius: 100px;
+
+    transition:
+        width 0.6s ease,
+        background 0.3s ease;
+}
+
+.progress-scale {
+    display: flex;
+
+    justify-content: space-between;
+
+    margin-top: 8px;
+
+    color: #8a93a5;
+
+    font-size: 11px;
+}
+
+
+/* ==================================================
+   TARJETAS DE ESTADÍSTICAS
+================================================== */
+
+.modern-dashboard-grid {
+    margin-top: 18px;
+}
+
+.stat-card {
+    display: flex;
+    flex-direction: row;
+
+    align-items: center;
+
+    gap: 17px;
+
+    padding: 22px;
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--ct-shadow);
+}
+
+.stat-icon {
+    width: 50px;
+    height: 50px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: var(--ct-primary-soft);
+
+    border-radius: 14px;
+
+    font-size: 23px;
+}
+
+.stat-card > div:last-child {
+    display: flex;
+    flex-direction: column;
+}
+
+.stat-card strong {
+    font-size: 29px;
+}
+
+
+/* ==================================================
+   NAVEGACIÓN MÓVIL
+================================================== */
+
+.mobile-nav {
+    display: none;
+}
+
+
+/* ==================================================
+   TABLET
+================================================== */
+
+@media (max-width: 950px) {
+
+    .header-add-btn {
+        display: none;
+    }
+
+    .nav {
+        gap: 17px;
+    }
+
+    .nav a {
+        font-size: 13px;
+    }
+
+}
+
+
+/* ==================================================
+   CELULAR
+================================================== */
+
+@media (max-width: 700px) {
+
+    body {
+        padding-bottom: 90px;
+    }
+
+    .header {
+        min-height: 65px;
+        padding: 0 20px;
+    }
+
+    .header .nav,
+    .header-add-btn {
+        display: none;
+    }
+
+
+    /* DASHBOARD */
+
+    .dashboard {
+        padding: 55px 20px;
+    }
+
+    .dashboard-heading {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .dashboard-heading h2 {
+        font-size: 28px;
+    }
+
+    .dashboard-add-btn {
+        width: 100%;
+    }
+
+
+    /* PROGRESO */
+
+    .main-progress-card {
+        padding: 22px;
+    }
+
+    .progress-main-info {
+        align-items: flex-start;
+    }
+
+    .calorie-total > strong {
+        font-size: 37px;
+    }
+
+    .calorie-total > span {
+        font-size: 14px;
+    }
+
+    .progress-percentage-box {
+        min-width: 85px;
+        padding: 12px;
+    }
+
+    .progress-percentage-box strong {
+        font-size: 21px;
+    }
+
+
+    /* ESTADÍSTICAS */
+
+    .modern-dashboard-grid {
+        grid-template-columns: 1fr;
+    }
+
+
+    /* NAVEGACIÓN INFERIOR */
+
+    .mobile-nav {
+        position: fixed;
+
+        left: 12px;
+        right: 12px;
+        bottom: 12px;
+
+        z-index: 900;
+
+        height: 68px;
+
+        display: grid;
+
+        grid-template-columns:
+            1fr
+            1fr
+            70px
+            1fr
+            1fr;
+
+        align-items: center;
+
+        padding: 5px 8px;
+
+        background: rgba(255, 255, 255, 0.96);
+
+        border: 1px solid var(--ct-border);
+        border-radius: 20px;
+
+        box-shadow:
+            0 12px 35px rgba(15, 23, 42, 0.16);
+
+        backdrop-filter: blur(14px);
+    }
+
+    .mobile-nav-item {
+        display: flex;
+
+        flex-direction: column;
+
+        align-items: center;
+        justify-content: center;
+
+        gap: 3px;
+
+        color: #697386;
+
+        text-decoration: none;
+    }
+
+    .mobile-nav-item > span {
+        font-size: 21px;
+        line-height: 1;
+    }
+
+    .mobile-nav-item small {
+        font-size: 9px;
+        font-weight: 700;
+    }
+
+    .mobile-nav-item:hover {
+        color: var(--ct-primary);
+    }
+
+
+    /* BOTÓN CENTRAL + */
+
+    .mobile-add-button {
+        width: 56px;
+        height: 56px;
+
+        justify-self: center;
+
+        margin-top: -28px;
+
+        border: 5px solid var(--ct-background);
+        border-radius: 50%;
+
+        background: var(--ct-primary);
+
+        color: white;
+
+        font-size: 32px;
+        font-weight: 300;
+
+        line-height: 1;
+
+        box-shadow:
+            0 8px 22px rgba(37, 99, 235, 0.35);
+
+        cursor: pointer;
+    }
+
+}
+
+
+/* ==================================================
+   CELULARES PEQUEÑOS
+================================================== */
+
+@media (max-width: 380px) {
+
+    .main-progress-card {
+        padding: 18px;
+    }
+
+    .progress-main-info {
+        gap: 10px;
+    }
+
+    .calorie-total > strong {
+        font-size: 32px;
+    }
+
+    .progress-percentage-box {
+        min-width: 73px;
+    }
+
+}
