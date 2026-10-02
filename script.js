@@ -1,3 +1,5 @@
+alert("SCRIPT FUNCIONANDO");
+
 // ==========================================
 // CALORIETRACK
 // SCRIPT COMPLETO
@@ -2164,6 +2166,7 @@ document.addEventListener(
     "DOMContentLoaded",
     () => {
 
+        alert("DOM FUNCIONANDO");
 
         // ----------------------------------
         // BOTONES MODAL
