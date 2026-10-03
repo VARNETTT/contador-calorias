@@ -1295,3 +1295,65 @@ textarea:focus {
 
     box-shadow: 0 20px 60px rgba(15, 23, 42, 0.25);
 }
+/* ==========================================
+   FIX - DESBORDAMIENTO HORIZONTAL EN CELULAR
+========================================== */
+
+html,
+body {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden !important;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+img,
+video,
+canvas,
+svg {
+    max-width: 100%;
+    height: auto;
+}
+
+@media (max-width: 700px) {
+
+    body {
+        position: relative;
+        overflow-x: hidden !important;
+    }
+
+    .header,
+    .hero,
+    .dashboard,
+    .meals-section,
+    .modal,
+    .modal-content,
+    .goal-modal,
+    .goal-modal-content,
+    .recipes-modal,
+    .recipes-modal-content,
+    .community-modal,
+    .community-modal-content,
+    #scannerContainer,
+    #scannedProductContainer {
+        max-width: 100% !important;
+    }
+
+    .dashboard-grid,
+    .modern-dashboard-grid,
+    .result-grid,
+    .product-nutrition {
+        min-width: 0;
+    }
+
+    .dashboard-card,
+    .main-progress-card,
+    .result-grid > div,
+    .product-nutrition > div {
+        min-width: 0;
+        overflow-wrap: anywhere;
+    }
+}
