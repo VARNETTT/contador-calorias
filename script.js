@@ -1,267 +1,269 @@
-// ==========================================
+// ======================================================
 // CALORIETRACK
 // SCRIPT.JS COMPLETO
-// ==========================================
+// Motor de alimentos + comidas + objetivos + scanner
+// ======================================================
 
 
-// ==========================================
-// BASE DE DATOS DE ALIMENTOS
-// ==========================================
+// ======================================================
+// 1. BASE DE DATOS DE ALIMENTOS
+// ======================================================
 
 const foods = {
 
     // CARNES
     asado: {
+        name: "Asado",
         calories: 280,
         protein: 26,
-        portion: 200,
-        measures: { plato: 300 }
+        portion: 200
     },
 
     carne: {
+        name: "Carne",
         calories: 250,
         protein: 26,
-        portion: 150,
-        measures: { plato: 250 }
+        portion: 150
     },
 
     vacio: {
+        name: "Vacío",
         calories: 290,
         protein: 26,
         portion: 200
     },
 
     entraña: {
+        name: "Entraña",
         calories: 280,
         protein: 25,
         portion: 180
     },
 
     costilla: {
+        name: "Costilla",
         calories: 300,
         protein: 24,
         portion: 200
     },
 
     chorizo: {
+        name: "Chorizo",
         calories: 320,
         protein: 14,
-        portion: 100,
-        measures: { unidad: 100 }
+        portion: 1
     },
 
     pollo: {
-        calories: 165,
-        protein: 31,
-        portion: 150,
-        measures: { plato: 200 }
+        name: "Pollo",
+        calories: 248,
+        protein: 46,
+        portion: 150
     },
 
     cerdo: {
-        calories: 242,
-        protein: 27,
+        name: "Cerdo",
+        calories: 363,
+        protein: 40,
         portion: 150
     },
 
     bondiola: {
-        calories: 280,
-        protein: 25,
+        name: "Bondiola",
+        calories: 420,
+        protein: 37,
         portion: 150
     },
 
 
     // HUEVOS
     huevo: {
+        name: "Huevo",
         calories: 78,
         protein: 6.3,
-        portion: 1,
-        measures: { unidad: 1 }
+        portion: 1
     },
 
     huevoFrito: {
+        name: "Huevo frito",
         calories: 100,
         protein: 6.3,
-        portion: 1,
-        measures: { unidad: 1 }
+        portion: 1
     },
 
     huevoRevuelto: {
+        name: "Huevo revuelto",
         calories: 95,
         protein: 6.5,
-        portion: 1,
-        measures: { unidad: 1 }
+        portion: 1
     },
 
 
     // CARBOHIDRATOS
     arroz: {
+        name: "Arroz",
         calories: 210,
         protein: 4,
-        portion: 1,
-        measures: {
-            taza: 1,
-            plato: 2,
-            cucharada: 0.1
-        }
+        portion: 1
     },
 
     pasta: {
+        name: "Pasta",
         calories: 220,
         protein: 8,
-        portion: 1,
-        measures: { plato: 2 }
+        portion: 1
     },
 
     fideos: {
+        name: "Fideos",
         calories: 220,
         protein: 8,
-        portion: 1,
-        measures: { plato: 2 }
+        portion: 1
     },
 
     papa: {
+        name: "Papa",
         calories: 130,
         protein: 3,
-        portion: 1,
-        measures: { unidad: 1 }
+        portion: 1
     },
 
     batata: {
+        name: "Batata",
         calories: 115,
         protein: 1.5,
-        portion: 1,
-        measures: { unidad: 1 }
+        portion: 1
     },
 
     avena: {
+        name: "Avena",
         calories: 150,
         protein: 5,
-        portion: 40,
-        measures: {
-            cucharada: 0.25,
-            cucharadita: 0.08
-        }
+        portion: 40
     },
 
     lentejas: {
+        name: "Lentejas",
         calories: 230,
         protein: 16,
-        portion: 1,
-        measures: {
-            taza: 1,
-            plato: 2
-        }
+        portion: 1
     },
 
 
     // PAN
     pan: {
+        name: "Pan",
         calories: 80,
         protein: 3,
-        portion: 1,
-        measures: { unidad: 1 }
+        portion: 1
     },
 
     panLactal: {
+        name: "Pan lactal",
         calories: 70,
         protein: 3,
-        portion: 1,
-        measures: { unidad: 1 }
+        portion: 1
     },
 
     tostada: {
+        name: "Tostada",
         calories: 70,
         protein: 3,
-        portion: 1,
-        measures: { unidad: 1 }
+        portion: 1
     },
 
 
     // LÁCTEOS
     queso: {
+        name: "Queso",
         calories: 100,
         protein: 7,
         portion: 30
     },
 
     leche: {
+        name: "Leche",
         calories: 120,
         protein: 6,
-        portion: 1,
-        measures: {
-            vaso: 1,
-            taza: 0.8
-        }
+        portion: 200
     },
 
     yogur: {
+        name: "Yogur",
         calories: 100,
         protein: 5,
-        portion: 1,
-        measures: { vaso: 1 }
+        portion: 1
     },
 
     quesoUntable: {
+        name: "Queso untable",
         calories: 50,
         protein: 2,
         portion: 30
     },
 
     manteca: {
+        name: "Manteca",
         calories: 100,
         protein: 0,
-        portion: 1,
-        measures: {
-            cucharada: 1,
-            cucharadita: 0.33
-        }
+        portion: 1
     },
 
     mermelada: {
+        name: "Mermelada",
         calories: 50,
         protein: 0,
-        portion: 1,
-        measures: { cucharada: 1 }
+        portion: 1
     },
 
     dulceDeLeche: {
+        name: "Dulce de leche",
         calories: 60,
         protein: 1.5,
-        portion: 1,
-        measures: { cucharada: 1 }
+        portion: 1
+    },
+
+
+    // BEBIDAS
+    cafe: {
+        name: "Café",
+        calories: 2,
+        protein: 0.3,
+        portion: 1
     },
 
 
     // FRUTAS
     banana: {
+        name: "Banana",
         calories: 105,
         protein: 1.3,
-        portion: 1,
-        measures: { unidad: 1 }
+        portion: 1
     },
 
     manzana: {
+        name: "Manzana",
         calories: 95,
         protein: 0.5,
-        portion: 1,
-        measures: { unidad: 1 }
+        portion: 1
     },
 
     naranja: {
+        name: "Naranja",
         calories: 62,
         protein: 1.2,
-        portion: 1,
-        measures: { unidad: 1 }
+        portion: 1
     },
 
     pera: {
+        name: "Pera",
         calories: 100,
         protein: 0.6,
-        portion: 1,
-        measures: { unidad: 1 }
+        portion: 1
     },
 
     palta: {
+        name: "Palta",
         calories: 160,
         protein: 2,
         portion: 100
@@ -270,64 +272,70 @@ const foods = {
 
     // VERDURAS
     tomate: {
+        name: "Tomate",
         calories: 22,
         protein: 1.1,
-        portion: 1,
-        measures: { unidad: 1 }
+        portion: 1
     },
 
     cebolla: {
+        name: "Cebolla",
         calories: 40,
         protein: 1.1,
-        portion: 1,
-        measures: { unidad: 1 }
+        portion: 1
     },
 
     lechuga: {
+        name: "Lechuga",
         calories: 15,
         protein: 1,
         portion: 1
     },
 
     zanahoria: {
+        name: "Zanahoria",
         calories: 41,
         protein: 0.9,
-        portion: 1,
-        measures: { unidad: 1 }
+        portion: 1
     },
 
     morron: {
+        name: "Morrón",
         calories: 31,
         protein: 1,
-        portion: 1,
-        measures: { unidad: 1 }
+        portion: 1
     },
 
     zapallo: {
+        name: "Zapallo",
         calories: 40,
         protein: 1,
         portion: 150
     },
 
     brocoli: {
+        name: "Brócoli",
         calories: 35,
         protein: 2.4,
         portion: 100
     },
 
     espinaca: {
+        name: "Espinaca",
         calories: 23,
         protein: 2.9,
         portion: 100
     },
 
     pepino: {
+        name: "Pepino",
         calories: 15,
         protein: 0.7,
         portion: 100
     },
 
     repollo: {
+        name: "Repollo",
         calories: 25,
         protein: 1.3,
         portion: 100
@@ -336,12 +344,14 @@ const foods = {
 
     // FIAMBRES
     jamon: {
+        name: "Jamón",
         calories: 120,
         protein: 18,
         portion: 50
     },
 
     salame: {
+        name: "Salame",
         calories: 400,
         protein: 22,
         portion: 50
@@ -350,299 +360,487 @@ const foods = {
 
     // OTROS
     aceite: {
+        name: "Aceite",
         calories: 120,
         protein: 0,
-        portion: 1,
-        measures: {
-            cucharada: 1,
-            cucharadita: 0.33,
-            chorrito: 0.5
-        }
+        portion: 1
     },
 
     mayonesa: {
+        name: "Mayonesa",
         calories: 100,
         protein: 0,
-        portion: 1,
-        measures: {
-            cucharada: 1,
-            cucharadita: 0.33
-        }
+        portion: 1
     },
 
     ketchup: {
+        name: "Ketchup",
         calories: 20,
         protein: 0,
-        portion: 1,
-        measures: {
-            cucharada: 1,
-            cucharadita: 0.33
-        }
+        portion: 1
     },
 
     azucar: {
+        name: "Azúcar",
         calories: 20,
         protein: 0,
-        portion: 1,
-        measures: {
-            cucharadita: 1,
-            cucharada: 3
-        }
+        portion: 1
     },
 
     atun: {
+        name: "Atún",
         calories: 130,
         protein: 28,
         portion: 100
     },
 
     galletitas: {
+        name: "Galletitas",
         calories: 130,
         protein: 2,
         portion: 30
+    },
+
+    gelatina: {
+        name: "Gelatina",
+        calories: 70,
+        protein: 1.5,
+        portion: 1
     }
 };
 
 
-// ==========================================
-// ALIAS
-// ==========================================
-
-const aliases = {
-    "queso untable": "quesoUntable",
-    "queso crema": "quesoUntable",
-    "dulce de leche": "dulceDeLeche",
-    "pan lactal": "panLactal",
-
-    "huevo frito": "huevoFrito",
-    "huevos fritos": "huevoFrito",
-
-    "huevo revuelto": "huevoRevuelto",
-    "huevos revueltos": "huevoRevuelto",
-
-    "morron": "morron",
-    "morrón": "morron"
-};
-
-
-// ==========================================
-// ALIMENTOS SIMPLES
-// ==========================================
-
-const simpleFoods = [
-    "asado",
-    "carne",
-    "vacio",
-    "entraña",
-    "costilla",
-    "chorizo",
-    "pollo",
-    "cerdo",
-    "bondiola",
-
-    "huevo",
-    "huevoFrito",
-    "huevoRevuelto",
-
-    "arroz",
-    "pasta",
-    "fideos",
-    "papa",
-    "batata",
-    "avena",
-    "lentejas",
-
-    "pan",
-    "panLactal",
-    "tostada",
-
-    "queso",
-    "leche",
-    "yogur",
-    "quesoUntable",
-    "manteca",
-    "mermelada",
-    "dulceDeLeche",
-
-    "banana",
-    "manzana",
-    "naranja",
-    "pera",
-    "palta",
-
-    "tomate",
-    "cebolla",
-    "lechuga",
-    "zanahoria",
-    "morron",
-    "zapallo",
-    "brocoli",
-    "espinaca",
-    "pepino",
-    "repollo",
-
-    "jamon",
-    "salame",
-
-    "aceite",
-    "mayonesa",
-    "ketchup",
-    "azucar",
-    "atun",
-    "galletitas"
-];
-
-
-// ==========================================
-// NÚMEROS EN ESPAÑOL
-// ==========================================
+// ======================================================
+// 2. NÚMEROS EN ESPAÑOL
+// ======================================================
 
 const numbers = {
-    "un": 1,
-    "una": 1,
-    "dos": 2,
-    "tres": 3,
-    "cuatro": 4,
-    "cinco": 5,
-    "seis": 6,
-    "siete": 7,
-    "ocho": 8,
-    "nueve": 9,
-    "diez": 10,
-    "once": 11,
-    "doce": 12,
-    "trece": 13,
-    "catorce": 14,
-    "quince": 15
+    un: 1,
+    una: 1,
+    uno: 1,
+    dos: 2,
+    tres: 3,
+    cuatro: 4,
+    cinco: 5,
+    seis: 6,
+    siete: 7,
+    ocho: 8,
+    nueve: 9,
+    diez: 10,
+    once: 11,
+    doce: 12,
+    trece: 13,
+    catorce: 14,
+    quince: 15
 };
 
 
-// ==========================================
-// NORMALIZAR TEXTO
-// ==========================================
+// ======================================================
+// 3. NORMALIZAR TEXTO
+// ======================================================
 
 function normalize(text) {
-    return text
+
+    return String(text || "")
         .toLowerCase()
         .normalize("NFD")
         .replace(/[\u0300-\u036f]/g, "")
+        .replace(/[.,;:!?]/g, " ")
+        .replace(/\s+/g, " ")
         .trim();
 }
 
 
-// ==========================================
-// OBTENER CANTIDAD
-// ==========================================
+// ======================================================
+// 4. DEFINICIONES PARA RECONOCER ALIMENTOS
+// ======================================================
 
-function getQuantity(text) {
+const foodDefinitions = [
+
+    { key: "huevoFrito", terms: ["huevos fritos", "huevo frito"] },
+
+    {
+        key: "huevoRevuelto",
+        terms: ["huevos revueltos", "huevo revuelto"]
+    },
+
+    { key: "panLactal", terms: ["pan lactal"] },
+
+    {
+        key: "quesoUntable",
+        terms: ["queso untable", "queso crema"]
+    },
+
+    {
+        key: "dulceDeLeche",
+        terms: ["dulce de leche"]
+    },
+
+    { key: "asado", terms: ["asado"] },
+    { key: "carne", terms: ["carne"] },
+    { key: "vacio", terms: ["vacio"] },
+    { key: "entraña", terms: ["entrana"] },
+    { key: "costilla", terms: ["costillas", "costilla"] },
+    { key: "chorizo", terms: ["chorizos", "chorizo"] },
+    { key: "pollo", terms: ["pollo"] },
+    { key: "cerdo", terms: ["cerdo"] },
+    { key: "bondiola", terms: ["bondiola"] },
+
+    { key: "huevo", terms: ["huevos", "huevo"] },
+
+    { key: "arroz", terms: ["arroz"] },
+    { key: "pasta", terms: ["pastas", "pasta"] },
+    { key: "fideos", terms: ["fideos", "fideo"] },
+    { key: "papa", terms: ["papas", "papa"] },
+    { key: "batata", terms: ["batatas", "batata"] },
+    { key: "avena", terms: ["avena"] },
+    { key: "lentejas", terms: ["lentejas", "lenteja"] },
+
+    { key: "tostada", terms: ["tostadas", "tostada"] },
+    { key: "pan", terms: ["pan"] },
+
+    { key: "queso", terms: ["queso"] },
+    { key: "leche", terms: ["leche"] },
+    { key: "yogur", terms: ["yogurt", "yogur"] },
+    { key: "manteca", terms: ["manteca"] },
+    { key: "mermelada", terms: ["mermelada"] },
+
+    { key: "cafe", terms: ["cafe"] },
+
+    { key: "banana", terms: ["bananas", "banana"] },
+    { key: "manzana", terms: ["manzanas", "manzana"] },
+    { key: "naranja", terms: ["naranjas", "naranja"] },
+    { key: "pera", terms: ["peras", "pera"] },
+    { key: "palta", terms: ["paltas", "palta"] },
+
+    { key: "tomate", terms: ["tomates", "tomate"] },
+    { key: "cebolla", terms: ["cebollas", "cebolla"] },
+    { key: "lechuga", terms: ["lechuga"] },
+    { key: "zanahoria", terms: ["zanahorias", "zanahoria"] },
+    { key: "morron", terms: ["morrones", "morron"] },
+    { key: "zapallo", terms: ["zapallo"] },
+    { key: "brocoli", terms: ["brocoli"] },
+    { key: "espinaca", terms: ["espinaca"] },
+    { key: "pepino", terms: ["pepinos", "pepino"] },
+    { key: "repollo", terms: ["repollo"] },
+
+    { key: "jamon", terms: ["jamon"] },
+    { key: "salame", terms: ["salame"] },
+
+    { key: "aceite", terms: ["aceite"] },
+    { key: "mayonesa", terms: ["mayonesa"] },
+    { key: "ketchup", terms: ["ketchup"] },
+    { key: "azucar", terms: ["azucar"] },
+    { key: "atun", terms: ["atun"] },
+    { key: "galletitas", terms: ["galletitas", "galletita"] },
+    { key: "gelatina", terms: ["gelatina"] }
+];
+
+
+// ======================================================
+// 5. DETECTAR NÚMERO EN UN FRAGMENTO
+// ======================================================
+
+function findNumber(text) {
 
     const normalized = normalize(text);
 
-    if (
-        normalized.includes("media ") ||
-        normalized.includes("medio ")
-    ) {
-        return 0.5;
+    const numeric =
+        normalized.match(/\b(\d+(?:[.,]\d+)?)\b/);
+
+    if (numeric) {
+
+        return parseFloat(
+            numeric[1].replace(",", ".")
+        );
     }
 
-    if (
-        normalized.includes("poco ") ||
-        normalized.includes("un poco ")
-    ) {
-        return 0.5;
-    }
 
-    if (
-        normalized.includes("bastante ") ||
-        normalized.includes("mucho ") ||
-        normalized.includes("bien cargado") ||
-        normalized.includes("bien cargada")
-    ) {
-        return 1.35;
-    }
+    for (const [word, value] of Object.entries(numbers)) {
 
-    const numberWords = Object.keys(numbers)
-        .sort((a, b) => b.length - a.length);
-
-    for (const word of numberWords) {
-
-        const regex = new RegExp(`\\b${word}\\b`);
+        const regex =
+            new RegExp(`\\b${word}\\b`);
 
         if (regex.test(normalized)) {
+            return value;
+        }
+    }
+
+
+    if (
+        /\bmedia\b/.test(normalized) ||
+        /\bmedio\b/.test(normalized)
+    ) {
+        return 0.5;
+    }
+
+
+    return null;
+}
+
+
+// ======================================================
+// 6. BUSCAR CANTIDAD ESPECÍFICA DEL ALIMENTO
+// ======================================================
+
+function getFoodQuantity(text, termPosition) {
+
+    const normalized =
+        normalize(text);
+
+    const before =
+        normalized.substring(
+            Math.max(0, termPosition - 45),
+            termPosition
+        );
+
+
+    const numericMatch =
+        before.match(
+            /(\d+(?:[.,]\d+)?)\s*(?:unidades?\s*)?$/
+        );
+
+
+    if (numericMatch) {
+
+        return parseFloat(
+            numericMatch[1].replace(",", ".")
+        );
+    }
+
+
+    const words =
+        Object.keys(numbers)
+            .sort(
+                (a, b) =>
+                    b.length - a.length
+            );
+
+
+    for (const word of words) {
+
+        const regex =
+            new RegExp(
+                `\\b${word}\\s*$`
+            );
+
+        if (regex.test(before)) {
             return numbers[word];
         }
     }
 
-    const numberMatch =
-        normalized.match(/(?:^|\s)(\d+(?:[.,]\d+)?)/);
 
-    if (numberMatch) {
-        return parseFloat(
-            numberMatch[1].replace(",", ".")
-        );
+    if (/\b(media|medio)\s*$/.test(before)) {
+        return 0.5;
     }
+
 
     return 1;
 }
 
 
-// ==========================================
-// MULTIPLICADOR DE MEDIDA
-// ==========================================
+// ======================================================
+// 7. DETECTAR GRAMOS / ML CERCANOS AL ALIMENTO
+// ======================================================
 
-function getMeasureMultiplier(text, foodKey) {
+function getAmountNearFood(
+    text,
+    position,
+    term
+) {
 
-    const normalized = normalize(text);
-    const food = foods[foodKey];
+    const normalized =
+        normalize(text);
 
-    if (!food || !food.measures) {
+    const start =
+        Math.max(
+            0,
+            position - 35
+        );
+
+    const end =
+        Math.min(
+            normalized.length,
+            position + term.length + 35
+        );
+
+    const context =
+        normalized.substring(
+            start,
+            end
+        );
+
+
+    const grams =
+        context.match(
+            /(\d+(?:[.,]\d+)?)\s*(g|gr|gramo|gramos)\b/
+        );
+
+
+    if (grams) {
+
+        return {
+            type: "grams",
+            amount: parseFloat(
+                grams[1].replace(",", ".")
+            )
+        };
+    }
+
+
+    const ml =
+        context.match(
+            /(\d+(?:[.,]\d+)?)\s*(ml|mililitro|mililitros)\b/
+        );
+
+
+    if (ml) {
+
+        return {
+            type: "ml",
+            amount: parseFloat(
+                ml[1].replace(",", ".")
+            )
+        };
+    }
+
+
+    return null;
+}
+
+
+// ======================================================
+// 8. DETECTAR MEDIDAS
+// ======================================================
+
+function getMeasureNearFood(
+    text,
+    position
+) {
+
+    const normalized =
+        normalize(text);
+
+    const before =
+        normalized.substring(
+            Math.max(0, position - 45),
+            position
+        );
+
+
+    if (
+        /\bcucharaditas?\s*(?:de)?\s*$/.test(before)
+    ) {
+        return "cucharadita";
+    }
+
+
+    if (
+        /\bcucharadas?\s*(?:de)?\s*$/.test(before)
+    ) {
+        return "cucharada";
+    }
+
+
+    if (
+        /\btazas?\s*(?:de)?\s*$/.test(before)
+    ) {
+        return "taza";
+    }
+
+
+    if (
+        /\bvasos?\s*(?:de)?\s*$/.test(before)
+    ) {
+        return "vaso";
+    }
+
+
+    if (
+        /\bplatos?\s*(?:de)?\s*$/.test(before)
+    ) {
+        return "plato";
+    }
+
+
+    return null;
+}
+
+
+// ======================================================
+// 9. CALCULAR SEGÚN MEDIDA
+// ======================================================
+
+function getMeasureFactor(
+    foodKey,
+    measure
+) {
+
+    if (!measure) {
         return 1;
     }
 
-    if (
-        normalized.includes("cucharada") ||
-        normalized.includes("cucharadas")
-    ) {
-        return food.measures.cucharada || 1;
-    }
 
-    if (
-        normalized.includes("cucharadita") ||
-        normalized.includes("cucharaditas")
-    ) {
-        return food.measures.cucharadita || 1;
-    }
+    const factors = {
 
-    if (normalized.includes("taza")) {
-        return food.measures.taza || 1;
-    }
+        avena: {
+            cucharada: 0.25,
+            cucharadita: 0.08,
+            taza: 2
+        },
 
-    if (normalized.includes("plato")) {
-        return food.measures.plato || 1;
-    }
+        aceite: {
+            cucharada: 1,
+            cucharadita: 0.33
+        },
 
-    if (normalized.includes("vaso")) {
-        return food.measures.vaso || 1;
-    }
+        mayonesa: {
+            cucharada: 1,
+            cucharadita: 0.33
+        },
 
-    if (
-        normalized.includes("unidad") ||
-        normalized.includes("unidades")
-    ) {
-        return food.measures.unidad || 1;
-    }
+        ketchup: {
+            cucharada: 1,
+            cucharadita: 0.33
+        },
 
-    if (normalized.includes("chorrito")) {
-        return food.measures.chorrito || 1;
-    }
+        azucar: {
+            cucharadita: 1,
+            cucharada: 3
+        },
 
-    return 1;
+        arroz: {
+            taza: 1,
+            plato: 2
+        },
+
+        lentejas: {
+            taza: 1,
+            plato: 2
+        },
+
+        leche: {
+            vaso: 1,
+            taza: 1
+        },
+
+        cafe: {
+            taza: 1,
+            vaso: 1
+        }
+    };
+
+
+    return (
+        factors[foodKey]?.[measure] ||
+        1
+    );
 }
 
 
-// ==========================================
-// MULTIPLICADOR DE PORCIÓN
-// ==========================================
+// ======================================================
+// 10. PORCIÓN GENERAL
+// ======================================================
 
 function getPortionMultiplier() {
 
@@ -651,358 +849,570 @@ function getPortionMultiplier() {
             'input[name="portion"]:checked'
         );
 
+
     if (!selected) {
         return 1;
     }
+
 
     if (selected.value === "poco") {
         return 0.7;
     }
 
+
     if (selected.value === "abundante") {
         return 1.35;
     }
+
 
     return 1;
 }
 
 
-// ==========================================
-// ANALIZAR ALIMENTO
-// ==========================================
+// ======================================================
+// 11. BUSCAR OCURRENCIAS DE ALIMENTOS
+// ======================================================
+
+function findFoods(text) {
+
+    const normalized =
+        normalize(text);
+
+    const matches = [];
+
+
+    for (const definition of foodDefinitions) {
+
+        for (const term of definition.terms) {
+
+            const normalizedTerm =
+                normalize(term);
+
+            const regex =
+                new RegExp(
+                    `\\b${normalizedTerm}\\b`,
+                    "g"
+                );
+
+            let match;
+
+
+            while (
+                (match = regex.exec(normalized)) !== null
+            ) {
+
+                matches.push({
+                    key: definition.key,
+                    term: normalizedTerm,
+                    index: match.index,
+                    length: normalizedTerm.length
+                });
+            }
+        }
+    }
+
+
+    /*
+        Evitamos duplicados.
+
+        Ejemplo:
+        "pan lactal" no debe contar también "pan".
+        "queso crema" no debe contar también "queso".
+        "huevo frito" no debe contar también "huevo".
+    */
+
+    matches.sort(
+        (a, b) => {
+
+            if (a.index !== b.index) {
+                return a.index - b.index;
+            }
+
+            return b.length - a.length;
+        }
+    );
+
+
+    const filtered = [];
+
+
+    for (const match of matches) {
+
+        const overlaps =
+            filtered.some(existing => {
+
+                const startA =
+                    match.index;
+
+                const endA =
+                    match.index +
+                    match.length;
+
+                const startB =
+                    existing.index;
+
+                const endB =
+                    existing.index +
+                    existing.length;
+
+
+                return (
+                    startA < endB &&
+                    endA > startB
+                );
+            });
+
+
+        if (!overlaps) {
+            filtered.push(match);
+        }
+    }
+
+
+    return filtered;
+}
+
+
+// ======================================================
+// 12. ANALIZAR ALIMENTOS
+// ======================================================
 
 function analyzeFood(text) {
 
-    const normalized = normalize(text);
+    const normalized =
+        normalize(text);
+
+    const matches =
+        findFoods(normalized);
+
     const results = [];
 
-    let searchText = normalized;
 
-    const aliasEntries =
-        Object.entries(aliases)
-            .sort((a, b) => b[0].length - a[0].length);
+    for (const match of matches) {
 
-    for (const [alias, key] of aliasEntries) {
-
-        if (searchText.includes(normalize(alias))) {
-
-            searchText =
-                searchText.replace(
-                    normalize(alias),
-                    key.toLowerCase()
-                );
-        }
-    }
+        const food =
+            foods[match.key];
 
 
-    // --------------------------------------
-    // ALIMENTOS SIMPLES
-    // --------------------------------------
-
-    for (const foodKey of simpleFoods) {
-
-        const food = foods[foodKey];
-
-        if (!food) continue;
-
-        const keyForSearch =
-            normalize(foodKey);
-
-        // Estos se procesan por separado
-        if (
-            foodKey === "huevoFrito" ||
-            foodKey === "huevoRevuelto" ||
-            foodKey === "panLactal" ||
-            foodKey === "quesoUntable" ||
-            foodKey === "dulceDeLeche"
-        ) {
+        if (!food) {
             continue;
         }
 
-        if (searchText.includes(keyForSearch)) {
 
-            const cantidad =
-                getQuantity(searchText);
-
-            const medida =
-                getMeasureMultiplier(
-                    searchText,
-                    foodKey
-                );
-
-            let factor =
-                cantidad * medida;
-
-
-            // GRAMOS
-            const gramsMatch =
-                searchText.match(
-                    /(\d+(?:[.,]\d+)?)\s*(gramos|gramo|g)\b/
-                );
-
-            if (gramsMatch) {
-
-                const gramos =
-                    parseFloat(
-                        gramsMatch[1].replace(",", ".")
-                    );
-
-                factor = gramos / 100;
-
-                results.push({
-                    name: foodKey,
-                    calories:
-                        food.calories * factor,
-                    protein:
-                        food.protein * factor
-                });
-
-                continue;
-            }
-
-
-            results.push({
-                name: foodKey,
-                calories:
-                    food.calories * factor,
-                protein:
-                    food.protein * factor
-            });
-        }
-    }
-
-
-    // --------------------------------------
-    // HUEVO FRITO
-    // --------------------------------------
-
-    if (
-        normalized.includes("huevo frito") ||
-        normalized.includes("huevos fritos")
-    ) {
-
-        const cantidad =
-            getQuantity(normalized);
-
-        results.push({
-            name: "Huevo frito",
-            calories:
-                foods.huevoFrito.calories *
-                cantidad,
-            protein:
-                foods.huevoFrito.protein *
-                cantidad
-        });
-    }
-
-
-    // --------------------------------------
-    // HUEVO REVUELTO
-    // --------------------------------------
-
-    if (
-        normalized.includes("huevo revuelto") ||
-        normalized.includes("huevos revueltos")
-    ) {
-
-        const cantidad =
-            getQuantity(normalized);
-
-        results.push({
-            name: "Huevo revuelto",
-            calories:
-                foods.huevoRevuelto.calories *
-                cantidad,
-            protein:
-                foods.huevoRevuelto.protein *
-                cantidad
-        });
-    }
-
-
-    // --------------------------------------
-    // PAN LACTAL
-    // --------------------------------------
-
-    if (normalized.includes("pan lactal")) {
-
-        const cantidad =
-            getQuantity(normalized);
-
-        results.push({
-            name: "Pan lactal",
-            calories:
-                foods.panLactal.calories *
-                cantidad,
-            protein:
-                foods.panLactal.protein *
-                cantidad
-        });
-    }
-
-
-    // --------------------------------------
-    // TOSTADA
-    // --------------------------------------
-
-    if (
-        normalized.includes("tostada") ||
-        normalized.includes("tostadas")
-    ) {
-
-        const cantidad =
-            getQuantity(normalized);
-
-        const yaExiste =
-            results.some(
-                item =>
-                    normalize(item.name) ===
-                    "tostada"
+        let quantity =
+            getFoodQuantity(
+                normalized,
+                match.index
             );
 
-        if (!yaExiste) {
 
-            results.push({
-                name: "Tostada",
-                calories:
-                    foods.tostada.calories *
-                    cantidad,
-                protein:
-                    foods.tostada.protein *
-                    cantidad
-            });
+        const measure =
+            getMeasureNearFood(
+                normalized,
+                match.index
+            );
+
+
+        const explicitAmount =
+            getAmountNearFood(
+                normalized,
+                match.index,
+                match.term
+            );
+
+
+        let calories =
+            food.calories;
+
+        let protein =
+            food.protein;
+
+
+        // ------------------------------------------
+        // GRAMOS
+        // ------------------------------------------
+
+        if (
+            explicitAmount &&
+            explicitAmount.type === "grams"
+        ) {
+
+            /*
+                Alimentos cuya información base está
+                expresada aproximadamente por 100 g.
+            */
+
+            const hundredGramFoods = [
+                "palta",
+                "zapallo",
+                "brocoli",
+                "espinaca",
+                "pepino",
+                "repollo",
+                "atun",
+                "jamon",
+                "salame"
+            ];
+
+
+            if (
+                hundredGramFoods.includes(
+                    match.key
+                )
+            ) {
+
+                const factor =
+                    explicitAmount.amount /
+                    100;
+
+                calories =
+                    food.calories *
+                    factor;
+
+                protein =
+                    food.protein *
+                    factor;
+
+            } else {
+
+                const basePortion =
+                    Number(food.portion) ||
+                    100;
+
+                const factor =
+                    explicitAmount.amount /
+                    basePortion;
+
+                calories =
+                    food.calories *
+                    factor;
+
+                protein =
+                    food.protein *
+                    factor;
+            }
+
+        }
+
+
+        // ------------------------------------------
+        // MILILITROS
+        // ------------------------------------------
+
+        else if (
+            explicitAmount &&
+            explicitAmount.type === "ml"
+        ) {
+
+            if (match.key === "leche") {
+
+                const factor =
+                    explicitAmount.amount /
+                    200;
+
+                calories =
+                    food.calories *
+                    factor;
+
+                protein =
+                    food.protein *
+                    factor;
+
+            }
+
+            else if (match.key === "cafe") {
+
+                /*
+                    Café solo prácticamente
+                    no aporta calorías.
+                */
+
+                const factor =
+                    explicitAmount.amount /
+                    200;
+
+                calories =
+                    food.calories *
+                    factor;
+
+                protein =
+                    food.protein *
+                    factor;
+            }
+
+        }
+
+
+        // ------------------------------------------
+        // MEDIDAS
+        // ------------------------------------------
+
+        else {
+
+            const measureFactor =
+
+                            getMeasureFactor(
+                    match.key,
+                    measure
+                );
+
+
+            calories =
+                food.calories *
+                quantity *
+                measureFactor;
+
+            protein =
+                food.protein *
+                quantity *
+                measureFactor;
+        }
+
+
+        results.push({
+
+            key:
+                match.key,
+
+            name:
+                food.name,
+
+            quantity:
+                quantity,
+
+            calories:
+                calories,
+
+            protein:
+                protein
+        });
+    }
+
+
+    // ==================================================
+    // CAFÉ CON LECHE
+    // ==================================================
+
+    /*
+        Si dice:
+
+        "café con leche"
+
+        detectamos ambos alimentos.
+
+        El café aporta ~2 kcal.
+
+        Para la leche, si el usuario NO puso
+        una cantidad específica, usamos media
+        porción de leche (~100 ml).
+
+        Así no contamos automáticamente un vaso
+        entero de leche.
+    */
+
+    if (
+        normalized.includes("cafe con leche")
+    ) {
+
+        const milk =
+            results.find(
+                item =>
+                    item.key === "leche"
+            );
+
+
+        if (milk) {
+
+            const milkMatch =
+                matches.find(
+                    item =>
+                        item.key === "leche"
+                );
+
+
+            const explicitMilk =
+                milkMatch
+                    ? getAmountNearFood(
+                        normalized,
+                        milkMatch.index,
+                        milkMatch.term
+                    )
+                    : null;
+
+
+            const milkMeasure =
+                milkMatch
+                    ? getMeasureNearFood(
+                        normalized,
+                        milkMatch.index
+                    )
+                    : null;
+
+
+            if (
+                !explicitMilk &&
+                !milkMeasure
+            ) {
+
+                milk.calories =
+                    foods.leche.calories *
+                    0.5;
+
+                milk.protein =
+                    foods.leche.protein *
+                    0.5;
+
+                milk.quantity =
+                    0.5;
+
+                milk.name =
+                    "Leche (estimado 100 ml)";
+            }
         }
     }
 
 
-    // --------------------------------------
+    // ==================================================
     // PORCIÓN GENERAL
-    // --------------------------------------
+    // ==================================================
 
     const portionMultiplier =
         getPortionMultiplier();
 
+
     if (portionMultiplier !== 1) {
 
-        for (const item of results) {
+        results.forEach(item => {
 
             item.calories *=
                 portionMultiplier;
 
             item.protein *=
                 portionMultiplier;
-        }
+        });
     }
+
 
     return results;
 }
 
 
-// ==========================================
-// ANALIZAR COMIDA COMPLETA
-// ==========================================
+// ======================================================
+// 13. ANALIZAR COMIDA COMPLETA
+// ======================================================
 
 function analyzeMeal(text) {
-
-    const results =
-        analyzeFood(text);
 
     const normalized =
         normalize(text);
 
+    let results =
+        analyzeFood(text);
 
+
+    // ==================================================
     // MILANESA DE POLLO
+    // ==================================================
+
     if (
-        normalized.includes("milanesa") &&
-        normalized.includes("pollo")
+        normalized.includes(
+            "milanesa de pollo"
+        )
     ) {
 
-        const alreadyChicken =
-            results.some(
+        results =
+            results.filter(
                 item =>
-                    normalize(item.name) ===
-                    "pollo"
+                    item.key !== "pollo"
             );
 
-        if (!alreadyChicken) {
 
-            results.push({
-                name: "Milanesa de pollo",
-                calories: 300,
-                protein: 27
-            });
-        }
+        results.push({
+            key: "milanesaPollo",
+            name: "Milanesa de pollo",
+            calories: 300,
+            protein: 27
+        });
     }
 
 
+    // ==================================================
     // MILANESA DE CARNE
+    // ==================================================
+
     if (
-        normalized.includes("milanesa") &&
-        normalized.includes("carne")
+        normalized.includes(
+            "milanesa de carne"
+        )
     ) {
 
-        const alreadyMeat =
-            results.some(
+        results =
+            results.filter(
                 item =>
-                    normalize(item.name) ===
-                    "carne"
+                    item.key !== "carne"
             );
 
-        if (!alreadyMeat) {
 
-            results.push({
-                name: "Milanesa de carne",
-                calories: 350,
-                protein: 25
-            });
-        }
+        results.push({
+            key: "milanesaCarne",
+            name: "Milanesa de carne",
+            calories: 350,
+            protein: 25
+        });
     }
 
 
+    // ==================================================
     // PURÉ DE PAPA
+    // ==================================================
+
     if (
-        normalized.includes("pure de papa") ||
-        normalized.includes("pure papa")
+        normalized.includes(
+            "pure de papa"
+        )
     ) {
 
-        const alreadyPotato =
-            results.some(
+        results =
+            results.filter(
                 item =>
-                    normalize(item.name) ===
-                    "papa"
+                    item.key !== "papa"
             );
 
-        if (!alreadyPotato) {
 
-            results.push({
-                name: "Puré de papa",
-                calories: 180,
-                protein: 4
-            });
-        }
+        results.push({
+            key: "purePapa",
+            name: "Puré de papa",
+            calories: 180,
+            protein: 4
+        });
     }
 
 
-    // ENSALADA
-    if (normalized.includes("ensalada")) {
+    // ==================================================
+    // ENSALADA GENÉRICA
+    // ==================================================
 
-        if (results.length === 0) {
+    if (
+        normalized.includes("ensalada") &&
+        results.length === 0
+    ) {
 
-            results.push({
-                name: "Ensalada",
-                calories: 60,
-                protein: 2
-            });
-        }
+        results.push({
+            key: "ensalada",
+            name: "Ensalada",
+            calories: 60,
+            protein: 2
+        });
     }
+
 
     return results;
 }
 
 
-// ==========================================
-// MOSTRAR ESTIMACIÓN
-// ==========================================
+// ======================================================
+// 14. MOSTRAR ESTIMACIÓN
+// ======================================================
 
 function showEstimate(results) {
 
@@ -1026,7 +1436,11 @@ function showEstimate(results) {
             "estimatedFoods"
         );
 
-    if (!results || results.length === 0) {
+
+    if (
+        !results ||
+        results.length === 0
+    ) {
 
         alert(
             "No pude reconocer los alimentos. Probá describiéndolos de otra manera."
@@ -1035,17 +1449,22 @@ function showEstimate(results) {
         return null;
     }
 
+
     let totalCalories = 0;
     let totalProtein = 0;
+
 
     results.forEach(item => {
 
         totalCalories +=
-            Number(item.calories) || 0;
+            Number(item.calories) ||
+            0;
 
         totalProtein +=
-            Number(item.protein) || 0;
+            Number(item.protein) ||
+            0;
     });
+
 
     const caloriesMin =
         Math.round(
@@ -1057,41 +1476,72 @@ function showEstimate(results) {
             totalCalories * 1.15
         );
 
-    estimatedCalories.textContent =
-        `${caloriesMin}-${caloriesMax}`;
 
-    estimatedProtein.textContent =
-        Math.round(totalProtein);
+    if (estimatedCalories) {
 
-    estimatedFoods.innerHTML = "";
+        estimatedCalories.textContent =
+            `${caloriesMin}-${caloriesMax}`;
+    }
 
-    results.forEach(item => {
 
-        const div =
-            document.createElement("div");
+    if (estimatedProtein) {
 
-        div.textContent =
-            `${item.name}: ${Math.round(item.calories)} kcal — ${Number(item.protein).toFixed(1)} g proteína`;
+        estimatedProtein.textContent =
+            Math.round(totalProtein);
+    }
 
-        estimatedFoods.appendChild(div);
-    });
 
-    resultSection.style.display =
-        "block";
+    if (estimatedFoods) {
+
+        estimatedFoods.innerHTML = "";
+
+
+        results.forEach(item => {
+
+            const div =
+                document.createElement(
+                    "div"
+                );
+
+
+            div.textContent =
+                `${item.name}: ${Math.round(item.calories)} kcal — ${Number(item.protein).toFixed(1)} g proteína`;
+
+
+            estimatedFoods.appendChild(
+                div
+            );
+        });
+    }
+
+
+    if (resultSection) {
+
+        resultSection.style.display =
+            "block";
+    }
+
 
     window.currentMeal = {
-        foods: results,
-        calories: totalCalories,
-        protein: totalProtein
+
+        foods:
+            results,
+
+        calories:
+            totalCalories,
+
+        protein:
+            totalProtein
     };
+
 
     return window.currentMeal;
 }
 
 
-// ==========================================
-// OPEN FOOD FACTS
-// ==========================================
+// ======================================================
+// 15. OPEN FOOD FACTS - CÓDIGO DE BARRAS
+// ======================================================
 
 async function buscarProductoOpenFoodFacts(
     codigoBarras
@@ -1099,64 +1549,36 @@ async function buscarProductoOpenFoodFacts(
 
     try {
 
-        const respuesta =
+        const response =
             await fetch(
                 `https://world.openfoodfacts.org/api/v2/product/${codigoBarras}.json`
             );
 
-        if (!respuesta.ok) {
+
+        if (!response.ok) {
             return null;
         }
 
-        const datos =
-            await respuesta.json();
 
-        if (datos.status !== 1) {
+        const data =
+            await response.json();
 
-            console.log(
-                "Producto no encontrado"
-            );
+
+        if (
+            data.status !== 1 ||
+            !data.product
+        ) {
 
             return null;
         }
 
-        const producto =
-            datos.product;
 
-        console.log(
-            "PRODUCTO ENCONTRADO"
-        );
-
-        console.log(
-            "Nombre:",
-            producto.product_name
-        );
-
-        console.log(
-            "Marca:",
-            producto.brands
-        );
-
-        console.log(
-            "Calorías:",
-            producto.nutriments?.[
-                "energy-kcal_100g"
-            ]
-        );
-
-        console.log(
-            "Proteínas:",
-            producto.nutriments?.[
-                "proteins_100g"
-            ]
-        );
-
-        return producto;
+        return data.product;
 
     } catch (error) {
 
         console.error(
-            "Error conectando con Open Food Facts:",
+            "Error Open Food Facts:",
             error
         );
 
@@ -1165,295 +1587,2214 @@ async function buscarProductoOpenFoodFacts(
 }
 
 
-// ==========================================
-// EQUIVALENCIAS PRODUCTOS ESCANEADOS
-// ==========================================
+// ======================================================
+// 16. BÚSQUEDA DE PRODUCTOS POR NOMBRE / MARCA
+// ======================================================
+
+const PRODUCT_CACHE_KEY =
+    "calorieTrackProductCache";
+
+
+// ======================================================
+// OBTENER PRODUCTOS GUARDADOS
+// ======================================================
+
+function getProductCache() {
+
+    try {
+
+        const saved =
+            localStorage.getItem(
+                PRODUCT_CACHE_KEY
+            );
+
+
+        if (!saved) {
+            return {};
+        }
+
+
+        const parsed =
+            JSON.parse(saved);
+
+
+        if (
+            !parsed ||
+            typeof parsed !== "object"
+        ) {
+            return {};
+        }
+
+
+        return parsed;
+
+    } catch (error) {
+
+        console.error(
+            "Error leyendo productos guardados:",
+            error
+        );
+
+        return {};
+    }
+}
+
+
+// ======================================================
+// GUARDAR PRODUCTO EN MEMORIA
+// ======================================================
+
+function saveProductToCache(
+    searchText,
+    product
+) {
+
+    if (
+        !searchText ||
+        !product
+    ) {
+        return;
+    }
+
+
+    const cache =
+        getProductCache();
+
+
+    const key =
+        normalize(searchText);
+
+
+    cache[key] =
+        product;
+
+
+    try {
+
+        localStorage.setItem(
+            PRODUCT_CACHE_KEY,
+            JSON.stringify(cache)
+        );
+
+    } catch (error) {
+
+        console.error(
+            "No se pudo guardar el producto:",
+            error
+        );
+    }
+}
+
+
+// ======================================================
+// BUSCAR PRODUCTO GUARDADO
+// ======================================================
+
+function getCachedProduct(
+    searchText
+) {
+
+    if (!searchText) {
+        return null;
+    }
+
+
+    const cache =
+        getProductCache();
+
+
+    return (
+        cache[
+            normalize(searchText)
+        ] ||
+        null
+    );
+}
+
+
+// ======================================================
+// NORMALIZAR PRODUCTO DE OPEN FOOD FACTS
+// ======================================================
+
+function normalizeOpenFoodFactsProduct(
+    product
+) {
+
+    if (!product) {
+        return null;
+    }
+
+
+    const nutriments =
+        product.nutriments ||
+        {};
+
+
+    let calories =
+        Number(
+            nutriments[
+                "energy-kcal_100g"
+            ]
+        );
+
+
+    if (
+        !Number.isFinite(calories) ||
+        calories <= 0
+    ) {
+
+        const kj =
+            Number(
+                nutriments.energy_100g
+            );
+
+
+        if (
+            Number.isFinite(kj) &&
+            kj > 0
+        ) {
+
+            calories =
+                kj / 4.184;
+
+        } else {
+
+            calories = 0;
+        }
+    }
+
+
+    const protein =
+        Number(
+            nutriments.proteins_100g
+        ) || 0;
+
+
+    const name =
+        product.product_name_es ||
+        product.product_name ||
+        "Producto";
+
+
+    const brand =
+        product.brands ||
+        "";
+
+
+    return {
+
+        code:
+            product.code ||
+            "",
+
+        name:
+            name,
+
+        brand:
+            brand,
+
+        calories100g:
+            calories,
+
+        protein100g:
+            protein,
+
+        servingSize:
+            product.serving_size ||
+            "",
+
+        quantity:
+            product.quantity ||
+            "",
+
+        image:
+            product.image_front_small_url ||
+            product.image_front_url ||
+            "",
+
+        categories:
+            product.categories ||
+            "",
+
+        originalProduct:
+            product
+    };
+}
+
+
+// ======================================================
+// BUSCAR PRODUCTOS POR NOMBRE
+// ======================================================
+
+// ======================================================
+// VALIDAR RELEVANCIA DE PRODUCTOS
+// ======================================================
+
+function getProductSearchScore(
+    product,
+    searchText
+) {
+
+    if (
+        !product ||
+        !searchText
+    ) {
+        return 0;
+    }
+
+    const query =
+        normalize(searchText);
+
+    const name =
+        normalize(
+            product.name || ""
+        );
+
+    const brand =
+        normalize(
+            product.brand || ""
+        );
+
+    const words =
+        query
+            .split(/\s+/)
+            .filter(
+                word =>
+                    word.length >= 3
+            );
+
+    if (
+        words.length === 0
+    ) {
+        return 0;
+    }
+
+    let score = 0;
+
+
+    // Marca exactamente igual
+    if (
+        brand === query
+    ) {
+        score += 100;
+    }
+
+
+    // La marca contiene la búsqueda
+    if (
+        brand.includes(query)
+    ) {
+        score += 80;
+    }
+
+
+    // El nombre contiene la búsqueda
+    if (
+        name.includes(query)
+    ) {
+        score += 60;
+    }
+
+
+    // Coincidencias palabra por palabra
+    words.forEach(
+        word => {
+
+            if (
+                brand.includes(word)
+            ) {
+                score += 30;
+            }
+
+            if (
+                name.includes(word)
+            ) {
+                score += 20;
+            }
+        }
+    );
+
+
+    return score;
+}
+
+async function buscarProductosPorNombre(
+    searchText
+) {
+
+    if (!searchText) {
+        return [];
+    }
+
+
+    const cached =
+        getCachedProduct(
+            searchText
+        );
+
+
+    if (cached) {
+
+        return [
+            {
+                ...cached,
+                fromCache: true
+            }
+        ];
+    }
+
+
+    try {
+
+        const url =
+            "https://world.openfoodfacts.org/cgi/search.pl" +
+            "?search_terms=" +
+            encodeURIComponent(
+                searchText
+            ) +
+            "&search_simple=1" +
+            "&action=process" +
+            "&json=1" +
+            "&page_size=8";
+
+
+        const response =
+            await fetch(url);
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                "Error HTTP " +
+                response.status
+            );
+        }
+
+
+        const data =
+            await response.json();
+
+
+        if (
+            !data ||
+            !Array.isArray(
+                data.products
+            )
+        ) {
+
+            return [];
+        }
+
+
+       const normalizedProducts =
+    data.products
+        .map(
+            normalizeOpenFoodFactsProduct
+        )
+        .filter(
+            product =>
+                product &&
+                product.calories100g > 0
+        );
+
+
+const relevantProducts =
+    normalizedProducts
+        .map(
+            product => ({
+                product: product,
+
+                score:
+                    getProductSearchScore(
+                        product,
+                        searchText
+                    )
+            })
+        )
+        .filter(
+            item =>
+                item.score >= 30
+        )
+        .sort(
+            (a, b) =>
+                b.score - a.score
+        )
+        .map(
+            item =>
+                item.product
+        );
+
+
+return relevantProducts; 
+
+    } catch (error) {
+
+        console.error(
+            "Error buscando producto por nombre:",
+            error
+        );
+
+        return [];
+    }
+}
+
+
+// ======================================================
+// 17. SEPARAR LA DESCRIPCIÓN DE LA COMIDA
+// ======================================================
+
+function splitMealIntoSegments(
+    text
+) {
+
+    if (!text) {
+        return [];
+    }
+
+
+    return String(text)
+        .split(
+            /,|\s+y\s+/i
+        )
+        .map(
+            segment =>
+                segment.trim()
+        )
+        .filter(Boolean);
+}
+
+
+// ======================================================
+// 18. PALABRAS QUE NO FORMAN PARTE DE LA MARCA
+// ======================================================
+
+const productIgnoreWords =
+    new Set([
+        "de",
+        "del",
+        "con",
+        "sin",
+        "una",
+        "uno",
+        "un",
+        "unos",
+        "unas",
+        "el",
+        "la",
+        "los",
+        "las",
+        "comi",
+        "tome",
+        "bebi",
+        "desayune",
+        "merende",
+        "almorce",
+        "cene",
+        "poco",
+        "poca",
+        "mucho",
+        "mucha",
+        "grande",
+        "chico",
+        "chica"
+    ]);
+
+
+// ======================================================
+// 19. LIMPIAR TEXTO PARA BUSCAR UNA MARCA
+// ======================================================
+
+function cleanProductSearchText(
+    text
+) {
+
+    if (!text) {
+        return "";
+    }
+
+
+    let cleaned =
+        normalize(text);
+
+
+    cleaned =
+        cleaned.replace(
+            /^\s*\d+(?:[.,]\d+)?\s*/,
+            ""
+        );
+
+
+    cleaned =
+        cleaned.replace(
+            /\b(kg|g|gr|gramo|gramos|ml|cc|litro|litros|l)\b/gi,
+            " "
+        );
+
+
+    cleaned =
+        cleaned.replace(
+            /\b(cucharada|cucharadas|cucharadita|cucharaditas|taza|tazas|vaso|vasos|plato|platos|porcion|porciones|unidad|unidades)\b/gi,
+            " "
+        );
+
+
+    cleaned =
+        cleaned.replace(
+            /\s+/g,
+            " "
+        )
+        .trim();
+
+
+    let words =
+        cleaned
+            .split(/\s+/)
+            .filter(Boolean);
+
+
+    while (
+        words.length > 0 &&
+        productIgnoreWords.has(
+            normalize(words[0])
+        )
+    ) {
+
+        words.shift();
+    }
+
+
+    return words
+        .join(" ")
+        .replace(/\s+/g, " ")
+        .trim();
+}
+
+
+// ======================================================
+// 20. COMPROBAR SI EL SEGMENTO YA ES UN ALIMENTO
+// ======================================================
+
+function segmentHasKnownFood(
+    segment
+) {
+
+    if (!segment) {
+        return false;
+    }
+
+
+    try {
+
+        const detected =
+            findFoods(segment);
+
+
+        return (
+            Array.isArray(detected) &&
+            detected.length > 0
+        );
+
+    } catch (error) {
+
+        console.error(
+            "Error comprobando alimento conocido:",
+            error
+        );
+
+        return false;
+    }
+}
+
+// ======================================================
+// 20B. QUITAR ALIMENTOS GENÉRICOS DE UNA BÚSQUEDA
+// ======================================================
+
+function removeKnownFoodTerms(text) {
+
+    if (!text) {
+        return "";
+    }
+
+    let cleaned =
+        normalize(text);
+
+    const terms =
+        foodDefinitions
+            .flatMap(
+                definition =>
+                    definition.terms || []
+            )
+            .map(
+                term =>
+                    normalize(term)
+            )
+            .filter(Boolean)
+            .sort(
+                (a, b) =>
+                    b.length - a.length
+            );
+
+    for (const term of terms) {
+
+        const escapedTerm =
+            term.replace(
+                /[.*+?^${}()|[\]\\]/g,
+                "\\$&"
+            );
+
+        const regex =
+            new RegExp(
+                `\\b${escapedTerm}\\b`,
+                "gi"
+            );
+
+        cleaned =
+            cleaned.replace(
+                regex,
+                " "
+            );
+    }
+
+    return cleaned
+        .replace(/\s+/g, " ")
+        .trim();
+}
+// ======================================================
+// 21. EXTRAER POSIBLES PRODUCTOS / MARCAS
+// ======================================================
+
+function extractPossibleProductSearches(
+    text
+) {
+
+    const segments =
+        splitMealIntoSegments(
+            text
+        );
+
+
+    const searches = [];
+
+
+    segments.forEach(
+        segment => {
+
+           const cleanedSegment =
+    cleanProductSearchText(
+        segment
+    );
+
+const cleaned =
+    removeKnownFoodTerms(
+        cleanedSegment
+    ); 
+
+
+            if (!cleaned) {
+                return;
+            }
+
+
+            if (
+                segmentHasKnownFood(
+                    segment
+                )
+            ) {
+
+                const knownFoods =
+                    findFoods(
+                        segment
+                    );
+
+
+                const normalizedCleaned =
+                    normalize(
+                        cleaned
+                    );
+
+
+                const onlyKnownFood =
+                    knownFoods.some(
+                        item =>
+                            normalize(
+                                item.term
+                            ) ===
+                            normalizedCleaned
+                    );
+
+
+                if (onlyKnownFood) {
+                    return;
+                }
+
+
+                const genericCombination =
+                    (
+                        normalize(segment)
+                            .includes(
+                                "cafe con leche"
+                            )
+                    );
+
+
+                if (genericCombination) {
+                    return;
+                }
+            }
+
+
+            if (
+                cleaned.length < 3
+            ) {
+                return;
+            }
+
+
+            const alreadyExists =
+                searches.some(
+                    item =>
+                        normalize(item) ===
+                        normalize(cleaned)
+                );
+
+
+            if (!alreadyExists) {
+
+                searches.push(
+                    cleaned
+                );
+            }
+        }
+    );
+
+
+    return searches;
+}
+
+
+// ======================================================
+// 22. MODAL PARA ELEGIR PRODUCTO
+// ======================================================
+
+// ======================================================
+// PRODUCTO / MARCA NO ENCONTRADO
+// ======================================================
+
+function seleccionarAccionProductoNoEncontrado(
+    searchText
+) {
+
+    return new Promise(
+        resolve => {
+
+            const overlay =
+                document.createElement("div");
+
+            overlay.className =
+                "product-not-found-overlay";
+
+
+            // ==========================================
+            // FONDO
+            // ==========================================
+
+            Object.assign(
+                overlay.style,
+                {
+                    position: "fixed",
+                    inset: "0",
+                    background: "rgba(15, 23, 42, 0.65)",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    padding: "20px",
+                    zIndex: "100000"
+                }
+            );
+
+
+            // ==========================================
+            // VENTANA
+            // ==========================================
+
+            const modal =
+                document.createElement("div");
+
+            Object.assign(
+                modal.style,
+                {
+                    width: "100%",
+                    maxWidth: "480px",
+                    background: "#ffffff",
+                    borderRadius: "20px",
+                    padding: "24px",
+                    boxShadow:
+                        "0 25px 70px rgba(0,0,0,0.30)"
+                }
+            );
+
+
+            // ==========================================
+            // TÍTULO
+            // ==========================================
+
+            const title =
+                document.createElement("h3");
+
+            title.textContent =
+                `No encontré "${searchText}"`;
+
+            title.style.margin =
+                "0 0 8px";
+
+
+            // ==========================================
+            // EXPLICACIÓN
+            // ==========================================
+
+            const description =
+                document.createElement("p");
+
+            description.textContent =
+                "No encontré una coincidencia confiable para este producto. Elegí cómo querés continuar.";
+
+            Object.assign(
+                description.style,
+                {
+                    margin: "0 0 20px",
+                    color: "#64748b",
+                    lineHeight: "1.5"
+                }
+            );
+
+
+            // ==========================================
+            // CONTENEDOR DE BOTONES
+            // ==========================================
+
+            const buttons =
+                document.createElement("div");
+
+            Object.assign(
+                buttons.style,
+                {
+                    display: "grid",
+                    gap: "10px"
+                }
+            );
+
+
+            // ==========================================
+            // FUNCIÓN PARA CREAR BOTONES
+            // ==========================================
+
+            function createButton(
+                text,
+                action,
+                primary = false
+            ) {
+
+                const button =
+                    document.createElement(
+                        "button"
+                    );
+
+                button.type =
+                    "button";
+
+                button.textContent =
+                    text;
+
+
+                Object.assign(
+                    button.style,
+                    {
+                        width: "100%",
+                        padding: "13px 16px",
+                        borderRadius: "12px",
+                        cursor: "pointer",
+                        fontSize: "15px",
+                        fontWeight: "600",
+
+                        border:
+                            primary
+                                ? "none"
+                                : "1px solid #e2e8f0",
+
+                        background:
+                            primary
+                                ? "#2563eb"
+                                : "#ffffff",
+
+                        color:
+                            primary
+                                ? "#ffffff"
+                                : "#0f172a"
+                    }
+                );
+
+
+                button.addEventListener(
+                    "click",
+                    () => {
+
+                        overlay.remove();
+
+                        resolve(action);
+                    }
+                );
+
+
+                return button;
+            }
+
+
+            // ==========================================
+            // OPCIONES
+            // ==========================================
+
+            const scanButton =
+                createButton(
+                    "📷 Escanear producto",
+                    "scan",
+                    true
+                );
+
+
+            const manualButton =
+                createButton(
+                    "✏️ Cargar información manualmente",
+                    "manual"
+                );
+
+
+            const genericButton =
+                createButton(
+                    "Continuar con alimento genérico",
+                    "generic"
+                );
+
+
+            const cancelButton =
+                createButton(
+                    "Cancelar",
+                    "cancel"
+                );
+
+
+            buttons.append(
+                scanButton,
+                manualButton,
+                genericButton,
+                cancelButton
+            );
+
+
+            modal.append(
+                title,
+                description,
+                buttons
+            );
+
+
+            overlay.appendChild(
+                modal
+            );
+
+
+            document.body.appendChild(
+                overlay
+            );
+
+
+            // ==========================================
+            // CLICK FUERA = CANCELAR
+            // ==========================================
+
+            overlay.addEventListener(
+                "click",
+                event => {
+
+                    if (
+                        event.target ===
+                        overlay
+                    ) {
+
+                        overlay.remove();
+
+                        resolve("cancel");
+                    }
+                }
+            );
+        }
+    );
+}
+
+function seleccionarProductoEncontrado(
+    searchText,
+    products
+) {
+
+    return new Promise(
+        resolve => {
+
+            if (
+                !products ||
+                products.length === 0
+            ) {
+
+                resolve(null);
+                return;
+            }
+
+
+            // Si viene de caché,
+            // lo usamos automáticamente.
+
+            if (
+                products.length === 1 &&
+                products[0].fromCache
+            ) {
+
+                resolve(
+                    products[0]
+                );
+
+                return;
+            }
+
+
+            const overlay =
+                document.createElement(
+                    "div"
+                );
+
+
+            overlay.className =
+                "product-search-overlay";
+
+
+            overlay.style.position =
+                "fixed";
+
+            overlay.style.inset =
+                "0";
+
+            overlay.style.background =
+                "rgba(15, 23, 42, 0.65)";
+
+            overlay.style.display =
+                "flex";
+
+            overlay.style.alignItems =
+                "center";
+
+            overlay.style.justifyContent =
+                "center";
+
+            overlay.style.padding =
+                "20px";
+
+            overlay.style.zIndex =
+                "99999";
+
+
+            const modal =
+                document.createElement(
+                    "div"
+                );
+
+
+            modal.className =
+                "product-search-modal";
+
+
+            modal.style.width =
+                "100%";
+
+            modal.style.maxWidth =
+                "600px";
+
+            modal.style.maxHeight =
+                "85vh";
+
+            modal.style.overflowY =
+                "auto";
+
+            modal.style.background =
+                "#ffffff";
+
+            modal.style.borderRadius =
+                "20px";
+
+            modal.style.padding =
+                "24px";
+
+            modal.style.boxShadow =
+                "0 25px 70px rgba(0,0,0,0.30)";
+
+
+            const title =
+                document.createElement(
+                    "h3"
+                );
+
+
+            title.textContent =
+                `Encontré productos para "${searchText}"`;
+
+
+            title.style.margin =
+                "0 0 8px";
+
+
+            const subtitle =
+                document.createElement(
+                    "p"
+                );
+
+
+            subtitle.textContent =
+                "Elegí el producto que consumiste.";
+
+
+            subtitle.style.margin =
+                "0 0 20px";
+
+            subtitle.style.color =
+                "#64748b";
+
+
+            modal.appendChild(
+                title
+            );
+
+            modal.appendChild(
+                subtitle
+            );
+
+
+            let resolved =
+                false;
+
+
+            function finish(
+                product
+            ) {
+
+                if (resolved) {
+                    return;
+                }
+
+
+                resolved =
+                    true;
+
+
+                if (
+                    overlay.parentNode
+                ) {
+
+                    overlay.parentNode
+                        .removeChild(
+                            overlay
+                        );
+                }
+
+
+                resolve(
+                    product
+                );
+            }
+
+
+            products
+                .slice(0, 6)
+                .forEach(
+                    product => {
+
+                        const button =
+                            document.createElement(
+                                "button"
+                            );
+
+
+                        button.type =
+                            "button";
+
+
+                        button.style.width =
+                            "100%";
+
+                        button.style.display =
+                            "flex";
+
+                        button.style.alignItems =
+                            "center";
+
+                        button.style.gap =
+                            "14px";
+
+                        button.style.textAlign =
+                            "left";
+
+                        button.style.padding =
+                            "14px";
+
+                        button.style.marginBottom =
+                            "10px";
+
+                        button.style.border =
+                            "1px solid #e2e8f0";
+
+                        button.style.borderRadius =
+                            "14px";
+
+                        button.style.background =
+                            "#ffffff";
+
+                        button.style.cursor =
+                            "pointer";
+
+
+                        // ==================================
+                        // IMAGEN
+                        // ==================================
+
+                        if (product.image) {
+
+                            const image =
+                                document.createElement(
+                                    "img"
+                                );
+
+
+                            image.src =
+                                product.image;
+
+                            image.alt =
+                                product.name ||
+                                "Producto";
+
+                            image.style.width =
+                                "55px";
+
+                            image.style.height =
+                                "55px";
+
+                            image.style.objectFit =
+                                "contain";
+
+                            image.style.flexShrink =
+                                "0";
+
+
+                            button.appendChild(
+                                image
+                            );
+                        }
+
+
+                        // ==================================
+                        // INFORMACIÓN
+                        // ==================================
+
+                        const info =
+                            document.createElement(
+                                "div"
+                            );
+
+
+                        info.style.flex =
+                            "1";
+
+
+                        const name =
+                            document.createElement(
+                                "strong"
+                            );
+
+
+                        name.textContent =
+                            product.name ||
+                            "Producto";
+
+
+                        name.style.display =
+                            "block";
+
+                        name.style.marginBottom =
+                            "4px";
+
+
+                        const brand =
+                            document.createElement(
+                                "span"
+                            );
+
+
+                        brand.textContent =
+                            product.brand
+                                ? product.brand
+                                : "Marca no especificada";
+
+
+                        brand.style.display =
+                            "block";
+
+                        brand.style.fontSize =
+                            "13px";
+
+                        brand.style.color =
+                            "#64748b";
+
+
+                        const nutrition =
+                            document.createElement(
+                                "small"
+                            );
+
+
+                        nutrition.textContent =
+                            `${Math.round(
+                                product.calories100g
+                            )} kcal / 100 g`;
+
+
+                        nutrition.style.display =
+                            "block";
+
+                        nutrition.style.marginTop =
+                            "5px";
+
+                        nutrition.style.color =
+                            "#334155";
+
+
+                        info.appendChild(
+                            name
+                        );
+
+                        info.appendChild(
+                            brand
+                        );
+
+                        info.appendChild(
+                            nutrition
+                        );
+
+
+                        button.appendChild(
+                            info
+                        );
+
+
+                        button.addEventListener(
+                            "click",
+                            () => {
+
+                                saveProductToCache(
+                                    searchText,
+                                    product
+                                );
+
+
+                                finish(
+                                    product
+                                );
+                            }
+                        );
+
+
+                        modal.appendChild(
+                            button
+                        );
+                    }
+                );
+
+
+            // ==========================================
+            // NINGUNO DE ESTOS
+            // ==========================================
+
+            const cancelButton =
+                document.createElement(
+                    "button"
+                );
+
+
+            cancelButton.type =
+                "button";
+
+            cancelButton.textContent =
+                "Ninguno de estos";
+
+
+            cancelButton.style.width =
+                "100%";
+
+            cancelButton.style.marginTop =
+                "10px";
+
+            cancelButton.style.padding =
+                "12px";
+
+            cancelButton.style.border =
+                "none";
+
+            cancelButton.style.borderRadius =
+                "12px";
+
+            cancelButton.style.background =
+                "#f1f5f9";
+
+            cancelButton.style.cursor =
+                "pointer";
+
+
+            cancelButton.addEventListener(
+                "click",
+                () => {
+
+                    finish(null);
+                }
+            );
+
+
+            modal.appendChild(
+                cancelButton
+            );
+
+
+            overlay.appendChild(
+                modal
+            );
+
+
+            document.body.appendChild(
+                overlay
+            );
+
+
+            // Cerrar tocando el fondo
+
+            overlay.addEventListener(
+                "click",
+                event => {
+
+                    if (
+                        event.target ===
+                        overlay
+                    ) {
+
+                        finish(null);
+                    }
+                }
+            );
+        }
+    );
+}
+
+
+// ======================================================
+// 23. OBTENER CALORÍAS POR 100 G
+// ======================================================
+
+function getProductCalories100g(
+    product
+) {
+
+    if (!product) {
+        return 0;
+    }
+
+
+    /*
+        Esta función puede recibir:
+
+        1. El producto normalizado por nosotros.
+        2. El producto original de Open Food Facts.
+    */
+
+
+    if (
+        Number.isFinite(
+            Number(
+                product.calories100g
+            )
+        )
+    ) {
+
+        return Number(
+            product.calories100g
+        );
+    }
+
+
+    const nutriments =
+        product.nutriments ||
+        {};
+
+
+    let calories =
+        Number(
+            nutriments[
+                "energy-kcal_100g"
+            ]
+        );
+
+
+    if (
+        Number.isFinite(calories) &&
+        calories > 0
+    ) {
+
+        return calories;
+    }
+
+
+    const energyKj =
+        Number(
+            nutriments.energy_100g
+        );
+
+
+    if (
+        Number.isFinite(energyKj) &&
+        energyKj > 0
+    ) {
+
+        return (
+            energyKj /
+            4.184
+        );
+    }
+
+
+    return 0;
+}
+
+
+// ======================================================
+// 24. OBTENER PROTEÍNA POR 100 G
+// ======================================================
+
+function getProductProtein100g(
+    product
+) {
+
+    if (!product) {
+        return 0;
+    }
+
+
+    if (
+        Number.isFinite(
+            Number(
+                product.protein100g
+            )
+        )
+    ) {
+
+        return Number(
+            product.protein100g
+        );
+    }
+
+
+    return (
+        Number(
+            product
+                .nutriments
+                ?.proteins_100g
+        ) ||
+        0
+    );
+}
+
+
+// ======================================================
+// 25. ESTIMAR GRAMOS SEGÚN UNIDAD
+// ======================================================
 
 function getProductUnitGrams(
     product,
     unit
 ) {
 
-    const texto = (
-        (product.product_name || "") +
-        " " +
-        (product.brands || "") +
-        " " +
-        (product.categories || "")
-    ).toLowerCase();
+    const name =
+        normalize(
+            [
+                product?.name,
+                product?.brand,
+                product?.product_name,
+                product?.brands
+            ]
+                .filter(Boolean)
+                .join(" ")
+        );
 
 
+    // ==============================================
     // AVENA
+    // ==============================================
+
     if (
-        texto.includes("avena") ||
-        texto.includes("oat")
+        name.includes("avena")
     ) {
 
-        if (unit === "tbsp") return 10;
-        if (unit === "tsp") return 3.3;
-        if (unit === "unit") return 40;
-        if (unit === "portion") return 40;
+        if (
+            unit === "tbsp"
+        ) {
+            return 10;
+        }
+
+
+        if (
+            unit === "tsp"
+        ) {
+            return 3.3;
+        }
+
+
+        if (
+            unit === "unit"
+        ) {
+            return 40;
+        }
+
+
+        return 40;
     }
 
 
-    // AZÚCAR
+    // ==============================================
+    // AZÚCAR / EDULCORANTE
+    // ==============================================
+
     if (
-        texto.includes("azucar") ||
-        texto.includes("azúcar") ||
-        texto.includes("sugar")
+        name.includes("azucar") ||
+        name.includes("edulcorante") ||
+        name.includes("hileret")
     ) {
 
-        if (unit === "tbsp") return 12;
-        if (unit === "tsp") return 4;
-        if (unit === "unit") return 100;
-        if (unit === "portion") return 12;
+        if (
+            unit === "tbsp"
+        ) {
+            return 12;
+        }
+
+
+        if (
+            unit === "tsp"
+        ) {
+            return 4;
+        }
+
+
+        return 12;
     }
 
 
+    // ==============================================
     // HARINA
+    // ==============================================
+
     if (
-        texto.includes("harina") ||
-        texto.includes("flour")
+        name.includes("harina")
     ) {
 
-        if (unit === "tbsp") return 8;
-        if (unit === "tsp") return 2.7;
-        if (unit === "unit") return 100;
-        if (unit === "portion") return 30;
+        if (
+            unit === "tbsp"
+        ) {
+            return 8;
+        }
+
+
+        if (
+            unit === "tsp"
+        ) {
+            return 2.7;
+        }
+
+
+        return 30;
     }
 
 
+    // ==============================================
     // ACEITE
+    // ==============================================
+
     if (
-        texto.includes("aceite") ||
-        texto.includes("oil")
+        name.includes("aceite")
     ) {
 
-        if (unit === "tbsp") return 13.5;
-        if (unit === "tsp") return 4.5;
-        if (unit === "unit") return 13.5;
-        if (unit === "portion") return 13.5;
+        if (
+            unit === "tbsp"
+        ) {
+            return 13.5;
+        }
+
+
+        if (
+            unit === "tsp"
+        ) {
+            return 4.5;
+        }
+
+
+        return 13.5;
     }
 
 
+    // ==============================================
     // LECHE
+    // ==============================================
+
     if (
-        texto.includes("leche") ||
-        texto.includes("milk")
+        name.includes("leche")
     ) {
 
-        if (unit === "tbsp") return 15;
-        if (unit === "tsp") return 5;
-        if (unit === "unit") return 200;
-        if (unit === "portion") return 200;
+        if (
+            unit === "tbsp"
+        ) {
+            return 15;
+        }
+
+
+        if (
+            unit === "tsp"
+        ) {
+            return 5;
+        }
+
+
+        if (
+            unit === "unit"
+        ) {
+            return 200;
+        }
+
+
+        return 200;
     }
 
 
+    // ==============================================
     // YOGUR
+    // ==============================================
+
     if (
-        texto.includes("yogur") ||
-        texto.includes("yogurt")
+        name.includes("yogur") ||
+        name.includes("yogurt")
     ) {
 
-        if (unit === "tbsp") return 15;
-        if (unit === "tsp") return 5;
-        if (unit === "unit") return 125;
-        if (unit === "portion") return 125;
+        if (
+            unit === "tbsp"
+        ) {
+            return 15;
+        }
+
+
+        if (
+            unit === "tsp"
+        ) {
+            return 5;
+        }
+
+
+        if (
+            unit === "unit"
+        ) {
+            return 125;
+        }
+
+
+        return 125;
     }
 
 
+    // ==============================================
     // GALLETITAS
+    // ==============================================
+
     if (
-        texto.includes("galleta") ||
-        texto.includes("cookie")
+        name.includes("gallet")
     ) {
 
-        if (unit === "unit") return 10;
-        if (unit === "portion") return 30;
+        if (
+            unit === "unit"
+        ) {
+            return 10;
+        }
+
+
+        return 30;
     }
 
 
-    // DEFAULT
-    if (unit === "tbsp") return 10;
-    if (unit === "tsp") return 3.3;
-    if (unit === "unit") return 30;
-    if (unit === "portion") return 30;
+    // ==============================================
+    // PORCIÓN DECLARADA POR OPEN FOOD FACTS
+    // ==============================================
 
-    return 1;
+    const original =
+        product?.originalProduct ||
+        product;
+
+
+    const servingQuantity =
+        Number(
+            original
+                ?.serving_quantity
+        );
+
+
+    if (
+        Number.isFinite(
+            servingQuantity
+        ) &&
+        servingQuantity > 0
+    ) {
+
+        return servingQuantity;
+    }
+
+
+    // ==============================================
+    // VALORES GENÉRICOS
+    // ==============================================
+
+    if (
+        unit === "tbsp"
+    ) {
+        return 10;
+    }
+
+
+    if (
+        unit === "tsp"
+    ) {
+        return 3.3;
+    }
+
+
+    if (
+        unit === "unit"
+    ) {
+        return 30;
+    }
+
+
+    return 30;
 }
 
 
-// ==========================================
-// NOMBRE DE UNIDAD
-// ==========================================
+// ======================================================
+// 26. NOMBRE DE LA UNIDAD
+// ======================================================
 
-function getUnitName(unit) {
+function getUnitName(
+    unit
+) {
 
-    if (unit === "tbsp") {
-        return "cucharada";
-    }
+    const units = {
 
-    if (unit === "tsp") {
-        return "cucharadita";
-    }
+        g:
+            "g",
 
-    if (unit === "unit") {
-        return "unidad";
-    }
+        ml:
+            "ml",
 
-    if (unit === "portion") {
-        return "porción";
-    }
+        tbsp:
+            "cucharada",
 
-    return "gramo";
+        tsp:
+            "cucharadita",
+
+        unit:
+            "unidad",
+
+        portion:
+            "porción"
+    };
+
+
+    return (
+        units[unit] ||
+        unit
+    );
 }
 
 
-// ==========================================
-// CALCULAR PRODUCTO ESCANEADO
-// ==========================================
+// ======================================================
+// 27. VARIABLES DEL SCANNER
+// ======================================================
+
+let html5QrCode =
+    null;
+
+
+window.scannedProductResult =
+    null;
+// Producto que estamos intentando resolver
+// mediante scanner.
+window.pendingProductSearch =
+    null;
+
+// ======================================================
+// 28. CALCULAR PRODUCTO ESCANEADO
+// ======================================================
 
 function calculateScannedProduct() {
 
-    if (!window.scannedProduct) {
+    const product =
+        window.scannedProductResult;
+
+
+    if (!product) {
         return;
     }
 
-    const product =
-        window.scannedProduct;
 
-    const amountElement =
+    const amountInput =
         document.getElementById(
             "productAmount"
         );
 
-    const unitElement =
+
+    const unitSelect =
         document.getElementById(
             "productUnit"
         );
 
-    if (!amountElement || !unitElement) {
-        return;
-    }
 
-    const cantidad =
-        parseFloat(
-            amountElement.value
-        ) || 0;
-
-    const unidad =
-        unitElement.value;
-
-    const gramosPorUnidad =
-        getProductUnitGrams(
-            product,
-            unidad
+    const caloriesElement =
+        document.getElementById(
+            "scannedCalories"
         );
 
-    let gramos;
 
-    if (unidad === "g") {
+    const proteinElement =
+        document.getElementById(
+            "scannedProtein"
+        );
 
-        gramos =
-            cantidad;
 
-    } else {
+    const amount =
+        Number(
+            amountInput?.value
+        ) || 1;
 
-        gramos =
-            cantidad *
-            gramosPorUnidad;
+
+    const unit =
+        unitSelect?.value ||
+        "g";
+
+
+    let grams =
+        amount;
+
+
+    if (
+        unit === "ml"
+    ) {
+
+        grams =
+            amount;
+
+    } else if (
+        unit !== "g"
+    ) {
+
+        grams =
+            amount *
+            getProductUnitGrams(
+                product,
+                unit
+            );
     }
 
-    const calorias100 =
-        Number(
-            product.nutriments?.[
-                "energy-kcal_100g"
-            ]
-        ) || 0;
 
-    const proteinas100 =
-        Number(
-            product.nutriments?.[
-                "proteins_100g"
-            ]
-        ) || 0;
+    const calories100 =
+        getProductCalories100g(
+            product
+        );
 
-    const calorias =
-        calorias100 *
-        gramos /
+
+    const protein100 =
+        getProductProtein100g(
+            product
+        );
+
+
+    const calories =
+        calories100 *
+        grams /
         100;
 
-    const proteinas =
-        proteinas100 *
-        gramos /
+
+    const protein =
+        protein100 *
+        grams /
         100;
 
-    const resultElement =
-        document.getElementById(
-            "scannedProductResult"
-        );
 
-    if (resultElement) {
+    product.gramos =
+        grams;
 
-        resultElement.innerHTML = `
-            <strong>
-                ${Math.round(calorias)} kcal
-            </strong>
+    product.calorias =
+        calories;
 
-            <br>
+    product.proteinas =
+        protein;
 
-            <span>
-                ${proteinas.toFixed(1)} g de proteína
-            </span>
-        `;
+
+    if (caloriesElement) {
+
+        caloriesElement.textContent =
+            `${Math.round(calories)} kcal`;
     }
 
-    const conversionInfo =
-        document.getElementById(
-            "productConversionInfo"
-        );
 
-    if (conversionInfo) {
+    if (proteinElement) {
 
-        if (unidad === "g") {
-
-            conversionInfo.textContent =
-                `${gramos.toFixed(0)} g`;
-
-        } else {
-
-            conversionInfo.textContent =
-                `≈ ${gramos.toFixed(1)} g (${gramosPorUnidad} g por ${getUnitName(unidad)})`;
-        }
+        proteinElement.textContent =
+            `${protein.toFixed(1)} g`;
     }
-
-    window.scannedProductResult = {
-
-        nombre:
-            product.product_name ||
-            "Producto",
-
-        marca:
-            product.brands ||
-            "",
-
-        gramos:
-            gramos,
-
-        calorias:
-            calorias,
-
-        proteinas:
-            proteinas
-    };
 }
 
 
-// ==========================================
-// ESCÁNER
-// ==========================================
+// ======================================================
+// 29. MOSTRAR PRODUCTO ESCANEADO
+// ======================================================
 
-let html5QrCode = null;
+function showScannedProduct(
+    product
+) {
+
+    if (!product) {
+        return;
+    }
+
+
+    const normalized =
+        normalizeOpenFoodFactsProduct(
+            product
+        );
+
+
+    if (!normalized) {
+
+        alert(
+            "No pude leer la información nutricional del producto."
+        );
+
+        return;
+    }
+
+
+    window.scannedProductResult =
+        normalized;
+
+
+    const container =
+        document.getElementById(
+            "scannedProductContainer"
+        );
+
+
+    const productName =
+        document.getElementById(
+            "scannedProductName"
+        );
+
+
+    const productBrand =
+        document.getElementById(
+            "scannedProductBrand"
+        );
+
+
+    const productImage =
+        document.getElementById(
+            "scannedProductImage"
+        );
+
+
+    const amountInput =
+        document.getElementById(
+            "productAmount"
+        );
+
+
+    const unitSelect =
+        document.getElementById(
+            "productUnit"
+        );
+
+
+    if (productName) {
+
+        productName.textContent =
+            normalized.name;
+    }
+
+
+    if (productBrand) {
+
+        productBrand.textContent =
+            normalized.brand ||
+            "Marca no especificada";
+    }
+
+
+    if (productImage) {
+
+        if (normalized.image) {
+
+            productImage.src =
+                normalized.image;
+
+            productImage.style.display =
+                "block";
+
+        } else {
+
+            productImage.style.display =
+                "none";
+        }
+    }
+
+
+    if (amountInput) {
+
+        amountInput.value =
+            1;
+    }
+
+
+    if (unitSelect) {
+
+        unitSelect.value =
+            "unit";
+    }
+
+
+    if (container) {
+
+        container.style.display =
+            "block";
+    }
+
+
+    calculateScannedProduct();
+}
+
+
+// ======================================================
+// 30. INICIAR SCANNER
+// ======================================================
 
 async function startScanner() {
 
@@ -1462,37 +3803,73 @@ async function startScanner() {
             "scannerContainer"
         );
 
-    const scannerStatus =
+
+    const reader =
         document.getElementById(
-            "scannerStatus"
+            "reader"
         );
 
-    if (!scannerContainer || !scannerStatus) {
+
+    if (
+        !scannerContainer ||
+        !reader
+    ) {
+
+        alert(
+            "No encontré el lector de códigos de barras."
+        );
+
         return;
     }
+
+
+    if (
+        typeof Html5Qrcode ===
+        "undefined"
+    ) {
+
+        alert(
+            "El lector de códigos de barras no está disponible."
+        );
+
+        return;
+    }
+
 
     scannerContainer.style.display =
         "block";
 
-    scannerStatus.textContent =
-        "Solicitando acceso a la cámara...";
 
-    try {
+    if (html5QrCode) {
 
-        if (
-            typeof Html5Qrcode ===
-            "undefined"
-        ) {
+        try {
 
-            throw new Error(
-                "No se cargó la librería del escáner."
-            );
+            await html5QrCode.stop();
+
+        } catch (_) {
+
+            // El scanner quizá todavía no estaba activo.
         }
 
-        html5QrCode =
-            new Html5Qrcode(
-                "scannerVideo"
-            );
+
+        try {
+
+            html5QrCode.clear();
+
+        } catch (_) {
+
+            // Ignorar.
+        }
+    }
+
+
+    html5QrCode =
+        new Html5Qrcode(
+            "reader"
+        );
+
+
+    try {
 
         await html5QrCode.start(
 
@@ -1505,308 +3882,1167 @@ async function startScanner() {
                 fps: 10,
 
                 qrbox: {
-                    width: 300,
+                    width: 250,
                     height: 150
-                },
-
-                formatsToSupport: [
-                    Html5QrcodeSupportedFormats.EAN_13,
-                    Html5QrcodeSupportedFormats.EAN_8,
-                    Html5QrcodeSupportedFormats.UPC_A,
-                    Html5QrcodeSupportedFormats.UPC_E
-                ]
+                }
             },
 
-
-            async codigo => {
-
-                console.log(
-                    "Código detectado:",
-                    codigo
-                );
-
-                scannerStatus.textContent =
-                    "Código detectado: " +
-                    codigo;
+            async decodedText => {
 
                 try {
 
                     await html5QrCode.stop();
 
-                } catch (error) {
+                } catch (_) {
 
-                    console.log(error);
+                    // Ignorar.
                 }
+
 
                 scannerContainer.style.display =
                     "none";
 
-                scannerStatus.textContent =
-                    "Buscando producto...";
 
-                const producto =
+                const product =
                     await buscarProductoOpenFoodFacts(
-                        codigo
+                        decodedText
                     );
 
-                if (!producto) {
+
+                if (!product) {
 
                     alert(
-                        "No encontramos este producto en Open Food Facts."
+                        "No encontré ese producto en Open Food Facts."
                     );
-
-                    scannerStatus.textContent =
-                        "Producto no encontrado.";
 
                     return;
                 }
 
-                window.scannedProduct =
-                    producto;
 
-                const nameElement =
-                    document.getElementById(
-                        "scannedProductName"
-                    );
-
-                const brandElement =
-                    document.getElementById(
-                        "scannedProductBrand"
-                    );
-
-                const caloriesElement =
-                    document.getElementById(
-                        "scannedProductCalories"
-                    );
-
-                const proteinElement =
-                    document.getElementById(
-                        "scannedProductProtein"
-                    );
-
-                const container =
-                    document.getElementById(
-                        "scannedProductContainer"
-                    );
-
-                if (nameElement) {
-
-                    nameElement.textContent =
-                        producto.product_name ||
-                        "Producto sin nombre";
-                }
-
-                if (brandElement) {
-
-                    brandElement.textContent =
-                        producto.brands
-                            ? "Marca: " +
-                              producto.brands
-                            : "";
-                }
-
-                if (caloriesElement) {
-
-                    caloriesElement.textContent =
-                        producto.nutriments?.[
-                            "energy-kcal_100g"
-                        ] || 0;
-                }
-
-                if (proteinElement) {
-
-                    proteinElement.textContent =
-                        producto.nutriments?.[
-                            "proteins_100g"
-                        ] || 0;
-                }
-
-                if (container) {
-
-                    container.style.display =
-                        "block";
-                }
-
-                const amount =
-                    document.getElementById(
-                        "productAmount"
-                    );
-
-                const unit =
-                    document.getElementById(
-                        "productUnit"
-                    );
-
-                if (amount) {
-                    amount.value = 1;
-                }
-
-                if (unit) {
-                    unit.value = "g";
-                }
-
-                calculateScannedProduct();
+                showScannedProduct(
+                    product
+                );
             },
 
-
             () => {
-                // Errores normales de lectura
-                // se ignoran.
+
+                /*
+                    Los errores de lectura mientras
+                    la cámara busca un código son normales.
+                    No mostramos nada.
+                */
             }
         );
-
-        scannerStatus.textContent =
-            "📷 Cámara activa. Apuntá al código de barras.";
 
     } catch (error) {
 
         console.error(
-            "Error iniciando cámara:",
+            "Error iniciando scanner:",
             error
         );
 
-        scannerStatus.textContent =
-            "❌ No se pudo abrir la cámara: " +
-            error.message;
+
+        scannerContainer.style.display =
+            "none";
+
+
+        alert(
+            "No pude iniciar la cámara. Revisá los permisos del navegador."
+        );
     }
 }
 
 
-// ==========================================
-// GUARDAR COMIDAS
-// ==========================================
+// ======================================================
+// 31. DETECTAR CANTIDAD DE PRODUCTO EN TEXTO
+// ======================================================
 
-function getMeals() {
+function getProductAmountFromText(
+    text,
+    product
+) {
+
+    const normalized =
+        normalize(text);
+
+
+    let quantity =
+        findNumber(
+            normalized
+        );
+
+
+    if (
+        quantity === null ||
+        !Number.isFinite(quantity)
+    ) {
+
+        quantity = 1;
+    }
+
+
+    // ==============================================
+    // GRAMOS
+    // ==============================================
+
+    const gramsMatch =
+        normalized.match(
+            /(\d+(?:[.,]\d+)?)\s*(?:g|gr|gramo|gramos)\b/
+        );
+
+
+    if (gramsMatch) {
+
+        return {
+
+            grams:
+                parseFloat(
+                    gramsMatch[1]
+                        .replace(",", ".")
+                ),
+
+            amount:
+                parseFloat(
+                    gramsMatch[1]
+                        .replace(",", ".")
+                ),
+
+            unit:
+                "g"
+        };
+    }
+
+
+    // ==============================================
+    // MILILITROS
+    // ==============================================
+
+    const mlMatch =
+        normalized.match(
+            /(\d+(?:[.,]\d+)?)\s*(?:ml|mililitro|mililitros|cc)\b/
+        );
+
+
+    if (mlMatch) {
+
+        const amount =
+            parseFloat(
+                mlMatch[1]
+                    .replace(",", ".")
+            );
+
+
+        return {
+
+            grams:
+                amount,
+
+            amount:
+                amount,
+
+            unit:
+                "ml"
+        };
+    }
+
+
+    // ==============================================
+    // CUCHARADITA
+    // ==============================================
+
+    if (
+        /\bcucharaditas?\b/.test(
+            normalized
+        )
+    ) {
+
+        return {
+
+            grams:
+                quantity *
+                getProductUnitGrams(
+                    product,
+                    "tsp"
+                ),
+
+            amount:
+                quantity,
+
+            unit:
+                "tsp"
+        };
+    }
+
+
+    // ==============================================
+    // CUCHARADA
+    // ==============================================
+
+    if (
+        /\bcucharadas?\b/.test(
+            normalized
+        )
+    ) {
+
+        return {
+
+            grams:
+                quantity *
+                getProductUnitGrams(
+                    product,
+                    "tbsp"
+                ),
+
+            amount:
+                quantity,
+
+            unit:
+                "tbsp"
+        };
+    }
+
+
+    // ==============================================
+    // TAZA
+    // ==============================================
+
+    if (
+        /\btazas?\b/.test(
+            normalized
+        )
+    ) {
+
+        return {
+
+            grams:
+                quantity *
+                200,
+
+            amount:
+                quantity,
+
+            unit:
+                "portion"
+        };
+    }
+
+
+    // ==============================================
+    // VASO
+    // ==============================================
+
+    if (
+        /\bvasos?\b/.test(
+            normalized
+        )
+    ) {
+
+        return {
+
+            grams:
+                quantity *
+                200,
+
+            amount:
+                quantity,
+
+            unit:
+                "portion"
+        };
+    }
+
+
+    // ==============================================
+    // UNIDAD
+    // ==============================================
+
+    if (
+        /\b(unidad|unidades)\b/.test(
+            normalized
+        )
+    ) {
+
+        return {
+
+            grams:
+                quantity *
+                getProductUnitGrams(
+                    product,
+                    "unit"
+                ),
+
+            amount:
+                quantity,
+
+            unit:
+                "unit"
+        };
+    }
+
+
+    // ==============================================
+    // PORCIÓN / VALOR POR DEFECTO
+    // ==============================================
+
+    return {
+
+        grams:
+            quantity *
+            getProductUnitGrams(
+                product,
+                "unit"
+            ),
+
+        amount:
+            quantity,
+
+        unit:
+            "unit"
+    };
+}
+
+
+// ======================================================
+// 32. CONVERTIR PRODUCTO EN ALIMENTO
+// ======================================================
+
+function convertSelectedProductToMealItem(
+    product,
+    originalText
+) {
+
+    if (!product) {
+        return null;
+    }
+
+
+    const amount =
+        getProductAmountFromText(
+            originalText,
+            product
+        );
+
+
+    const calories100 =
+        getProductCalories100g(
+            product
+        );
+
+
+    const protein100 =
+        getProductProtein100g(
+            product
+        );
+
+
+    const calories =
+        calories100 *
+        amount.grams /
+        100;
+
+
+    const protein =
+        protein100 *
+        amount.grams /
+        100;
+
+
+    const displayName =
+        [
+            product.name,
+            product.brand
+        ]
+            .filter(Boolean)
+            .join(" · ");
+
+
+    return {
+
+        key:
+            "product_" +
+            (
+                product.code ||
+                normalize(
+                    displayName
+                )
+            ),
+
+        name:
+            displayName ||
+            "Producto",
+
+        calories:
+            calories,
+
+        protein:
+            protein,
+
+        quantity:
+            amount.amount,
+
+        grams:
+            amount.grams,
+
+        unit:
+            amount.unit,
+
+        brandedProduct:
+            true
+    };
+}
+
+
+// ======================================================
+// 33. EVITAR DUPLICADOS ENTRE GENÉRICO Y MARCA
+// ======================================================
+
+function removeGenericFoodsForSelectedProduct(
+    genericResults,
+    searchText
+) {
+
+    if (
+        !Array.isArray(
+            genericResults
+        )
+    ) {
+
+        return [];
+    }
+
+
+    const normalizedSearch =
+        normalize(
+            searchText
+        );
+
+
+    return genericResults.filter(
+        item => {
+
+            const itemName =
+                normalize(
+                    item.name ||
+                    ""
+                );
+
+
+            const definition =
+                foodDefinitions.find(
+                    def =>
+                        def.key ===
+                        item.key
+                );
+
+
+            const terms =
+                definition
+                    ?.terms ||
+                [];
+
+
+            const matchesSearch =
+                terms.some(
+                    term =>
+
+                        normalizedSearch.includes(
+                            normalize(term)
+                        )
+                ) ||
+                (
+                    itemName &&
+                    normalizedSearch.includes(
+                        itemName
+                    )
+                );
+
+
+            return !matchesSearch;
+        }
+    );
+}
+
+
+// ======================================================
+// 34. ANALIZAR COMIDA + PRODUCTOS DE MARCA
+// ======================================================
+
+async function analyzeMealWithProducts(
+    description
+) {
+
+    /*
+        Primero analizamos los alimentos
+        genéricos de nuestra base interna.
+    */
+
+    let genericResults =
+        analyzeMeal(
+            description
+        );
+
+
+    const selectedProducts =
+        [];
+
+
+    const searches =
+        extractPossibleProductSearches(
+            description
+        );
+
+
+    if (
+        searches.length === 0
+    ) {
+
+        window
+            .calorieTrackSelectedProducts =
+            [];
+
+
+        return genericResults;
+    }
+
+
+    const segments =
+        splitMealIntoSegments(
+            description
+        );
+
+
+    for (
+        const searchText
+        of searches
+    ) {
+
+        let products = [];
+
+
+        try {
+
+            products =
+                await buscarProductosPorNombre(
+                    searchText
+                );
+
+        } catch (error) {
+
+            console.error(
+                `No se pudo buscar "${searchText}":`,
+                error
+            );
+
+
+            continue;
+        }
+
+
+                if (
+            !products ||
+            products.length === 0
+        ) {
+
+            /*
+                Open Food Facts no encontró el texto exacto.
+
+                Antes simplemente hacíamos "continue",
+                por eso marcas como "Hileret Light"
+                desaparecían silenciosamente.
+
+                Ahora intentamos búsquedas progresivamente
+                más simples.
+            */
+
+            const searchWords =
+                normalize(searchText)
+                    .split(/\s+/)
+                    .filter(Boolean);
+
+
+            /*
+                Ejemplo:
+
+                "hileret light"
+                    ↓
+                primero busca "hileret light"
+                    ↓
+                si no encuentra, busca "hileret"
+            */
+
+            if (searchWords.length > 1) {
+
+                for (
+                    let wordCount =
+                        searchWords.length - 1;
+
+                    wordCount >= 1;
+
+                    wordCount--
+                ) {
+
+                    const simplerSearch =
+                        searchWords
+                            .slice(
+                                0,
+                                wordCount
+                            )
+                            .join(" ");
+
+
+                    /*
+                        Evitamos búsquedas demasiado
+                        genéricas.
+                    */
+
+                    if (
+                        simplerSearch.length < 3
+                    ) {
+                        continue;
+                    }
+
+
+                    try {
+
+                        const fallbackProducts =
+                            await buscarProductosPorNombre(
+                                simplerSearch
+                            );
+
+
+                        if (
+                            Array.isArray(
+                                fallbackProducts
+                            ) &&
+                            fallbackProducts.length > 0
+                        ) {
+
+                            products =
+                                fallbackProducts;
+
+                            break;
+                        }
+
+                    } catch (error) {
+
+                        console.error(
+                            `No se pudo buscar "${simplerSearch}":`,
+                            error
+                        );
+                    }
+                }
+            }
+
+
+            /*
+                Si ni siquiera la búsqueda simplificada
+                encontró algo, no inventamos calorías.
+            */
+
+           if (
+    !products ||
+    products.length === 0
+) {
+
+    console.warn(
+        `CalorieTrack: no se encontró el producto "${searchText}".`
+    );
+
+
+    const action =
+        await seleccionarAccionProductoNoEncontrado(
+            searchText
+        );
+
+
+    /*
+        POR AHORA:
+
+        Solo estamos comprobando
+        que el selector funcione.
+
+        Scanner y carga manual
+        se conectarán después.
+    */
+
+
+    if (
+        action === "generic"
+    ) {
+
+        // Mantener alimento genérico.
+
+        continue;
+    }
+
+
+    if (
+    action === "scan"
+) {
+
+    /*
+        Recordamos qué marca/producto
+        está intentando identificar.
+    */
+
+    window.pendingProductSearch =
+        searchText;
+
+
+    /*
+        Abrimos el scanner que CalorieTrack
+        ya tiene implementado.
+    */
+
+    await startScanner();
+
+
+    /*
+        Por ahora terminamos este intento.
+
+        En el siguiente paso conectaremos
+        el producto escaneado con "Hileret"
+        y con el cálculo de la comida.
+    */
+
+    continue;
+}
+
+
+    if (
+        action === "manual"
+    ) {
+
+        alert(
+            "En el próximo paso conectaremos la carga manual."
+        );
+
+        continue;
+    }
+
+
+    // Cancelar
+
+    continue;
+} 
+        }
+
+        let selected =
+            null;
+
+
+        if (
+            products.length === 1 &&
+            products[0].fromCache
+        ) {
+
+            selected =
+                products[0];
+
+        } else {
+
+            selected =
+                await seleccionarProductoEncontrado(
+                    searchText,
+                    products
+                );
+        }
+
+
+        if (!selected) {
+            continue;
+        }
+
+
+        /*
+            Buscamos el fragmento original donde
+            apareció esa marca/producto.
+
+            Esto nos permite saber si el usuario dijo:
+
+            "una cucharadita de Hileret Light"
+
+            o:
+
+            "2 galletitas Oreo"
+        */
+
+        const matchingSegment =
+            segments.find(
+                segment => {
+
+                    const cleaned =
+                        cleanProductSearchText(
+                            segment
+                        );
+
+
+                    return (
+                        normalize(
+                            cleaned
+                        ) ===
+                        normalize(
+                            searchText
+                        )
+                    );
+                }
+            ) ||
+            searchText;
+
+
+        const mealItem =
+            convertSelectedProductToMealItem(
+                selected,
+                matchingSegment
+            );
+
+
+        if (!mealItem) {
+            continue;
+        }
+
+
+        /*
+            Si el producto seleccionado representa
+            algo que ya estaba detectado como genérico,
+            quitamos el genérico para no contar dos veces.
+
+            Ejemplo:
+
+            "azúcar Hileret Light"
+
+            No queremos sumar:
+            Azúcar genérica + Hileret Light.
+        */
+
+        genericResults =
+            removeGenericFoodsForSelectedProduct(
+                genericResults,
+                searchText
+            );
+
+
+        selectedProducts.push(
+            mealItem
+        );
+
+
+        saveProductToCache(
+            searchText,
+            selected
+        );
+    }
+
+
+    window
+        .calorieTrackSelectedProducts =
+        selectedProducts;
+
+
+    return [
+        ...genericResults,
+        ...selectedProducts
+    ];
+}
+
+
+// ======================================================
+// 35. LOCALSTORAGE - COMIDAS
+// ======================================================
+
+const MEALS_STORAGE_KEY =
+    "calorieTrackMeals";
+
+
+function getSavedMeals() {
 
     try {
 
-        return JSON.parse(
+        const saved =
             localStorage.getItem(
-                "calorietrack_meals"
-            )
-        ) || [];
+                MEALS_STORAGE_KEY
+            );
+
+
+        if (!saved) {
+            return [];
+        }
+
+
+        const parsed =
+            JSON.parse(
+                saved
+            );
+
+
+        return Array.isArray(
+            parsed
+        )
+            ? parsed
+            : [];
 
     } catch (error) {
+
+        console.error(
+            "Error leyendo comidas guardadas:",
+            error
+        );
+
 
         return [];
     }
 }
 
 
-function saveMeals(meals) {
-
-    localStorage.setItem(
-        "calorietrack_meals",
-        JSON.stringify(meals)
-    );
-}
-
-
-// ==========================================
-// SABER SI UNA COMIDA ES DE HOY
-// ==========================================
-
-function isMealToday(meal) {
-
-    if (!meal || !meal.date) {
-        return false;
-    }
-
-    const mealDate =
-        new Date(meal.date);
-
-    const today =
-        new Date();
-
-    if (
-        Number.isNaN(
-            mealDate.getTime()
-        )
-    ) {
-        return false;
-    }
-
-    return (
-        mealDate.getFullYear() ===
-            today.getFullYear() &&
-
-        mealDate.getMonth() ===
-            today.getMonth() &&
-
-        mealDate.getDate() ===
-            today.getDate()
-    );
-}
-
-
-// ==========================================
-// OBJETIVO CALÓRICO
-// ==========================================
-
-const GOAL_STORAGE_KEY =
-    "calorietrack_goal";
-
-
-function getGoal() {
+function saveMeals(
+    meals
+) {
 
     try {
 
-        return JSON.parse(
-            localStorage.getItem(
-                GOAL_STORAGE_KEY
+        localStorage.setItem(
+            MEALS_STORAGE_KEY,
+            JSON.stringify(
+                meals
             )
-        ) || null;
+        );
 
     } catch (error) {
+
+        console.error(
+            "Error guardando comidas:",
+            error
+        );
+    }
+}
+
+
+// ======================================================
+// 36. FECHA LOCAL
+// ======================================================
+
+function getLocalDateKey(
+    date = new Date()
+) {
+
+    const year =
+        date.getFullYear();
+
+
+    const month =
+        String(
+            date.getMonth() + 1
+        )
+            .padStart(
+                2,
+                "0"
+            );
+
+
+    const day =
+        String(
+            date.getDate()
+        )
+            .padStart(
+                2,
+                "0"
+            );
+
+
+    return (
+        `${year}-${month}-${day}`
+    );
+}
+
+
+// ======================================================
+// 37. OBTENER COMIDAS DE HOY
+// ======================================================
+
+function getTodayMeals() {
+
+    const today =
+        getLocalDateKey();
+
+
+    return getSavedMeals()
+        .filter(
+            meal =>
+                meal.date ===
+                today
+        );
+}
+
+
+// ======================================================
+// 38. GUARDAR UNA COMIDA
+// ======================================================
+
+function saveMeal(
+    meal
+) {
+
+    if (!meal) {
+        return;
+    }
+
+
+    const meals =
+        getSavedMeals();
+
+
+    const now =
+        new Date();
+
+
+    meals.push({
+
+        id:
+            Date.now(),
+
+        date:
+            getLocalDateKey(
+                now
+            ),
+
+        createdAt:
+            now.toISOString(),
+
+        type:
+            meal.type ||
+            "Comida",
+
+        description:
+            meal.description ||
+            "",
+
+        calories:
+            Number(
+                meal.calories
+            ) ||
+            0,
+
+        protein:
+            Number(
+                meal.protein
+            ) ||
+            0,
+
+        foods:
+            Array.isArray(
+                meal.foods
+            )
+                ? meal.foods
+                : []
+    });
+
+
+    saveMeals(
+        meals
+    );
+}
+
+
+// ======================================================
+// 39. ELIMINAR COMIDA
+// ======================================================
+
+function deleteMeal(
+    mealId
+) {
+
+    const meals =
+        getSavedMeals();
+
+
+    const filtered =
+        meals.filter(
+            meal =>
+                Number(meal.id) !==
+                Number(mealId)
+        );
+
+
+    saveMeals(
+        filtered
+    );
+
+
+    updateDashboard();
+}
+
+
+// ======================================================
+// 40. OBJETIVO
+// ======================================================
+
+const GOAL_STORAGE_KEY =
+    "calorieTrackGoal";
+
+
+function getSavedGoal() {
+
+    try {
+
+        const saved =
+            localStorage.getItem(
+                GOAL_STORAGE_KEY
+            );
+
+
+        if (!saved) {
+            return null;
+        }
+
+
+        return JSON.parse(
+            saved
+        );
+
+    } catch (error) {
+
+        console.error(
+            "Error leyendo objetivo:",
+            error
+        );
+
 
         return null;
     }
 }
 
 
-function saveGoal(goal) {
+function saveGoal(
+    goal
+) {
 
-    localStorage.setItem(
-        GOAL_STORAGE_KEY,
-        JSON.stringify(goal)
-    );
+    if (!goal) {
+        return;
+    }
+
+
+    try {
+
+        localStorage.setItem(
+            GOAL_STORAGE_KEY,
+            JSON.stringify(
+                goal
+            )
+        );
+
+    } catch (error) {
+
+        console.error(
+            "Error guardando objetivo:",
+            error
+        );
+    }
 }
 
 
-// ==========================================
-// ACTIVIDAD
-// ==========================================
-
-function getActivityLabel(factor) {
-
-    const labels = {
-        "1.2":
-            "Sedentario",
-
-        "1.375":
-            "Actividad ligera",
-
-        "1.55":
-            "Actividad moderada",
-
-        "1.725":
-            "Actividad alta",
-
-        "1.9":
-            "Actividad muy alta"
-    };
-
-    return (
-        labels[String(factor)] ||
-        "Actividad seleccionada"
-    );
-}
-
-
-// ==========================================
-// CALCULAR OBJETIVO
-// MIFFLIN-ST JEOR
-// ==========================================
+// ======================================================
+// 41. CALCULAR CALORÍAS OBJETIVO
+// ======================================================
 
 function calculateGoalCalories(
     weight,
@@ -1817,600 +5053,593 @@ function calculateGoalCalories(
     goalType
 ) {
 
-    let bmr;
+    weight =
+        Number(weight);
 
-    // HOMBRE
-    if (sex === "male") {
+    height =
+        Number(height);
 
-        bmr =
-            (10 * weight) +
-            (6.25 * height) -
-            (5 * age) +
-            5;
-
-    // MUJER
-    } else {
-
-        bmr =
-            (10 * weight) +
-            (6.25 * height) -
-            (5 * age) -
-            161;
-    }
+    age =
+        Number(age);
 
 
-    // Gasto energético diario estimado
-    const tdee =
-        bmr * activity;
-
-
-    let targetCalories;
-    let goalLabel;
-
-
-    // DÉFICIT -15%
-    if (goalType === "deficit") {
-
-        targetCalories =
-            tdee * 0.85;
-
-        goalLabel =
-            "Déficit calórico";
-
-
-    // SUPERÁVIT +10%
-    } else if (
-        goalType === "surplus"
+    if (
+        !Number.isFinite(weight) ||
+        !Number.isFinite(height) ||
+        !Number.isFinite(age) ||
+        weight <= 0 ||
+        height <= 0 ||
+        age <= 0
     ) {
 
-        targetCalories =
-            tdee * 1.10;
-
-        goalLabel =
-            "Superávit calórico";
-
-
-    // MANTENIMIENTO
-    } else {
-
-        targetCalories =
-            tdee;
-
-        goalLabel =
-            "Mantenimiento";
+        return null;
     }
 
 
-    return {
+    /*
+        Fórmula Mifflin-St Jeor
+    */
 
-        weight:
-            weight,
+    let bmr;
 
-        sex:
-            sex,
 
-        height:
-            height,
+    if (
+        sex === "female"
+    ) {
 
-        age:
-            age,
+        bmr =
+            (
+                10 * weight
+            ) +
+            (
+                6.25 * height
+            ) -
+            (
+                5 * age
+            ) -
+            161;
 
-        activity:
-            activity,
+    } else {
 
-        activityLabel:
-            getActivityLabel(
-                activity
-            ),
+        bmr =
+            (
+                10 * weight
+            ) +
+            (
+                6.25 * height
+            ) -
+            (
+                5 * age
+            ) +
+            5;
+    }
 
-        goalType:
-            goalType,
 
-        goalLabel:
-            goalLabel,
+    const activityFactors = {
 
-        bmr:
-            Math.round(bmr),
+        sedentary:
+            1.2,
 
-        tdee:
-            Math.round(tdee),
+        light:
+            1.375,
 
-        targetCalories:
-            Math.round(
-                targetCalories
-            )
+        moderate:
+            1.55,
+
+        active:
+            1.725,
+
+        veryActive:
+            1.9
     };
+
+
+    const factor =
+        activityFactors[
+            activity
+        ] ||
+        1.2;
+
+
+    let calories =
+        bmr *
+        factor;
+
+
+    if (
+        goalType === "lose"
+    ) {
+
+        calories -=
+            400;
+
+    } else if (
+        goalType === "gain"
+    ) {
+
+        calories +=
+            300;
+    }
+
+
+    /*
+        Evitamos objetivos absurdamente bajos
+        por datos incorrectos.
+    */
+
+    calories =
+        Math.max(
+            1200,
+            calories
+        );
+
+
+    return Math.round(
+        calories
+    );
 }
 
 
-// ==========================================
-// MOSTRAR OBJETIVO
-// ==========================================
+// ======================================================
+// 42. MOSTRAR OBJETIVO
+// ======================================================
 
-function displayGoal(goal) {
+function displayGoal(
+    goal
+) {
 
     if (!goal) {
         return;
     }
 
-    const goalResult =
+
+    const targetCalories =
         document.getElementById(
-            "goalResult"
+            "targetCalories"
         );
+
 
     const goalCalories =
         document.getElementById(
             "goalCalories"
         );
 
-    const goalBMR =
-        document.getElementById(
-            "goalBMR"
-        );
 
-    const goalTDEE =
-        document.getElementById(
-            "goalTDEE"
-        );
+    const dailyGoal =
+        Number(
+            goal.calories
+        ) ||
+        0;
 
-    const goalExplanation =
-        document.getElementById(
-            "goalExplanation"
-        );
+
+    if (targetCalories) {
+
+        targetCalories.textContent =
+            Math.round(
+                dailyGoal
+            );
+    }
+
 
     if (goalCalories) {
 
         goalCalories.textContent =
             Math.round(
-                goal.targetCalories
+                dailyGoal
             );
-    }
-
-    if (goalBMR) {
-
-        goalBMR.textContent =
-            Math.round(
-                goal.bmr
-            );
-    }
-
-    if (goalTDEE) {
-
-        goalTDEE.textContent =
-            Math.round(
-                goal.tdee
-            );
-    }
-
-    if (goalExplanation) {
-
-        goalExplanation.textContent =
-            `${goal.goalLabel} · ${goal.activityLabel}. ` +
-            `El cálculo es una estimación basada en la fórmula Mifflin-St Jeor y el nivel de actividad seleccionado.`;
-    }
-
-    if (goalResult) {
-
-        goalResult.style.display =
-            "block";
     }
 }
 
 
-// ==========================================
-// CARGAR OBJETIVO GUARDADO
-// ==========================================
+// ======================================================
+// 43. CARGAR OBJETIVO GUARDADO
+// ======================================================
 
 function loadSavedGoal() {
 
     const goal =
-        getGoal();
+        getSavedGoal();
+
 
     if (!goal) {
         return;
     }
 
-    const goalWeight =
-        document.getElementById(
-            "goalWeight"
+
+    displayGoal(
+        goal
+    );
+
+
+    const fields = {
+
+        goalWeight:
+            goal.weight,
+
+        goalHeight:
+            goal.height,
+
+        goalAge:
+            goal.age,
+
+        goalSex:
+            goal.sex,
+
+        goalActivity:
+            goal.activity,
+
+        goalType:
+            goal.goalType
+    };
+
+
+    Object.entries(
+        fields
+    )
+        .forEach(
+            ([id, value]) => {
+
+                const element =
+                    document.getElementById(
+                        id
+                    );
+
+
+                if (
+                    element &&
+                    value !== undefined &&
+                    value !== null
+                ) {
+
+                    element.value =
+                        value;
+                }
+            }
         );
-
-    const goalSex =
-        document.getElementById(
-            "goalSex"
-        );
-
-    const goalHeight =
-        document.getElementById(
-            "goalHeight"
-        );
-
-    const goalAge =
-        document.getElementById(
-            "goalAge"
-        );
-
-    const goalActivity =
-        document.getElementById(
-            "goalActivity"
-        );
-
-    const goalType =
-        document.getElementById(
-            "goalType"
-        );
-
-
-    if (goalWeight) {
-        goalWeight.value =
-            goal.weight;
-    }
-
-    if (goalSex) {
-        goalSex.value =
-            goal.sex;
-    }
-
-    if (goalHeight) {
-        goalHeight.value =
-            goal.height;
-    }
-
-    if (goalAge) {
-        goalAge.value =
-            goal.age;
-    }
-
-    if (goalActivity) {
-        goalActivity.value =
-            goal.activity;
-    }
-
-    if (goalType) {
-        goalType.value =
-            goal.goalType;
-    }
-
-    displayGoal(goal);
 }
 
 
-// ==========================================
-// TARJETA OBJETIVO DIARIO
-// ==========================================
-
-function updateDailyGoalCard(
-    consumedCalories
-) {
-
-    const card =
-        document.getElementById(
-            "dailyGoalCard"
-        );
-
-    const consumed =
-        document.getElementById(
-            "dailyConsumedCalories"
-        );
-
-    const target =
-        document.getElementById(
-            "dailyTargetCalories"
-        );
-
-    const remaining =
-        document.getElementById(
-            "dailyRemainingCalories"
-        );
-
-    const progress =
-        document.getElementById(
-            "dailyProgress"
-        );
-
-    if (
-        !card ||
-        !consumed ||
-        !target ||
-        !remaining ||
-        !progress
-    ) {
-        return;
-    }
-
-    const goal =
-        getGoal();
-
-    if (
-        !goal ||
-        !goal.targetCalories
-    ) {
-
-        card.style.display =
-            "none";
-
-        return;
-    }
-
-
-    const targetCalories =
-        Number(
-            goal.targetCalories
-        ) || 0;
-
-    const calories =
-        Number(
-            consumedCalories
-        ) || 0;
-
-    const difference =
-        targetCalories -
-        calories;
-
-
-    consumed.textContent =
-        Math.round(calories);
-
-    target.textContent =
-        Math.round(
-            targetCalories
-        );
-
-
-    if (difference >= 0) {
-
-        remaining.textContent =
-            `${Math.round(difference)} kcal restantes`;
-
-    } else {
-
-        remaining.textContent =
-            `${Math.round(Math.abs(difference))} kcal sobre el objetivo`;
-    }
-
-
-    const percentage =
-        targetCalories > 0
-            ? Math.min(
-                (calories /
-                    targetCalories) *
-                    100,
-                100
-            )
-            : 0;
-
-
-    progress.style.width =
-        `${percentage}%`;
-
-    card.style.display =
-        "block";
-}
-
-
-// ==========================================
-// ACTUALIZAR DASHBOARD
-// SOLO COMIDAS DE HOY
-// ==========================================
+// ======================================================
+// 44. ACTUALIZAR DASHBOARD
+// ======================================================
 
 function updateDashboard() {
 
     const meals =
-        getMeals();
+        getTodayMeals();
 
-    const todayMeals =
-        meals.filter(
-            isMealToday
+
+    const totalCalories =
+        meals.reduce(
+            (
+                total,
+                meal
+            ) =>
+                total +
+                (
+                    Number(
+                        meal.calories
+                    ) ||
+                    0
+                ),
+            0
         );
 
 
-    let totalCalories = 0;
-    let totalProtein = 0;
+    const totalProtein =
+        meals.reduce(
+            (
+                total,
+                meal
+            ) =>
+                total +
+                (
+                    Number(
+                        meal.protein
+                    ) ||
+                    0
+                ),
+            0
+        );
 
 
-    todayMeals.forEach(meal => {
-
-        totalCalories +=
-            Number(
-                meal.calories
-            ) || 0;
-
-        totalProtein +=
-            Number(
-                meal.protein
-            ) || 0;
-    });
+    const goal =
+        getSavedGoal();
 
 
-    const totalCaloriesElement =
+    const goalCalories =
+        Number(
+            goal?.calories
+        ) ||
+        0;
+
+
+    const remaining =
+        goalCalories > 0
+            ? Math.max(
+                0,
+                goalCalories -
+                totalCalories
+            )
+            : 0;
+
+
+    const consumedCalories =
         document.getElementById(
-            "totalCalories"
+            "consumedCalories"
         );
 
-    const totalProteinElement =
+
+    const consumedProtein =
         document.getElementById(
-            "totalProtein"
+            "consumedProtein"
         );
 
-    const totalMealsElement =
+
+    const remainingCalories =
+        document.getElementById(
+            "remainingCalories"
+        );
+
+
+    const totalMeals =
         document.getElementById(
             "totalMeals"
         );
 
 
-    if (totalCaloriesElement) {
+    if (consumedCalories) {
 
-        totalCaloriesElement.textContent =
+        consumedCalories.textContent =
             Math.round(
                 totalCalories
             );
     }
 
-    if (totalProteinElement) {
 
-        totalProteinElement.textContent =
+    if (consumedProtein) {
+
+        consumedProtein.textContent =
             Math.round(
                 totalProtein
             );
     }
 
-    if (totalMealsElement) {
 
-        totalMealsElement.textContent =
-            todayMeals.length;
+    if (remainingCalories) {
+
+        remainingCalories.textContent =
+            goalCalories > 0
+                ? Math.round(
+                    remaining
+                )
+                : "--";
     }
 
 
-    updateDailyGoalCard(
-        totalCalories
-    );
+    if (totalMeals) {
 
-    renderMeals();
+        totalMeals.textContent =
+            meals.length;
+    }
+
+
+    renderMeals(
+        meals
+    );
 }
 
 
-// ==========================================
-// MOSTRAR COMIDAS
-// ==========================================
+// ======================================================
+// 45. MOSTRAR COMIDAS GUARDADAS
+// ======================================================
 
-function renderMeals() {
+function renderMeals(
+    meals = getTodayMeals()
+) {
 
-    const mealsList =
+    const container =
         document.getElementById(
             "mealsList"
         );
 
-    if (!mealsList) {
-        return;
-    }
 
-    const meals =
-        getMeals();
-
-    const todayMeals =
-        meals
-            .map(
-                (meal, originalIndex) => ({
-                    meal,
-                    originalIndex
-                })
-            )
-            .filter(
-                item =>
-                    isMealToday(
-                        item.meal
-                    )
-            );
-
-
-    if (todayMeals.length === 0) {
-
-        mealsList.innerHTML = `
-
-            <div
-                id="emptyMeals"
-                class="empty-state"
-            >
-                <p>
-                    Todavía no agregaste ninguna comida hoy.
-                </p>
-            </div>
-        `;
-
+    if (!container) {
         return;
     }
 
 
-    mealsList.innerHTML = "";
+    container.innerHTML =
+        "";
 
 
-    todayMeals.forEach(item => {
+    if (
+        !meals ||
+        meals.length === 0
+    ) {
 
-        const meal =
-            item.meal;
-
-        const originalIndex =
-            item.originalIndex;
-
-        const card =
+        const empty =
             document.createElement(
                 "div"
             );
 
-        card.className =
-            "dashboard-card";
 
-        card.innerHTML = `
+        empty.className =
+            "empty-meals";
 
-            <span>
-                ${meal.type || "Comida"}
-            </span>
 
-            <strong>
-                ${Math.round(meal.calories)} kcal
-            </strong>
+        empty.textContent =
+            "Todavía no registraste comidas hoy.";
 
-            <small>
-                ${Math.round(meal.protein)} g de proteína
-            </small>
 
-            <small>
-                ${meal.description || ""}
-            </small>
-
-            <button
-                type="button"
-                class="secondary-btn delete-meal"
-                data-index="${originalIndex}"
-                style="margin-top: 10px;"
-            >
-                Eliminar
-            </button>
-        `;
-
-        mealsList.appendChild(
-            card
+        container.appendChild(
+            empty
         );
-    });
 
 
-    document
-        .querySelectorAll(
-            ".delete-meal"
-        )
-        .forEach(button => {
+        return;
+    }
 
-            button.addEventListener(
-                "click",
-                () => {
 
-                    const index =
+    meals
+        .slice()
+        .reverse()
+        .forEach(
+            meal => {
+
+                const item =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                item.className =
+                    "meal-item";
+
+
+                const header =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                header.className =
+                    "meal-item-header";
+
+
+                const title =
+                    document.createElement(
+                        "strong"
+                    );
+
+
+                title.textContent =
+                    meal.type ||
+                    "Comida";
+
+
+                const calories =
+                    document.createElement(
+                        "span"
+                    );
+
+
+                calories.textContent =
+                    `${Math.round(
                         Number(
-                            button.dataset.index
+                            meal.calories
+                        ) ||
+                        0
+                    )} kcal`;
+
+
+                header.appendChild(
+                    title
+                );
+
+
+                header.appendChild(
+                    calories
+                );
+
+
+                const description =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                description.className =
+                    "meal-item-description";
+
+
+                description.textContent =
+                    meal.description ||
+                    "";
+
+
+                const nutrition =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                nutrition.className =
+                    "meal-item-nutrition";
+
+
+                nutrition.textContent =
+                    `${Number(
+                        meal.protein ||
+                        0
+                    ).toFixed(1)} g proteína`;
+
+
+                const deleteButton =
+                    document.createElement(
+                        "button"
+                    );
+
+
+                deleteButton.type =
+                    "button";
+
+
+                deleteButton.className =
+                    "delete-meal-btn";
+
+
+                deleteButton.textContent =
+                    "Eliminar";
+
+
+                deleteButton.addEventListener(
+                    "click",
+                    () => {
+
+                        deleteMeal(
+                            meal.id
                         );
+                    }
+                );
 
-                    const meals =
-                        getMeals();
 
-                    meals.splice(
-                        index,
-                        1
+                item.appendChild(
+                    header
+                );
+
+
+                if (
+                    meal.description
+                ) {
+
+                    item.appendChild(
+                        description
                     );
-
-                    saveMeals(
-                        meals
-                    );
-
-                    updateDashboard();
                 }
-            );
-        });
+
+
+                item.appendChild(
+                    nutrition
+                );
+
+
+                item.appendChild(
+                    deleteButton
+                );
+
+
+                container.appendChild(
+                    item
+                );
+            }
+        );
 }
 
 
-// ==========================================
-// MODAL
-// ==========================================
+// ======================================================
+// 46. ABRIR / CERRAR MODAL DE COMIDA
+// ======================================================
 
 function openModal() {
 
@@ -2419,11 +5648,85 @@ function openModal() {
             "mealModal"
         );
 
-    if (modal) {
 
-        modal.style.display =
-            "flex";
+    if (!modal) {
+        return;
     }
+
+
+    /*
+        Algunos HTML anteriores tenían
+        style="display:none" directamente.
+
+        Lo eliminamos para que la clase active
+        pueda controlar correctamente el modal.
+    */
+
+    modal.style.removeProperty(
+        "display"
+    );
+
+
+    modal.classList.add(
+        "active"
+    );
+
+
+    window.currentMeal =
+        null;
+
+
+    window
+        .calorieTrackSelectedProducts =
+        [];
+
+
+    const resultSection =
+        document.getElementById(
+            "resultSection"
+        );
+
+
+    if (resultSection) {
+
+        resultSection.style.display =
+            "none";
+    }
+}
+
+
+async function stopScannerSafely() {
+
+    if (!html5QrCode) {
+        return;
+    }
+
+
+    try {
+
+        await html5QrCode.stop();
+
+    } catch (_) {
+
+        /*
+            Es normal si el scanner
+            todavía no estaba iniciado.
+        */
+    }
+
+
+    try {
+
+        html5QrCode.clear();
+
+    } catch (_) {
+
+        // Ignorar.
+    }
+
+
+    html5QrCode =
+        null;
 }
 
 
@@ -2434,26 +5737,480 @@ function closeModal() {
             "mealModal"
         );
 
-    if (modal) {
 
-        modal.style.display =
+    if (!modal) {
+        return;
+    }
+
+
+    /*
+        Esta corrección es importante:
+
+        Quitamos "active" Y forzamos display:none.
+
+        Así funciona tanto con la versión nueva
+        del CSS como con versiones anteriores
+        del HTML/CSS que mostraban el modal
+        mediante display:flex.
+    */
+
+    modal.classList.remove(
+        "active"
+    );
+
+
+    modal.style.display =
+        "none";
+
+
+    const scannerContainer =
+        document.getElementById(
+            "scannerContainer"
+        );
+
+
+    if (scannerContainer) {
+
+        scannerContainer.style.display =
             "none";
     }
+
+
+    stopScannerSafely();
 }
 
 
-// ==========================================
-// INICIALIZACIÓN
-// ==========================================
+// ======================================================
+// 47. EVENTOS PRINCIPALES
+// ======================================================
+
+// ======================================================
 
 document.addEventListener(
     "DOMContentLoaded",
     () => {
 
+        // ==================================================
+        // ABRIR MODAL DE COMIDA
+        // ==================================================
 
-        // ==================================
-        // OBJETIVO DE CALORÍAS
-        // ==================================
+        [
+            "openMealModal",
+            "openMealModal2",
+            "headerAddMeal",
+            "dashboardAddMeal",
+            "mobileAddMeal"
+        ].forEach(
+            id => {
+
+                const button =
+                    document.getElementById(
+                        id
+                    );
+
+                if (button) {
+
+                    button.addEventListener(
+                        "click",
+                        event => {
+
+                            event.preventDefault();
+
+                            openModal();
+                        }
+                    );
+                }
+            }
+        );
+
+
+        // ==================================================
+        // CERRAR MODAL DE COMIDA
+        // ==================================================
+
+        const mealOverlay =
+            document.getElementById(
+                "mealModalOverlay"
+            );
+
+
+        if (mealOverlay) {
+
+            mealOverlay.addEventListener(
+                "click",
+                closeModal
+            );
+        }
+
+
+        const mealModal =
+            document.getElementById(
+                "mealModal"
+            );
+
+
+        if (mealModal) {
+
+            mealModal.addEventListener(
+                "click",
+                event => {
+
+                    /*
+                        También permitimos cerrar si el
+                        usuario toca directamente el fondo
+                        exterior del modal.
+                    */
+
+                    if (
+                        event.target ===
+                        mealModal
+                    ) {
+
+                        closeModal();
+                    }
+                }
+            );
+        }
+
+
+        const closeMeal =
+            document.getElementById(
+                "closeMealModal"
+            );
+
+
+        if (closeMeal) {
+
+            closeMeal.addEventListener(
+                "click",
+                event => {
+
+                    event.preventDefault();
+
+                    closeModal();
+                }
+            );
+        }
+
+
+        // ==================================================
+        // FORMULARIO COMIDA
+        // ==================================================
+
+        const mealForm =
+            document.getElementById(
+                "mealForm"
+            );
+
+
+        if (mealForm) {
+
+            mealForm.addEventListener(
+                "submit",
+                async event => {
+
+                    event.preventDefault();
+
+
+                    const descriptionInput =
+                        document.getElementById(
+                            "mealDescription"
+                        );
+
+
+                    const description =
+                        descriptionInput
+                            ?.value
+                            ?.trim();
+
+
+                    if (!description) {
+
+                        alert(
+                            "Describí lo que comiste."
+                        );
+
+                        return;
+                    }
+
+
+                    const submitButton =
+                        mealForm.querySelector(
+                            '[type="submit"]'
+                        );
+
+
+                    const originalText =
+                        submitButton
+                            ?.textContent;
+
+
+                    if (submitButton) {
+
+                        submitButton.disabled =
+                            true;
+
+                        submitButton.textContent =
+                            "Analizando...";
+                    }
+
+
+                    try {
+
+                        /*
+                            Esta es la función principal.
+
+                            Primero analiza alimentos
+                            genéricos y después intenta
+                            reconocer productos/marcas.
+                        */
+
+                        const results =
+                            await analyzeMealWithProducts(
+                                description
+                            );
+
+
+                        if (
+                            !Array.isArray(results) ||
+                            results.length === 0
+                        ) {
+
+                            alert(
+                                "No pude reconocer alimentos o productos en esa descripción."
+                            );
+
+                            return;
+                        }
+
+
+                        showEstimate(
+                            results
+                        );
+
+
+                    } catch (error) {
+
+                        console.error(
+                            "Error analizando comida:",
+                            error
+                        );
+
+
+                        /*
+                            Si Open Food Facts falla,
+                            CalorieTrack sigue funcionando
+                            con la base local.
+                        */
+
+                        try {
+
+                            const fallbackResults =
+                                analyzeMeal(
+                                    description
+                                );
+
+
+                            if (
+                                fallbackResults.length >
+                                0
+                            ) {
+
+                                showEstimate(
+                                    fallbackResults
+                                );
+
+                            } else {
+
+                                alert(
+                                    "No pude analizar esa comida. Probá escribiéndola de otra manera."
+                                );
+                            }
+
+                        } catch (
+                            fallbackError
+                        ) {
+
+                            console.error(
+                                "Error en analizador local:",
+                                fallbackError
+                            );
+
+
+                            alert(
+                                "Ocurrió un error al analizar la comida."
+                            );
+                        }
+
+
+                    } finally {
+
+                        if (
+                            submitButton
+                        ) {
+
+                            submitButton.disabled =
+                                false;
+
+                            submitButton.textContent =
+                                originalText ||
+                                "Calcular comida";
+                        }
+                    }
+                }
+            );
+        }
+
+
+        // ==================================================
+        // GUARDAR COMIDA
+        // ==================================================
+
+        const saveMealButton =
+            document.getElementById(
+                "saveMealBtn"
+            );
+
+
+        if (saveMealButton) {
+
+            saveMealButton.addEventListener(
+                "click",
+                event => {
+
+                    event.preventDefault();
+
+
+                    if (
+                        !window.currentMeal
+                    ) {
+
+                        alert(
+                            "Primero calculá la comida."
+                        );
+
+                        return;
+                    }
+
+
+                    const mealType =
+                        document.getElementById(
+                            "mealType"
+                        )
+                            ?.value ||
+                        "Comida";
+
+
+                    const description =
+                        document.getElementById(
+                            "mealDescription"
+                        )
+                            ?.value
+                            ?.trim() ||
+                        "";
+
+
+                    saveMeal({
+
+                        type:
+                            mealType,
+
+                        description:
+                            description,
+
+                        calories:
+                            window.currentMeal
+                                .calories,
+
+                        protein:
+                            window.currentMeal
+                                .protein,
+
+                        foods:
+                            window.currentMeal
+                                .foods
+                    });
+
+
+                    /*
+                        Actualizamos el dashboard
+                        antes de cerrar.
+                    */
+
+                    updateDashboard();
+
+
+                    /*
+                        Limpiamos el estado temporal.
+                    */
+
+                    window.currentMeal =
+                        null;
+
+
+                    window
+                        .calorieTrackSelectedProducts =
+                        [];
+
+
+                    const descriptionInput =
+                        document.getElementById(
+                            "mealDescription"
+                        );
+
+
+                    if (
+                        descriptionInput
+                    ) {
+
+                        descriptionInput.value =
+                            "";
+                    }
+
+
+                    const resultSection =
+                        document.getElementById(
+                            "resultSection"
+                        );
+
+
+                    if (
+                        resultSection
+                    ) {
+
+                        resultSection.style.display =
+                            "none";
+                    }
+
+
+                    const scannedContainer =
+                        document.getElementById(
+                            "scannedProductContainer"
+                        );
+
+
+                    if (
+                        scannedContainer
+                    ) {
+
+                        scannedContainer.style.display =
+                            "none";
+                    }
+
+
+                    window.scannedProductResult =
+                        null;
+
+
+                    closeModal();
+                }
+            );
+        }
+
+
+        // ==================================================
+        // FORMULARIO DE OBJETIVO
+        // ==================================================
 
         const goalForm =
             document.getElementById(
@@ -2474,21 +6231,17 @@ document.addEventListener(
                         parseFloat(
                             document.getElementById(
                                 "goalWeight"
-                            ).value
+                            )
+                                ?.value
                         );
-
-
-                    const sex =
-                        document.getElementById(
-                            "goalSex"
-                        ).value;
 
 
                     const height =
                         parseFloat(
                             document.getElementById(
                                 "goalHeight"
-                            ).value
+                            )
+                                ?.value
                         );
 
 
@@ -2496,30 +6249,42 @@ document.addEventListener(
                         parseInt(
                             document.getElementById(
                                 "goalAge"
-                            ).value,
+                            )
+                                ?.value,
                             10
                         );
 
 
+                    const sex =
+                        document.getElementById(
+                            "goalSex"
+                        )
+                            ?.value;
+
+
                     const activity =
-                        parseFloat(
-                            document.getElementById(
-                                "goalActivity"
-                            ).value
-                        );
+                        document.getElementById(
+                            "goalActivity"
+                        )
+                            ?.value;
 
 
                     const goalType =
                         document.getElementById(
                             "goalType"
-                        ).value;
+                        )
+                            ?.value;
 
 
+                    // ======================================
                     // VALIDACIONES
+                    // ======================================
 
                     if (
-                        !Number.isFinite(weight) ||
-                        weight <= 0 ||
+                        !Number.isFinite(
+                            weight
+                        ) ||
+                        weight < 30 ||
                         weight > 500
                     ) {
 
@@ -2532,7 +6297,9 @@ document.addEventListener(
 
 
                     if (
-                        !Number.isFinite(height) ||
+                        !Number.isFinite(
+                            height
+                        ) ||
                         height < 100 ||
                         height > 250
                     ) {
@@ -2546,7 +6313,9 @@ document.addEventListener(
 
 
                     if (
-                        !Number.isFinite(age) ||
+                        !Number.isFinite(
+                            age
+                        ) ||
                         age < 13 ||
                         age > 120
                     ) {
@@ -2565,18 +6334,14 @@ document.addEventListener(
                     ) {
 
                         alert(
-                            "Seleccioná el sexo biológico."
+                            "Seleccioná el sexo."
                         );
 
                         return;
                     }
 
 
-                    if (
-                        !Number.isFinite(
-                            activity
-                        )
-                    ) {
+                    if (!activity) {
 
                         alert(
                             "Seleccioná tu nivel de actividad."
@@ -2586,7 +6351,17 @@ document.addEventListener(
                     }
 
 
-                    const goal =
+                    if (!goalType) {
+
+                        alert(
+                            "Seleccioná tu objetivo."
+                        );
+
+                        return;
+                    }
+
+
+                    const calories =
                         calculateGoalCalories(
                             weight,
                             sex,
@@ -2597,378 +6372,98 @@ document.addEventListener(
                         );
 
 
-                    saveGoal(goal);
-
-                    displayGoal(goal);
-
-                    updateDashboard();
-
-
-                    const resumen =
-                        document.getElementById(
-                            "resumen"
-                        );
-
-                    if (resumen) {
-
-                        setTimeout(
-                            () => {
-
-                                resumen.scrollIntoView({
-                                    behavior:
-                                        "smooth",
-                                    block:
-                                        "start"
-                                });
-
-                            },
-                            300
-                        );
-                    }
-                }
-            );
-        }
-
-
-        // ==================================
-        // EDITAR OBJETIVO
-        // ==================================
-
-        const editGoalBtn =
-            document.getElementById(
-                "editGoalBtn"
-            );
-
-
-        if (editGoalBtn) {
-
-            editGoalBtn.addEventListener(
-                "click",
-                () => {
-
-                    const goalSection =
-                        document.getElementById(
-                            "objetivo"
-                        );
-
-                    if (goalSection) {
-
-                        goalSection.scrollIntoView({
-                            behavior:
-                                "smooth",
-                            block:
-                                "start"
-                        });
-                    }
-
-
-                    const weightInput =
-                        document.getElementById(
-                            "goalWeight"
-                        );
-
-                    if (weightInput) {
-
-                        setTimeout(
-                            () =>
-                                weightInput.focus(),
-                            400
-                        );
-                    }
-                }
-            );
-        }
-
-
-        // CARGAR OBJETIVO GUARDADO
-        loadSavedGoal();
-
-
-        // ==================================
-        // BOTONES MODAL
-        // ==================================
-
-        const openMealModal =
-            document.getElementById(
-                "openMealModal"
-            );
-
-        const openMealModal2 =
-            document.getElementById(
-                "openMealModal2"
-            );
-
-        const closeMealModal =
-            document.getElementById(
-                "closeMealModal"
-            );
-
-
-        if (openMealModal) {
-
-            openMealModal.addEventListener(
-                "click",
-                openModal
-            );
-        }
-
-
-        if (openMealModal2) {
-
-            openMealModal2.addEventListener(
-                "click",
-                openModal
-            );
-        }
-
-
-        if (closeMealModal) {
-
-            closeMealModal.addEventListener(
-                "click",
-                closeModal
-            );
-        }
-
-
-        // ==================================
-        // CERRAR MODAL AL TOCAR AFUERA
-        // ==================================
-
-        const mealModal =
-            document.getElementById(
-                "mealModal"
-            );
-
-
-        if (mealModal) {
-
-            mealModal.addEventListener(
-                "click",
-                event => {
-
                     if (
-                        event.target.id ===
-                        "mealModal"
-                    ) {
-
-                        closeModal();
-                    }
-                }
-            );
-        }
-
-
-        // ==================================
-        // ANALIZAR COMIDA
-        // ==================================
-
-        const mealForm =
-            document.getElementById(
-                "mealForm"
-            );
-
-
-        if (mealForm) {
-
-            mealForm.addEventListener(
-                "submit",
-                event => {
-
-                    event.preventDefault();
-
-
-                    const descriptionElement =
-                        document.getElementById(
-                            "mealDescription"
-                        );
-
-
-                    const description =
-                        descriptionElement
-                            ? descriptionElement.value.trim()
-                            : "";
-
-
-                    if (!description) {
-
-                        alert(
-                            "Escribí qué comiste."
-                        );
-
-                        return;
-                    }
-
-
-                    // PRODUCTO ESCANEADO
-                    if (
-                        window.currentMeal &&
-                        window.scannedProductResult
-                    ) {
-
-                        showEstimate(
-                            window.currentMeal.foods
-                        );
-
-                        return;
-                    }
-
-
-                    const results =
-                        analyzeMeal(
-                            description
-                        );
-
-
-                    showEstimate(
-                        results
-                    );
-                }
-            );
-        }
-
-
-        // ==================================
-        // AGREGAR COMIDA AL DÍA
-        // ==================================
-
-        const saveMealBtn =
-            document.getElementById(
-                "saveMealBtn"
-            );
-
-
-        if (saveMealBtn) {
-
-            saveMealBtn.addEventListener(
-                "click",
-                () => {
-
-                    if (
-                        !window.currentMeal
+                        !Number.isFinite(
+                            calories
+                        )
                     ) {
 
                         alert(
-                            "Primero analizá una comida."
+                            "No pude calcular el objetivo. Revisá los datos ingresados."
                         );
 
                         return;
                     }
 
 
-                    const mealTypeElement =
-                        document.getElementById(
-                            "mealType"
+                    const protein =
+                        Math.round(
+                            weight *
+                            1.6
                         );
 
 
-                    const descriptionElement =
-                        document.getElementById(
-                            "mealDescription"
-                        );
+                    const goal = {
 
+                        weight:
+                            weight,
 
-                    const mealType =
-                        mealTypeElement
-                            ? mealTypeElement.value
-                            : "Comida";
+                        height:
+                            height,
 
+                        age:
+                            age,
 
-                    const description =
-                        descriptionElement
-                            ? descriptionElement.value
-                            : "";
+                        sex:
+                            sex,
 
+                        activity:
+                            activity,
 
-                    const meals =
-                        getMeals();
-
-
-                    meals.push({
-
-                        type:
-                            mealType,
-
-                        description:
-                            description,
+                        goalType:
+                            goalType,
 
                         calories:
-                            window.currentMeal.calories,
+                            calories,
 
                         protein:
-                            window.currentMeal.protein,
-
-                        date:
-                            new Date().toISOString()
-                    });
+                            protein
+                    };
 
 
-                    saveMeals(
-                        meals
+                    saveGoal(
+                        goal
+                    );
+
+
+                    displayGoal(
+                        goal
                     );
 
 
                     updateDashboard();
 
 
-                    alert(
-                        "✅ Comida agregada al día."
-                    );
+                    /*
+                        Cerramos el modal objetivo
+                        si existe.
+                    */
 
-
-                    // LIMPIAR
-                    window.currentMeal =
-                        null;
-
-                    window.scannedProduct =
-                        null;
-
-                    window.scannedProductResult =
-                        null;
-
-
-                    if (descriptionElement) {
-
-                        descriptionElement.value =
-                            "";
-                    }
-
-
-                    const resultSection =
+                    const goalModal =
                         document.getElementById(
-                            "resultSection"
+                            "goalModal"
                         );
 
 
-                    if (resultSection) {
+                    if (
+                        goalModal
+                    ) {
 
-                        resultSection.style.display =
-                            "none";
-                    }
-
-
-                    const scannedContainer =
-                        document.getElementById(
-                            "scannedProductContainer"
+                        goalModal.classList.remove(
+                            "active"
                         );
 
-
-                    if (scannedContainer) {
-
-                        scannedContainer.style.display =
+                        goalModal.style.display =
                             "none";
                     }
-
-
-                    closeModal();
                 }
             );
         }
 
 
-        // ==================================
-        // ESCÁNER
-        // ==================================
+        // ==================================================
+        // SCANNER
+        // ==================================================
 
         const scanButton =
             document.getElementById(
@@ -2980,18 +6475,25 @@ document.addEventListener(
 
             scanButton.addEventListener(
                 "click",
-                startScanner
+                event => {
+
+                    event.preventDefault();
+
+                    startScanner();
+                }
             );
         }
 
 
-        // ==================================
-        // CANTIDAD PRODUCTO ESCANEADO
-        // ==================================
-
         const productAmount =
             document.getElementById(
                 "productAmount"
+            );
+
+
+        const productUnit =
+            document.getElementById(
+                "productUnit"
             );
 
 
@@ -3004,16 +6506,6 @@ document.addEventListener(
         }
 
 
-        // ==================================
-        // UNIDAD PRODUCTO ESCANEADO
-        // ==================================
-
-        const productUnit =
-            document.getElementById(
-                "productUnit"
-            );
-
-
         if (productUnit) {
 
             productUnit.addEventListener(
@@ -3023,9 +6515,9 @@ document.addEventListener(
         }
 
 
-        // ==================================
+        // ==================================================
         // USAR PRODUCTO ESCANEADO
-        // ==================================
+        // ==================================================
 
         const useScannedProduct =
             document.getElementById(
@@ -3033,989 +6525,1185 @@ document.addEventListener(
             );
 
 
-        if (useScannedProduct) {
+        if (
+            useScannedProduct
+        ) {
 
             useScannedProduct.addEventListener(
                 "click",
-                () => {
+                event => {
 
-                    if (
-                        !window.scannedProductResult
-                    ) {
+                    event.preventDefault();
+
+
+                    const product =
+                        window
+                            .scannedProductResult;
+
+
+                    if (!product) {
 
                         alert(
-                            "Primero indicá cuánto consumiste."
+                            "Primero escaneá un producto."
                         );
 
                         return;
                     }
 
 
-                    const producto =
-                        window.scannedProductResult;
+                    if (
+                        !Number.isFinite(
+                            Number(
+                                product.calorias
+                            )
+                        )
+                    ) {
+
+                        calculateScannedProduct();
+                    }
 
 
-                    // CREAR COMIDA
-                    window.currentMeal = {
+                    const mealItem = {
 
-                        foods: [
-                            {
-                                name:
-                                    producto.nombre,
+                        key:
+                            "scanned_" +
+                            (
+                                product.code ||
+                                normalize(
+                                    product.name
+                                )
+                            ),
 
-                                calories:
-                                    producto.calorias,
-
-                                protein:
-                                    producto.proteinas
-                            }
-                        ],
+                        name:
+                            [
+                                product.name,
+                                product.brand
+                            ]
+                                .filter(
+                                    Boolean
+                                )
+                                .join(
+                                    " · "
+                                ),
 
                         calories:
-                            producto.calorias,
+                            Number(
+                                product.calorias
+                            ) ||
+                            0,
 
                         protein:
-                            producto.proteinas
+                            Number(
+                                product.proteinas
+                            ) ||
+                            0,
+
+                        grams:
+                            Number(
+                                product.gramos
+                            ) ||
+                            0,
+
+                        brandedProduct:
+                            true
                     };
 
 
-                    // DESCRIPCIÓN
-                    const mealDescription =
+                    /*
+                        showEstimate() se ocupa
+                        de crear window.currentMeal.
+                    */
+
+                    showEstimate(
+                        [
+                            mealItem
+                        ]
+                    );
+
+
+                    const description =
                         document.getElementById(
                             "mealDescription"
                         );
 
 
-                    if (mealDescription) {
+                    if (
+                        description
+                    ) {
 
-                        mealDescription.value =
-                            `${producto.nombre} - ${producto.gramos.toFixed(0)} g`;
+                        description.value =
+                            `${mealItem.name} - ${Math.round(
+                                mealItem.grams
+                            )} g`;
                     }
 
 
-                    // CALORÍAS
-                    const estimatedCalories =
-                        document.getElementById(
-                            "estimatedCalories"
-                        );
-
-
-                    if (estimatedCalories) {
-
-                        estimatedCalories.textContent =
-                            `${Math.round(producto.calorias)}`;
-                    }
-
-
-                    // PROTEÍNA
-                    const estimatedProtein =
-                        document.getElementById(
-                            "estimatedProtein"
-                        );
-
-
-                    if (estimatedProtein) {
-
-                        estimatedProtein.textContent =
-                            producto.proteinas.toFixed(1);
-                    }
-
-
-                    // ALIMENTO
-                    const estimatedFoods =
-                        document.getElementById(
-                            "estimatedFoods"
-                        );
-
-
-                    if (estimatedFoods) {
-
-                        estimatedFoods.innerHTML = `
-                            <div>
-                                ${producto.nombre}
-                                — ${producto.gramos.toFixed(0)} g
-                            </div>
-                        `;
-                    }
-
-
-                    // MOSTRAR RESULTADO
-                    const resultSection =
-                        document.getElementById(
-                            "resultSection"
-                        );
-
-
-                    if (resultSection) {
-
-                        resultSection.style.display =
-                            "block";
-                    }
-
-
-                    // OCULTAR PRODUCTO ESCANEADO
                     const scannedContainer =
                         document.getElementById(
                             "scannedProductContainer"
                         );
 
 
-                    if (scannedContainer) {
+                    if (
+                        scannedContainer
+                    ) {
 
                         scannedContainer.style.display =
                             "none";
                     }
-
-
-                    alert(
-                        "✅ Producto agregado al análisis."
-                    );
                 }
             );
         }
 
 
-        // ==================================
-        // DASHBOARD INICIAL
-        // ==================================
+        // ==================================================
+        // CARGA INICIAL
+        // ==================================================
+
+        loadSavedGoal();
 
         updateDashboard();
-
     }
 );
 
 
+// ======================================================
+// 48. MODAL MI OBJETIVO
+// ======================================================
 
-/* ==================================================
-   CALORIETRACK - MEJORAS DE INTERFAZ
-================================================== */
+document.addEventListener(
+    "DOMContentLoaded",
+    () => {
 
-document.addEventListener("DOMContentLoaded", () => {
+        const modal =
+            document.getElementById(
+                "goalModal"
+            );
 
-    // ==================================================
-    // NUEVOS BOTONES "AGREGAR COMIDA"
-    // ==================================================
 
-    const mealModalUI = document.getElementById("mealModal");
+        function openGoal(
+            event
+        ) {
 
-    const extraMealButtons = [
-        document.getElementById("headerAddMeal"),
-        document.getElementById("dashboardAddMeal"),
-        document.getElementById("mobileAddMeal")
-    ];
+            if (event) {
 
-    extraMealButtons.forEach((button) => {
+                event.preventDefault();
+            }
 
-        if (!button) {
-            return;
-        }
 
-        button.addEventListener("click", () => {
-
-            if (!mealModalUI) {
-                console.warn("No se encontró el modal mealModal.");
+            if (!modal) {
                 return;
             }
 
-            // Abrimos el modal de agregar comida
-            mealModalUI.style.display = "flex";
 
-            button.addEventListener("click", () => {
+            /*
+                Eliminamos display:none que
+                pudiera venir escrito directamente
+                en el HTML.
+            */
 
-    if (!mealModalUI) {
-        console.warn("No se encontró el modal mealModal.");
-        return;
-    }
-
-    // Abrimos el modal de agregar comida
-    mealModalUI.style.display = "flex";
-
-});
-
-        });
-
-    });
+            modal.style.removeProperty(
+                "display"
+            );
 
 
-    // ==================================================
-    // ELEMENTOS DEL PROGRESO DIARIO
-    // ==================================================
-
-    const consumedElement =
-        document.getElementById("dailyConsumedCalories");
-
-    const targetElement =
-        document.getElementById("dailyTargetCalories");
-
-    const percentageElement =
-        document.getElementById("dailyProgressPercentage");
-
-    const progressElement =
-        document.getElementById("dailyProgress");
-
-    const goalLabel =
-        document.getElementById("progressGoalLabel");
-
-    const remainingElement =
-        document.getElementById("dailyRemainingCalories");
-
-
-    // ==================================================
-    // CONVERTIR TEXTO A NÚMERO
-    // ==================================================
-
-    function textToNumber(element) {
-
-        if (!element) {
-            return 0;
+            modal.classList.add(
+                "active"
+            );
         }
 
-        /*
-         * Ejemplo:
-         *
-         * "2050"       -> 2050
-         * "2.050"      -> 2050
-         * "2,050 kcal" -> 2050
-         */
 
-        const text = element.textContent
-            .trim()
-            .replace(/[^\d]/g, "");
+        function closeGoal() {
 
-        return Number(text) || 0;
+            if (!modal) {
+                return;
+            }
+
+
+            modal.classList.remove(
+                "active"
+            );
+
+
+            /*
+                Forzamos cerrado para mantener
+                compatibilidad con el HTML/CSS.
+            */
+
+            modal.style.display =
+                "none";
+        }
+
+
+        [
+            "openGoalModal",
+            "mobileOpenGoalModal"
+        ].forEach(
+            id => {
+
+                const button =
+                    document.getElementById(
+                        id
+                    );
+
+
+                if (button) {
+
+                    button.addEventListener(
+                        "click",
+                        openGoal
+                    );
+                }
+            }
+        );
+
+
+        const close =
+            document.getElementById(
+                "closeGoalModal"
+            );
+
+
+        const overlay =
+            document.getElementById(
+                "goalModalOverlay"
+            );
+
+
+        const finish =
+            document.getElementById(
+                "finishGoalBtn"
+            );
+
+
+        if (close) {
+
+            close.addEventListener(
+                "click",
+                closeGoal
+            );
+        }
+
+
+        if (overlay) {
+
+            overlay.addEventListener(
+                "click",
+                closeGoal
+            );
+        }
+
+
+        if (finish) {
+
+            finish.addEventListener(
+                "click",
+                closeGoal
+            );
+        }
     }
+);
 
 
-    // ==================================================
-    // ACTUALIZAR INTERFAZ DEL PROGRESO
-    // ==================================================
+// ======================================================
+// 49. MODAL RECETAS
+// ======================================================
 
-    function updateProgressPercentageUI() {
+// ======================================================
+
+document.addEventListener(
+    "DOMContentLoaded",
+    () => {
+
+        const recipesModal =
+            document.getElementById(
+                "recipesModal"
+            );
+
+
+        if (!recipesModal) {
+            return;
+        }
+
+
+        function openRecipes(
+            event
+        ) {
+
+            if (event) {
+                event.preventDefault();
+            }
+
+
+            recipesModal.style.removeProperty(
+                "display"
+            );
+
+
+            recipesModal.classList.add(
+                "active"
+            );
+        }
+
+
+        function closeRecipes() {
+
+            recipesModal.classList.remove(
+                "active"
+            );
+
+
+            recipesModal.style.display =
+                "none";
+        }
+
+
+        // ==============================================
+        // BOTONES PARA ABRIR RECETAS
+        // ==============================================
+
+        [
+            "openRecipesModal",
+            "mobileOpenRecipesModal"
+        ].forEach(
+            id => {
+
+                const button =
+                    document.getElementById(
+                        id
+                    );
+
+
+                if (button) {
+
+                    button.addEventListener(
+                        "click",
+                        openRecipes
+                    );
+                }
+            }
+        );
+
+
+        // ==============================================
+        // CERRAR RECETAS
+        // ==============================================
+
+        const closeButton =
+            document.getElementById(
+                "closeRecipesModal"
+            );
+
+
+        const overlay =
+            document.getElementById(
+                "recipesModalOverlay"
+            );
+
+
+        if (closeButton) {
+
+            closeButton.addEventListener(
+                "click",
+                closeRecipes
+            );
+        }
+
+
+        if (overlay) {
+
+            overlay.addEventListener(
+                "click",
+                closeRecipes
+            );
+        }
+
+
+        // ==============================================
+        // CATEGORÍAS DE RECETAS
+        // ==============================================
+
+        const categoryButtons =
+            recipesModal.querySelectorAll(
+                "[data-recipe-category]"
+            );
+
+
+        const recipeSections =
+            recipesModal.querySelectorAll(
+                "[data-recipe-section]"
+            );
+
+
+        categoryButtons.forEach(
+            button => {
+
+                button.addEventListener(
+                    "click",
+                    () => {
+
+                        const category =
+                            button.dataset
+                                .recipeCategory;
+
+
+                        if (!category) {
+                            return;
+                        }
+
+
+                        // Quitar activo
+                        categoryButtons
+                            .forEach(
+                                item => {
+
+                                    item.classList
+                                        .remove(
+                                            "active"
+                                        );
+                                }
+                            );
+
+
+                        // Activar botón actual
+                        button.classList.add(
+                            "active"
+                        );
+
+
+                        // Mostrar sección correcta
+                        recipeSections
+                            .forEach(
+                                section => {
+
+                                    const sectionCategory =
+                                        section.dataset
+                                            .recipeSection;
+
+
+                                    section.style.display =
+                                        (
+                                            sectionCategory ===
+                                            category
+                                        )
+                                            ? ""
+                                            : "none";
+                                }
+                            );
+                    }
+                );
+            }
+        );
+    }
+);
+
+
+// ======================================================
+// 50. MODAL COMUNIDAD
+// ======================================================
+
+document.addEventListener(
+    "DOMContentLoaded",
+    () => {
+
+        const communityModal =
+            document.getElementById(
+                "communityModal"
+            );
+
+
+        if (!communityModal) {
+            return;
+        }
+
+
+        function openCommunity(
+            event
+        ) {
+
+            if (event) {
+                event.preventDefault();
+            }
+
+
+            communityModal.style
+                .removeProperty(
+                    "display"
+                );
+
+
+            communityModal.classList.add(
+                "active"
+            );
+        }
+
+
+        function closeCommunity() {
+
+            communityModal.classList.remove(
+                "active"
+            );
+
+
+            communityModal.style.display =
+                "none";
+        }
+
+
+        // ==============================================
+        // ABRIR
+        // ==============================================
+
+        [
+            "openCommunityModal",
+            "mobileOpenCommunityModal"
+        ].forEach(
+            id => {
+
+                const button =
+                    document.getElementById(
+                        id
+                    );
+
+
+                if (button) {
+
+                    button.addEventListener(
+                        "click",
+                        openCommunity
+                    );
+                }
+            }
+        );
+
+
+        // ==============================================
+        // CERRAR
+        // ==============================================
+
+        const closeButton =
+            document.getElementById(
+                "closeCommunityModal"
+            );
+
+
+        const overlay =
+            document.getElementById(
+                "communityModalOverlay"
+            );
+
+
+        if (closeButton) {
+
+            closeButton.addEventListener(
+                "click",
+                closeCommunity
+            );
+        }
+
+
+        if (overlay) {
+
+            overlay.addEventListener(
+                "click",
+                closeCommunity
+            );
+        }
+    }
+);
+
+
+// ======================================================
+// 51. CERRAR MODALES CON ESC
+// ======================================================
+
+document.addEventListener(
+    "keydown",
+    event => {
 
         if (
-            !consumedElement ||
-            !targetElement ||
-            !percentageElement ||
-            !progressElement
+            event.key !==
+            "Escape"
         ) {
             return;
         }
 
 
-        const consumed =
-            textToNumber(consumedElement);
+        // ==============================================
+        // MODAL COMIDA
+        // ==============================================
 
-        const target =
-            textToNumber(targetElement);
-
-
-        // ----------------------------------------------
-        // TODAVÍA NO HAY OBJETIVO
-        // ----------------------------------------------
-
-        if (target <= 0) {
-
-            percentageElement.textContent = "0%";
-
-            progressElement.style.width = "0%";
-
-            progressElement.style.background =
-                "linear-gradient(90deg, #2563eb, #60a5fa)";
-
-            percentageElement.style.color = "#2563eb";
+        closeModal();
 
 
-            if (goalLabel) {
+        // ==============================================
+        // OTROS MODALES
+        // ==============================================
 
-                goalLabel.textContent =
-                    "Configurá tu objetivo";
+        [
+            "goalModal",
+            "recipesModal",
+            "communityModal"
+        ].forEach(
+            id => {
 
+                const modal =
+                    document.getElementById(
+                        id
+                    );
+
+
+                if (!modal) {
+                    return;
+                }
+
+
+                modal.classList.remove(
+                    "active"
+                );
+
+
+                modal.style.display =
+                    "none";
             }
+        );
 
 
-            if (remainingElement) {
+        // ==============================================
+        // MODAL DINÁMICO DE PRODUCTOS
+        // ==============================================
 
-                remainingElement.textContent =
-                    "Configurá tu objetivo para comenzar";
-
-                remainingElement.style.color =
-                    "#2563eb";
-
-            }
-
-            return;
-        }
-
-
-        // ==================================================
-        // CALCULAR PORCENTAJE
-        // ==================================================
-
-        const percentage =
-            Math.round((consumed / target) * 100);
-
-
-        percentageElement.textContent =
-            `${percentage}%`;
-
-
-        /*
-         * Si consume más del objetivo podemos mostrar
-         * 105%, 110%, etc.
-         *
-         * Pero la barra visual se detiene en 100%.
-         */
-
-        const visualPercentage =
-            Math.min(
-                Math.max(percentage, 0),
-                100
+        const productOverlay =
+            document.querySelector(
+                ".product-search-overlay"
             );
 
 
-        progressElement.style.width =
-            `${visualPercentage}%`;
+        if (productOverlay) {
 
+            /*
+                Disparamos click sobre el fondo
+                para que la Promise se resuelva
+                correctamente con null.
 
-        // ==================================================
-        // MOSTRAR OBJETIVO ABAJO DE LA BARRA
-        // ==================================================
+                No removemos el elemento
+                directamente.
+            */
 
-        if (goalLabel) {
-
-            goalLabel.textContent =
-                `${target.toLocaleString("es-AR")} kcal`;
-
+            productOverlay.click();
         }
-
-
-        // ==================================================
-        // CALORÍAS RESTANTES
-        // ==================================================
-
-        if (remainingElement) {
-
-            const difference =
-                target - consumed;
-
-
-            if (difference > 0) {
-
-                remainingElement.textContent =
-                    `${difference.toLocaleString("es-AR")} kcal restantes`;
-
-            }
-
-            else if (difference === 0) {
-
-                remainingElement.textContent =
-                    "¡Llegaste a tu objetivo diario!";
-
-            }
-
-            else {
-
-                remainingElement.textContent =
-                    `Superaste tu objetivo por ${Math.abs(difference).toLocaleString("es-AR")} kcal`;
-
-            }
-
-        }
-
-
-        // ==================================================
-        // COLORES SEGÚN EL PROGRESO
-        // ==================================================
-
-        if (percentage >= 105) {
-
-            // ROJO
-            // Se pasó considerablemente del objetivo
-
-            progressElement.style.background =
-                "#dc2626";
-
-            percentageElement.style.color =
-                "#dc2626";
-
-            if (remainingElement) {
-                remainingElement.style.color =
-                    "#dc2626";
-            }
-
-        }
-
-        else if (percentage >= 100) {
-
-            // VERDE
-            // Llegó al objetivo
-
-            progressElement.style.background =
-                "#16a34a";
-
-            percentageElement.style.color =
-                "#16a34a";
-
-            if (remainingElement) {
-                remainingElement.style.color =
-                    "#16a34a";
-            }
-
-        }
-
-        else if (percentage >= 80) {
-
-            // NARANJA
-            // Está cerca del objetivo
-
-            progressElement.style.background =
-                "#f59e0b";
-
-            percentageElement.style.color =
-                "#f59e0b";
-
-            if (remainingElement) {
-                remainingElement.style.color =
-                    "#f59e0b";
-            }
-
-        }
-
-        else {
-
-            // AZUL
-            // Progreso normal
-
-            progressElement.style.background =
-                "linear-gradient(90deg, #2563eb, #60a5fa)";
-
-            percentageElement.style.color =
-                "#2563eb";
-
-            if (remainingElement) {
-                remainingElement.style.color =
-                    "#2563eb";
-            }
-
-        }
-
     }
+);
 
 
-    // ==================================================
-    // DETECTAR CAMBIOS AUTOMÁTICAMENTE
-    // ==================================================
+// ======================================================
+// 52. LIMPIAR MODAL DE COMIDA
+// ======================================================
 
-    /*
-     * Tu código original ya actualiza:
-     *
-     * dailyConsumedCalories
-     * dailyTargetCalories
-     *
-     * cuando agregás comidas o modificás el objetivo.
-     *
-     * MutationObserver observa esos números.
-     *
-     * Cada vez que cambian, recalculamos la interfaz.
-     */
+function resetMealModal() {
 
-    const progressObserver =
-        new MutationObserver(() => {
-
-            updateProgressPercentageUI();
-
-        });
-
-
-    if (consumedElement) {
-
-        progressObserver.observe(
-            consumedElement,
-            {
-                childList: true,
-                characterData: true,
-                subtree: true
-            }
+    const mealForm =
+        document.getElementById(
+            "mealForm"
         );
 
+
+    if (mealForm) {
+
+        mealForm.reset();
     }
 
 
-    if (targetElement) {
-
-        progressObserver.observe(
-            targetElement,
-            {
-                childList: true,
-                characterData: true,
-                subtree: true
-            }
+    const resultSection =
+        document.getElementById(
+            "resultSection"
         );
 
+
+    if (resultSection) {
+
+        resultSection.style.display =
+            "none";
     }
 
 
-    // ==================================================
-    // ACTUALIZACIÓN INICIAL
-    // ==================================================
-
-    updateProgressPercentageUI();
-
-});
-
-/* ==================================================
-   MODAL - MI OBJETIVO
-================================================== */
-
-document.addEventListener("DOMContentLoaded", () => {
-
-    const goalModal =
-        document.getElementById("goalModal");
-
-    const openGoalButton =
-        document.getElementById("openGoalModal");
-
-    const mobileOpenGoalButton =
-        document.getElementById("mobileOpenGoalModal");
-
-    const closeGoalButton =
-        document.getElementById("closeGoalModal");
-
-    const goalModalOverlay =
-        document.getElementById("goalModalOverlay");
-
-    const finishGoalButton =
-        document.getElementById("finishGoalBtn");
+    const scannerContainer =
+        document.getElementById(
+            "scannerContainer"
+        );
 
 
-    // ==============================================
-    // ABRIR
-    // ==============================================
+    if (scannerContainer) {
 
-    function openGoalModal(event) {
+        scannerContainer.style.display =
+            "none";
+    }
 
-        if (event) {
-            event.preventDefault();
+
+    const scannedProductContainer =
+        document.getElementById(
+            "scannedProductContainer"
+        );
+
+
+    if (
+        scannedProductContainer
+    ) {
+
+        scannedProductContainer
+            .style.display =
+            "none";
+    }
+
+
+    window.currentMeal =
+        null;
+
+
+    window.scannedProductResult =
+        null;
+
+
+    window
+        .calorieTrackSelectedProducts =
+        [];
+}
+
+
+// ======================================================
+// 53. CERRAR MODAL + LIMPIAR ESTADO
+// ======================================================
+
+const originalCloseMealModal =
+    closeModal;
+
+
+closeModal =
+    function () {
+
+        const modal =
+            document.getElementById(
+                "mealModal"
+            );
+
+
+        if (modal) {
+
+            modal.classList.remove(
+                "active"
+            );
+
+
+            modal.style.display =
+                "none";
         }
 
-        if (!goalModal) {
-            return;
+
+        const scannerContainer =
+            document.getElementById(
+                "scannerContainer"
+            );
+
+
+        if (
+            scannerContainer
+        ) {
+
+            scannerContainer.style.display =
+                "none";
         }
 
-        goalModal.classList.add("active");
 
-    }
-
-
-    // ==============================================
-    // CERRAR
-    // ==============================================
-
-    function closeGoalModal() {
-
-        if (!goalModal) {
-            return;
-        }
-
-        goalModal.classList.remove("active");
-
-    }
+        stopScannerSafely();
 
 
-    // PC
+        /*
+            No hacemos resetMealModal() acá.
 
-    if (openGoalButton) {
+            Motivo:
+            si el usuario cierra accidentalmente
+            el modal, puede volver a abrirlo sin
+            perder lo que estaba escribiendo.
 
-        openGoalButton.addEventListener(
-            "click",
-            openGoalModal
-        );
-
-    }
-
-
-    // CELULAR
-
-    if (mobileOpenGoalButton) {
-
-        mobileOpenGoalButton.addEventListener(
-            "click",
-            openGoalModal
-        );
-
-    }
-
-
-    // X
-
-    if (closeGoalButton) {
-
-        closeGoalButton.addEventListener(
-            "click",
-            closeGoalModal
-        );
-
-    }
-
-
-    // CLICK EN EL FONDO
-
-    if (goalModalOverlay) {
-
-        goalModalOverlay.addEventListener(
-            "click",
-            closeGoalModal
-        );
-
-    }
-
-
-    // GUARDAR Y CERRAR
-
-    if (finishGoalButton) {
-
-        finishGoalButton.addEventListener(
-            "click",
-            closeGoalModal
-        );
-
-    }
-
-
-    // ==============================================
-    // TECLA ESC
-    // ==============================================
-
-    document.addEventListener(
-        "keydown",
-        (event) => {
-
-            if (
-                event.key === "Escape" &&
-                goalModal &&
-                goalModal.classList.contains("active")
-            ) {
-
-                closeGoalModal();
-
-            }
-
-        }
-    );
-
-});
-
-/* ==================================================
-   RECETAS SALUDABLES - MODAL Y CATEGORÍAS
-================================================== */
-
-document.addEventListener("DOMContentLoaded", () => {
-
-    const recipesModal =
-        document.getElementById("recipesModal");
-
-    const openRecipesButton =
-        document.getElementById("openRecipesModal");
-
-    const mobileOpenRecipesButton =
-        document.getElementById("mobileOpenRecipesModal");
-
-    const closeRecipesButton =
-        document.getElementById("closeRecipesModal");
-
-    const recipesOverlay =
-        document.getElementById("recipesModalOverlay");
-
-    const categoriesView =
-        document.getElementById("recipeCategories");
-
-    const recipeListView =
-        document.getElementById("recipeListView");
-
-    const backButton =
-        document.getElementById("backToRecipeCategories");
-
-    const categoryButtons =
-        document.querySelectorAll("[data-recipe-category]");
-
-    const recipeCards =
-        document.querySelectorAll(
-            "#recipeListView .recipe-card[data-category]"
-        );
-
-    const selectedTitle =
-        document.getElementById("selectedRecipeTitle");
-
-    const selectedIcon =
-        document.getElementById("selectedRecipeIcon");
-
-
-    const categoryInfo = {
-
-        desayuno: {
-            title: "Desayuno",
-            icon: "☀️"
-        },
-
-        almuerzo: {
-            title: "Almuerzo",
-            icon: "🍽️"
-        },
-
-        merienda: {
-            title: "Merienda",
-            icon: "☕"
-        },
-
-        cena: {
-            title: "Cena",
-            icon: "🌙"
-        }
-
+            El formulario se limpia después de
+            guardar correctamente.
+        */
     };
 
 
-    // ==============================================
-    // ABRIR RECETAS
-    // ==============================================
+// ======================================================
+// 54. REABRIR CORRECTAMENTE EL MODAL DE COMIDA
+// ======================================================
 
-    function openRecipesModal(event) {
-
-        if (event) {
-            event.preventDefault();
-        }
-
-        if (!recipesModal) {
-            return;
-        }
-
-        recipesModal.classList.add("active");
-
-        showCategories();
-
-    }
+const originalOpenMealModal =
+    openModal;
 
 
-    // ==============================================
-    // CERRAR
-    // ==============================================
+openModal =
+    function () {
 
-    function closeRecipesModal() {
-
-        if (!recipesModal) {
-            return;
-        }
-
-        recipesModal.classList.remove("active");
-
-        showCategories();
-
-    }
-
-
-    // ==============================================
-    // MOSTRAR CATEGORÍAS
-    // ==============================================
-
-    function showCategories() {
-
-        if (categoriesView) {
-            categoriesView.style.display = "block";
-        }
-
-        if (recipeListView) {
-            recipeListView.style.display = "none";
-        }
-
-
-        /*
-         * Cerramos cualquier receta que haya
-         * quedado desplegada anteriormente.
-         */
-
-        document
-            .querySelectorAll("#recipeListView details")
-            .forEach((detail) => {
-
-                detail.removeAttribute("open");
-
-            });
-
-    }
-
-
-    // ==============================================
-    // MOSTRAR RECETAS DE UNA CATEGORÍA
-    // ==============================================
-
-    function showRecipeCategory(category) {
-
-        const info =
-            categoryInfo[category];
-
-        if (!info) {
-            return;
-        }
-
-
-        if (categoriesView) {
-            categoriesView.style.display = "none";
-        }
-
-        if (recipeListView) {
-            recipeListView.style.display = "block";
-        }
-
-
-        if (selectedTitle) {
-            selectedTitle.textContent =
-                info.title;
-        }
-
-        if (selectedIcon) {
-            selectedIcon.textContent =
-                info.icon;
-        }
-
-
-        recipeCards.forEach((card) => {
-
-            if (
-                card.dataset.category === category
-            ) {
-
-                card.style.display = "";
-
-            }
-
-            else {
-
-                card.style.display = "none";
-
-            }
-
-        });
-
-
-        /*
-         * Volvemos arriba dentro de la ventana
-         * al cambiar de categoría.
-         */
-
-        const modalContent =
-            recipesModal?.querySelector(
-                ".recipes-modal-content"
+        const modal =
+            document.getElementById(
+                "mealModal"
             );
 
-        if (modalContent) {
-            modalContent.scrollTop = 0;
+
+        if (!modal) {
+            return;
         }
 
-    }
+
+        /*
+            closeModal() coloca display:none.
+
+            Por eso al volver a abrir debemos
+            quitar ese estilo antes de agregar
+            la clase active.
+        */
+
+        modal.style.removeProperty(
+            "display"
+        );
 
 
-    // ==============================================
-    // EVENTOS DE CATEGORÍAS
-    // ==============================================
+        modal.classList.add(
+            "active"
+        );
 
-    categoryButtons.forEach((button) => {
 
-        button.addEventListener(
-            "click",
+        /*
+            Si el CSS actual todavía depende
+            directamente de display:flex y no
+            de .active, este fallback asegura
+            que el modal igualmente aparezca.
+        */
+
+        const computedStyle =
+            window.getComputedStyle(
+                modal
+            );
+
+
+        if (
+            computedStyle.display ===
+            "none"
+        ) {
+
+            modal.style.display =
+                "flex";
+        }
+    };
+
+
+// ======================================================
+// 55. PROTECCIÓN CONTRA DOBLE GUARDADO
+// ======================================================
+
+let mealSaveLocked =
+    false;
+
+
+document.addEventListener(
+    "click",
+    event => {
+
+        const button =
+            event.target.closest(
+                "#saveMealBtn"
+            );
+
+
+        if (!button) {
+            return;
+        }
+
+
+        if (mealSaveLocked) {
+
+            event.preventDefault();
+
+            event.stopImmediatePropagation();
+
+            return;
+        }
+
+
+        mealSaveLocked =
+            true;
+
+
+        setTimeout(
             () => {
 
-                const category =
-                    button.dataset.recipeCategory;
-
-                showRecipeCategory(category);
-
-            }
+                mealSaveLocked =
+                    false;
+            },
+            800
         );
+    },
+    true
+);
 
-    });
+
+// ======================================================
+// 56. PROTECCIÓN DE DATOS NUMÉRICOS
+// ======================================================
+
+function safeNumber(
+    value,
+    fallback = 0
+) {
+
+    const number =
+        Number(value);
 
 
-    // ==============================================
-    // BOTONES ABRIR
-    // ==============================================
+    return Number.isFinite(
+        number
+    )
+        ? number
+        : fallback;
+}
 
-    if (openRecipesButton) {
 
-        openRecipesButton.addEventListener(
-            "click",
-            openRecipesModal
-        );
+// ======================================================
+// 57. RESUMEN DE COMIDA ACTUAL
+// ======================================================
 
+function getCurrentMealSummary() {
+
+    if (
+        !window.currentMeal
+    ) {
+
+        return null;
     }
 
 
-    if (mobileOpenRecipesButton) {
+    return {
 
-        mobileOpenRecipesButton.addEventListener(
-            "click",
-            openRecipesModal
+        calories:
+            safeNumber(
+                window.currentMeal
+                    .calories
+            ),
+
+        protein:
+            safeNumber(
+                window.currentMeal
+                    .protein
+            ),
+
+        foods:
+            Array.isArray(
+                window.currentMeal
+                    .foods
+            )
+                ? window.currentMeal
+                    .foods
+                : []
+    };
+}
+
+
+// ======================================================
+// 58. COMPROBAR LOCALSTORAGE
+// ======================================================
+
+function isLocalStorageAvailable() {
+
+    try {
+
+        const testKey =
+            "__calorieTrackTest__";
+
+
+        localStorage.setItem(
+            testKey,
+            "1"
         );
 
-    }
 
-
-    // ==============================================
-    // VOLVER
-    // ==============================================
-
-    if (backButton) {
-
-        backButton.addEventListener(
-            "click",
-            showCategories
+        localStorage.removeItem(
+            testKey
         );
 
+
+        return true;
+
+    } catch (_) {
+
+        return false;
     }
+}
 
 
-    // ==============================================
-    // CERRAR
-    // ==============================================
+// ======================================================
+// 59. COMPROBACIONES AL CARGAR
+// ======================================================
 
-    if (closeRecipesButton) {
+document.addEventListener(
+    "DOMContentLoaded",
+    () => {
 
-        closeRecipesButton.addEventListener(
-            "click",
-            closeRecipesModal
-        );
+        if (
+            !isLocalStorageAvailable()
+        ) {
 
-    }
-
-
-    if (recipesOverlay) {
-
-        recipesOverlay.addEventListener(
-            "click",
-            closeRecipesModal
-        );
-
-    }
-
-
-    // ==============================================
-    // ESC
-    // ==============================================
-
-    document.addEventListener(
-        "keydown",
-        (event) => {
-
-            if (
-                event.key === "Escape" &&
-                recipesModal &&
-                recipesModal.classList.contains("active")
-            ) {
-
-                closeRecipesModal();
-
-            }
-
+            console.warn(
+                "CalorieTrack: localStorage no está disponible."
+            );
         }
-    );
 
-});
+
+        // ==============================================
+        // BOTONES IMPORTANTES
+        // ==============================================
+
+        const importantElements = [
+
+            "mealModal",
+            "mealForm",
+            "mealDescription",
+            "closeMealModal"
+        ];
+
+
+        importantElements.forEach(
+            id => {
+
+                if (
+                    !document.getElementById(
+                        id
+                    )
+                ) {
+
+                    console.warn(
+                        `CalorieTrack: no se encontró #${id}`
+                    );
+                }
+            }
+        );
+
+
+        /*
+            Dejamos el modal de comida cerrado
+            al iniciar la página.
+
+            Esto evita que aparezca abierto por
+            una regla CSS antigua.
+        */
+
+        const mealModal =
+            document.getElementById(
+                "mealModal"
+            );
+
+
+        if (mealModal) {
+
+            mealModal.classList.remove(
+                "active"
+            );
+
+
+            mealModal.style.display =
+                "none";
+        }
+
+
+        // ==============================================
+        // OTROS MODALES
+        // ==============================================
+
+        [
+            "goalModal",
+            "recipesModal",
+            "communityModal"
+        ].forEach(
+            id => {
+
+                const modal =
+                    document.getElementById(
+                        id
+                    );
+
+
+                if (modal) {
+
+                    modal.classList.remove(
+                        "active"
+                    );
+
+
+                    modal.style.display =
+                        "none";
+                }
+            }
+        );
+    }
+);
+
+
+// ======================================================
+// 60. ERRORES NO CONTROLADOS
+// ======================================================
+
+window.addEventListener(
+    "unhandledrejection",
+    event => {
+
+        console.error(
+            "CalorieTrack - Promise rechazada:",
+            event.reason
+        );
+    }
+);
+
+
+window.addEventListener(
+    "error",
+    event => {
+
+        /*
+            Dejamos el error visible en consola
+            para facilitar cualquier diagnóstico.
+        */
+
+        console.error(
+            "CalorieTrack - Error:",
+            event.error ||
+            event.message
+        );
+    }
+);
+
+
+// ======================================================
+// 61. INFORMACIÓN DE DEPURACIÓN
+// ======================================================
+
+console.log(
+    "CalorieTrack cargado correctamente."
+);
+
+
+console.log(
+    "Reconocimiento de alimentos: activo."
+);
+
+
+console.log(
+    "Búsqueda de marcas/productos: activa."
+);
+
+
+console.log(
+    "Scanner de código de barras: preparado."
+);
+
+
+// ======================================================
+// FIN DEL SCRIPT.JS
+// ======================================================
+
