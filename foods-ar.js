@@ -26,6 +26,80 @@ const CALORIETRACK_FOODS_AR_VERSION = "0.1.0";
 
 
 const calorieTrackFoodsAR = [
+   
+    {
+    id: "aceiteOliva",
+    name: "Aceite de oliva",
+    category: "aceite",
+
+    aliases: [
+        "aceite de oliva",
+        "aceite oliva"
+    ],
+
+    nutrition: {
+        calories100g: 884,
+        protein100g: 0,
+
+        source: {
+            database:
+                "USDA FoodData Central",
+            foodId:
+                "171413",
+            dataset:
+                "SR Legacy",
+            description:
+                "Oil, olive, salad or cooking",
+            verified:
+                true
+        }
+    },
+
+    portions: {
+
+        teaspoon: {
+            grams:
+                4.5,
+            ml:
+                5,
+            description:
+                "1 cucharadita de aceite de oliva",
+            estimated:
+                false
+        },
+
+        tablespoon: {
+            grams:
+                13.5,
+            ml:
+                15,
+            description:
+                "1 cucharada de aceite de oliva",
+            estimated:
+                false
+        },
+
+        splash: {
+            grams:
+                4.5,
+            ml:
+                5,
+            description:
+                "1 chorrito de aceite de oliva - estimación CalorieTrack",
+            estimated:
+                true,
+            confidence:
+                "medium"
+        }
+    },
+
+    locale:
+        "AR"
+},
+
+
+
+
 
     // ==================================================
     // FRUTAS
@@ -124,7 +198,67 @@ const calorieTrackFoodsAR = [
         "AR"
 },
 
+// ==================================================
+// HUEVOS
+// ==================================================
 
+
+{
+    id: "huevo",
+    name: "Huevo",
+    category: "huevo",
+
+    aliases: [
+        "huevo",
+        "huevos"
+    ],
+
+    nutrition: {
+        calories100g: 143,
+        protein100g: 12.56,
+
+        source: {
+            database:
+                "USDA FoodData Central",
+            foodId:
+                "171287",
+            dataset:
+                "SR Legacy",
+            description:
+                "Egg, whole, raw, fresh",
+            verified:
+                true
+        }
+    },
+
+    portions: {
+        unit: {
+            grams:
+                50,
+            description:
+                "1 huevo grande - peso comestible sin cáscara",
+            estimated:
+                true,
+
+            source: {
+                database:
+                    "USDA FoodData Central",
+                foodId:
+                    "171287",
+                dataset:
+                    "SR Legacy",
+                measure:
+                    "1 large",
+                verified:
+                    true
+            }
+        }
+    },
+
+    locale:
+        "AR"
+},
+   
     // ==================================================
     // INFUSIONES
     // ==================================================
