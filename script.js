@@ -872,6 +872,438 @@ function getPortionMultiplier() {
 // ======================================================
 // 11. BUSCAR OCURRENCIAS DE ALIMENTOS
 // ======================================================
+// ======================================================
+// CALORIETRACK FOODS AR - RESOLVER V2
+// ======================================================
+
+function findFoodsAR(text) {
+
+    /*
+        Seguridad durante la migración.
+
+        Si foods-ar.js no cargó correctamente,
+        el motor viejo puede seguir funcionando.
+    */
+
+    if (
+        typeof calorieTrackFoodsAR === "undefined" ||
+        !Array.isArray(calorieTrackFoodsAR)
+    ) {
+
+        console.warn(
+            "CalorieTrack Foods AR no está disponible."
+        );
+
+        return [];
+    }
+
+
+    const normalized =
+        normalize(text);
+
+
+    if (!normalized) {
+        return [];
+    }
+
+
+    const matches = [];
+
+
+    for (
+        const food
+        of calorieTrackFoodsAR
+    ) {
+
+        if (
+            !food ||
+            !food.id ||
+            !Array.isArray(food.aliases)
+        ) {
+            continue;
+        }
+
+
+        for (
+            const alias
+            of food.aliases
+        ) {
+
+            const normalizedAlias =
+                normalize(alias);
+
+
+            if (!normalizedAlias) {
+                continue;
+            }
+
+
+            /*
+                Escapamos caracteres especiales antes
+                de construir la expresión regular.
+            */
+
+            const escapedAlias =
+                normalizedAlias.replace(
+                    /[.*+?^${}()|[\]\\]/g,
+                    "\\$&"
+                );
+
+
+            const regex =
+                new RegExp(
+                    `\\b${escapedAlias}\\b`,
+                    "g"
+                );
+
+
+            let match;
+
+
+            while (
+                (
+                    match =
+                        regex.exec(
+                            normalized
+                        )
+                ) !== null
+            ) {
+
+                matches.push({
+
+                    foodId:
+                        food.id,
+
+                    food:
+                        food,
+
+                    alias:
+                        normalizedAlias,
+
+                    index:
+                        match.index,
+
+                    length:
+                        normalizedAlias.length,
+
+                    source:
+                        "foods-ar"
+
+                });
+            }
+        }
+    }
+
+
+    /*
+        Priorizamos expresiones largas.
+
+        Ejemplo:
+
+        "milanesa de pollo"
+
+        debe ganar frente a cualquier alias
+        más corto que pueda superponerse.
+    */
+
+    matches.sort(
+        (a, b) => {
+
+            if (
+                a.index !== b.index
+            ) {
+
+                return (
+                    a.index -
+                    b.index
+                );
+            }
+
+
+            return (
+                b.length -
+                a.length
+            );
+        }
+    );
+
+
+    const filtered = [];
+
+
+    for (
+        const match
+        of matches
+    ) {
+
+        const overlaps =
+            filtered.some(
+                existing => {
+
+                    const startA =
+                        match.index;
+
+                    const endA =
+                        match.index +
+                        match.length;
+
+                    const startB =
+                        existing.index;
+
+                    const endB =
+                        existing.index +
+                        existing.length;
+
+
+                    return (
+                        startA < endB &&
+                        endA > startB
+                    );
+                }
+            );
+
+
+        if (!overlaps) {
+
+            filtered.push(
+                match
+            );
+        }
+    }
+
+
+    return filtered;
+}
+
+// ======================================================
+// CALORIETRACK FOODS AR - ANALIZADOR V2
+// ======================================================
+
+function analyzeFoodAR(text) {
+
+    const normalized =
+        normalize(text);
+
+    const matches =
+        findFoodsAR(normalized);
+
+    const results = [];
+
+
+    for (const match of matches) {
+
+        const food =
+            match.food;
+
+
+        if (!food) {
+            continue;
+        }
+
+
+        const nutrition =
+            food.nutrition;
+
+
+        /*
+            Nunca calculamos un alimento si sus
+            datos nutricionales no están verificados.
+        */
+
+        if (
+            !nutrition ||
+            nutrition.source?.verified !== true ||
+            !Number.isFinite(nutrition.calories100g) ||
+            !Number.isFinite(nutrition.protein100g)
+        ) {
+
+            console.warn(
+                `Foods AR: ${food.name} todavía no tiene información nutricional verificada.`
+            );
+
+            continue;
+        }
+
+
+        /*
+            Reutilizamos el detector de cantidades
+            que ya existe en CalorieTrack.
+
+            Ejemplo:
+            "200 g de mandarina"
+        */
+
+        const explicitAmount =
+            getAmountNearFood(
+                normalized,
+                match.index,
+                match.alias
+            );
+
+
+       /*
+    CANTIDAD DEL ALIMENTO
+
+    Prioridad:
+
+    1. Si el usuario escribió gramos explícitos,
+       usamos esa cantidad exacta.
+
+       Ejemplo:
+       "200 g de mandarina"
+
+    2. Si no hay gramos, intentamos utilizar
+       una unidad natural verificada/definida
+       en Foods AR.
+
+       Ejemplo:
+       "2 mandarinas"
+*/
+
+let grams = null;
+let estimated = false;
+let confidence = "high";
+
+
+if (
+    explicitAmount &&
+    explicitAmount.type === "grams"
+) {
+
+    /*
+        Cantidad explícita indicada por
+        el usuario.
+    */
+
+    grams =
+        explicitAmount.amount;
+
+} else {
+
+    /*
+        Intentamos resolver una cantidad
+        expresada en unidades naturales.
+    */
+
+    const unitGrams =
+        Number(
+            food.portions
+                ?.unit
+                ?.grams
+        );
+
+
+    if (
+        !Number.isFinite(unitGrams) ||
+        unitGrams <= 0
+    ) {
+
+        console.info(
+            `Foods AR: ${food.name} reconocida, pero todavía no tiene un peso por unidad disponible.`
+        );
+
+        continue;
+    }
+
+
+    const quantity =
+        getFoodQuantity(
+            normalized,
+            match.index
+        );
+
+
+    if (
+        !Number.isFinite(quantity) ||
+        quantity <= 0
+    ) {
+
+        continue;
+    }
+
+
+    grams =
+        quantity *
+        unitGrams;
+
+
+    /*
+        El peso por unidad es una estimación.
+
+        Por ejemplo, una mandarina puede variar
+        de tamaño aunque usemos como referencia
+        una unidad mediana.
+    */
+
+    estimated = true;
+    confidence = "medium";
+}
+
+        if (
+            !Number.isFinite(grams) ||
+            grams <= 0
+        ) {
+            continue;
+        }
+
+
+        const factor =
+            grams / 100;
+
+
+        const calories =
+            nutrition.calories100g *
+            factor;
+
+
+        const protein =
+            nutrition.protein100g *
+            factor;
+
+
+        results.push({
+
+            key:
+                `foodsAR_${food.id}`,
+
+            foodId:
+                food.id,
+
+            name:
+                food.name,
+
+            grams:
+                grams,
+
+            quantity:
+                grams,
+
+            unit:
+                "g",
+
+            calories:
+                calories,
+
+            protein:
+                protein,
+
+            source:
+                "foods-ar",
+
+            nutritionSource:
+                nutrition.source,
+
+            estimated:
+    estimated,
+
+confidence:
+    confidence
+        });
+    }
+
+
+    return results;
+}
 
 function findFoods(text) {
 
@@ -2260,6 +2692,300 @@ function removeKnownFoodTerms(text) {
         .trim();
 }
 // ======================================================
+// MOTOR V2 - CLASIFICACIÓN DE TEXTO DESCONOCIDO
+// ======================================================
+
+const genericFoodVocabulary = new Set([
+
+    // Bebidas e infusiones
+    "mate",
+    "matecocido",
+    "te",
+    "infusion",
+    "agua",
+    "jugo",
+    "licuado",
+
+    // Frutas
+    "mandarina",
+    "durazno",
+    "frutilla",
+    "frutillas",
+    "kiwi",
+    "melon",
+    "sandia",
+    "uva",
+    "uvas",
+    "ciruela",
+    "ciruelas",
+
+    // Verduras
+    "acelga",
+    "berenjena",
+    "berenjenas",
+    "zapallito",
+    "zapallitos",
+    "calabaza",
+    "remolacha",
+    "chaucha",
+    "chauchas",
+
+    // Cereales / legumbres
+    "garbanzo",
+    "garbanzos",
+    "poroto",
+    "porotos",
+    "quinoa",
+
+    // Preparaciones frecuentes
+    "pizza",
+    "empanada",
+    "empanadas",
+    "hamburguesa",
+    "hamburguesas",
+    "tortilla",
+    "sopa",
+    "guiso",
+    "pure",
+    "milanesa",
+
+    // Otros alimentos
+    "harina",
+    "salsa",
+    "nueces",
+    "almendras",
+    "mani"
+]);
+
+
+/*
+    Palabras que suelen describir un alimento
+    pero no identifican una marca.
+*/
+const genericFoodDescriptorWords = new Set([
+
+    "integral",
+    "descremada",
+    "descremado",
+    "entera",
+    "entero",
+
+    "cocido",
+    "cocida",
+    "cocidos",
+    "cocidas",
+
+    "hervido",
+    "hervida",
+    "hervidos",
+    "hervidas",
+
+    "horno",
+    "plancha",
+
+    "frito",
+    "frita",
+    "fritos",
+    "fritas",
+
+    "casero",
+    "casera",
+    "caseros",
+    "caseras",
+
+    "natural"
+]);
+
+
+/*
+    Palabras que no aportan identidad al alimento.
+*/
+const genericFoodConnectorWords = new Set([
+
+    "de",
+    "del",
+    "con",
+    "sin",
+    "al",
+    "a",
+    "la",
+    "el",
+    "los",
+    "las",
+    "un",
+    "una",
+    "unos",
+    "unas"
+]);
+
+
+/*
+    Devuelve las palabras útiles de un fragmento.
+*/
+function getMeaningfulFoodWords(text) {
+
+    return normalize(text)
+        .split(/\s+/)
+        .filter(Boolean)
+        .filter(
+            word =>
+                !productIgnoreWords.has(word) &&
+                !genericFoodConnectorWords.has(word)
+        );
+}
+
+
+/*
+    Comprueba si un fragmento contiene vocabulario
+    claramente alimentario.
+
+    Importante:
+    esto NO calcula todavía sus calorías.
+
+    Su función es evitar que una comida normal
+    desconocida sea tratada automáticamente
+    como una marca comercial.
+*/
+function looksLikeGenericFood(text) {
+
+    if (!text) {
+        return false;
+    }
+
+
+    const normalized =
+        normalize(text);
+
+
+    /*
+        Primero comprobamos los alimentos que
+        CalorieTrack ya conoce oficialmente.
+    */
+    if (segmentHasKnownFood(normalized)) {
+        return true;
+    }
+
+
+    const words =
+        getMeaningfulFoodWords(normalized);
+
+
+    if (words.length === 0) {
+        return false;
+    }
+
+
+    /*
+        Reconocemos expresiones equivalentes.
+
+        Ejemplo:
+
+        "mate cocido"
+        "matecocido"
+    */
+    const compact =
+        words.join("");
+
+
+    if (
+        compact === "matecocido" ||
+        normalized.includes("mate cocido")
+    ) {
+        return true;
+    }
+
+
+    /*
+        Si alguna palabra pertenece al vocabulario
+        alimentario general, consideramos que
+        probablemente estamos frente a un alimento.
+    */
+    const hasFoodWord =
+        words.some(
+            word =>
+                genericFoodVocabulary.has(word)
+        );
+
+
+    if (hasFoodWord) {
+        return true;
+    }
+
+
+    /*
+        Un descriptor solo ("integral", "casero"...)
+        no alcanza para afirmar que sea alimento.
+    */
+    const onlyDescriptors =
+        words.every(
+            word =>
+                genericFoodDescriptorWords.has(word)
+        );
+
+
+    if (onlyDescriptors) {
+        return false;
+    }
+
+
+    return false;
+}
+
+
+/*
+    Clasificación inicial del fragmento.
+
+    known-food
+        alimento ya soportado por el motor actual
+
+    generic-food
+        parece comida, pero todavía no tenemos
+        información nutricional suficiente
+
+    unknown
+        podría ser marca/producto u otro texto
+*/
+function classifyMealSegment(segment) {
+
+    if (!segment) {
+        return {
+            type: "unknown",
+            text: ""
+        };
+    }
+
+
+    const normalized =
+        normalize(segment);
+
+
+    if (segmentHasKnownFood(normalized)) {
+
+        return {
+            type: "known-food",
+            text: normalized
+        };
+    }
+
+
+    if (looksLikeGenericFood(normalized)) {
+
+        return {
+            type: "generic-food",
+            text: normalized
+        };
+    }
+
+
+    return {
+        type: "unknown",
+        text: normalized
+    };
+}
+
+
+
+// ======================================================
 // 21. EXTRAER POSIBLES PRODUCTOS / MARCAS
 // ======================================================
 
@@ -2278,7 +3004,28 @@ function extractPossibleProductSearches(
 
     segments.forEach(
         segment => {
+        const segmentClassification =
+    classifyMealSegment(segment);
 
+
+/*
+    Si parece un alimento genérico que todavía
+    no está en nuestra base nutricional,
+    NO lo mandamos como si fuera una marca
+    a Open Food Facts.
+*/
+if (
+    segmentClassification.type ===
+    "generic-food"
+) {
+
+    console.info(
+        "CalorieTrack V2: alimento genérico pendiente:",
+        segment
+    );
+
+    return;
+}    
            const cleanedSegment =
     cleanProductSearchText(
         segment
@@ -4372,14 +5119,66 @@ async function analyzeMealWithProducts(
 ) {
 
     /*
-        Primero analizamos los alimentos
-        genéricos de nuestra base interna.
+        MOTOR LEGACY
+
+        Se mantiene funcionando durante
+        la migración a Parser V2.
     */
 
     let genericResults =
         analyzeMeal(
             description
         );
+
+
+    /*
+        FOODS AR / PARSER V2
+
+        Analizamos también la descripción
+        utilizando el nuevo catálogo argentino.
+    */
+
+    const foodsARResults =
+        analyzeFoodAR(
+            description
+        );
+
+
+    /*
+        Evitamos duplicar un alimento cuando
+        ya existe una versión V2 del mismo.
+
+        Esto será importante durante la migración
+        de alimentos del motor viejo a Foods AR.
+    */
+
+    if (
+        Array.isArray(foodsARResults) &&
+        foodsARResults.length > 0
+    ) {
+
+        const foodsARIds =
+            new Set(
+                foodsARResults.map(
+                    item =>
+                        item.foodId
+                )
+            );
+
+
+        genericResults =
+            genericResults.filter(
+                item =>
+                    !foodsARIds.has(
+                        item.key
+                    )
+            );
+
+
+        genericResults.push(
+            ...foodsARResults
+        );
+    }
 
 
     const selectedProducts =
@@ -4667,28 +5466,29 @@ async function analyzeMealWithProducts(
             "2 galletitas Oreo"
         */
 
-        const matchingSegment =
-            segments.find(
-                segment => {
+const matchingSegment =
+    segments.find(
+        segment => {
 
-                    const cleaned =
-                        cleanProductSearchText(
-                            segment
-                        );
+            const cleaned =
+                removeKnownFoodTerms(
+                    cleanProductSearchText(
+                        segment
+                    )
+                );
 
 
-                    return (
-                        normalize(
-                            cleaned
-                        ) ===
-                        normalize(
-                            searchText
-                        )
-                    );
-                }
-            ) ||
-            searchText;
-
+            return (
+                normalize(
+                    cleaned
+                ) ===
+                normalize(
+                    searchText
+                )
+            );
+        }
+    ) ||
+    searchText;
 
         const mealItem =
             convertSelectedProductToMealItem(
@@ -4718,7 +5518,7 @@ async function analyzeMealWithProducts(
         genericResults =
             removeGenericFoodsForSelectedProduct(
                 genericResults,
-                searchText
+                matchingSegment
             );
 
 
