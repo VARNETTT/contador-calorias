@@ -652,62 +652,132 @@ function getAmountNearFood(
     const normalized =
         normalize(text);
 
-    const start =
-        Math.max(
-            0,
-            position - 35
-        );
 
-    const end =
-        Math.min(
-            normalized.length,
-            position + term.length + 35
-        );
+    if (
+        !normalized ||
+        !Number.isFinite(position) ||
+        !term
+    ) {
+        return null;
+    }
 
-    const context =
+
+    /*
+        ==================================================
+        CANTIDAD EXPLÍCITA ASOCIADA AL ALIMENTO
+        ==================================================
+
+        Buscamos primero una cantidad que esté
+        directamente antes del alimento.
+
+        Ejemplos:
+
+        "100 g de huevo"
+        "20 g de aceite de oliva"
+        "200 ml de leche"
+
+        Esto evita que una cantidad perteneciente
+        a otro alimento sea utilizada por error.
+    */
+
+
+    const before =
         normalized.substring(
-            start,
-            end
+            Math.max(
+                0,
+                position - 45
+            ),
+            position
         );
 
+
+    /*
+        GRAMOS
+
+        La expresión debe terminar justo antes
+        del alimento reconocido.
+
+        Acepta:
+
+        "100 g de "
+        "100 gr de "
+        "100 gramos de "
+        "100 g "
+    */
 
     const grams =
-        context.match(
-            /(\d+(?:[.,]\d+)?)\s*(g|gr|gramo|gramos)\b/
+        before.match(
+            /(\d+(?:[.,]\d+)?)\s*(?:g|gr|gramo|gramos)\s*(?:de\s*)?$/
         );
 
 
     if (grams) {
 
-        return {
-            type: "grams",
-            amount: parseFloat(
-                grams[1].replace(",", ".")
-            )
-        };
+        const amount =
+            parseFloat(
+                grams[1].replace(
+                    ",",
+                    "."
+                )
+            );
+
+
+        if (
+            Number.isFinite(amount) &&
+            amount > 0
+        ) {
+
+            return {
+                type: "grams",
+                amount: amount
+            };
+        }
     }
 
 
+    /*
+        MILILITROS
+
+        Misma lógica que gramos.
+
+        Ejemplos:
+
+        "200 ml de leche"
+        "250 mililitros de leche"
+    */
+
     const ml =
-        context.match(
-            /(\d+(?:[.,]\d+)?)\s*(ml|mililitro|mililitros)\b/
+        before.match(
+            /(\d+(?:[.,]\d+)?)\s*(?:ml|mililitro|mililitros)\s*(?:de\s*)?$/
         );
 
 
     if (ml) {
 
-        return {
-            type: "ml",
-            amount: parseFloat(
-                ml[1].replace(",", ".")
-            )
-        };
+        const amount =
+            parseFloat(
+                ml[1].replace(
+                    ",",
+                    "."
+                )
+            );
+
+
+        if (
+            Number.isFinite(amount) &&
+            amount > 0
+        ) {
+
+            return {
+                type: "ml",
+                amount: amount
+            };
+        }
     }
 
 
     return null;
 }
-
 
 // ======================================================
 // 8. DETECTAR MEDIDAS
@@ -1078,7 +1148,226 @@ function findFoodsAR(text) {
 // ======================================================
 // CALORIETRACK FOODS AR - ANALIZADOR V2
 // ======================================================
+// ======================================================
+// CALORIETRACK FOODS AR - PREPARACIONES
+// ======================================================
 
+function detectFoodPreparationAR(
+    text,
+    foodId
+) {
+
+    const normalized =
+        normalize(text);
+
+
+    /*
+        Por ahora comenzamos solamente con huevo.
+
+        La función está separada del cálculo nutricional
+        para poder agregar nuevas preparaciones después
+        sin modificar la base Foods AR.
+    */
+
+    if (foodId === "huevo") {
+
+        if (
+            /\b(revuelto|revueltos)\b/.test(
+                normalized
+            )
+        ) {
+
+            return {
+                id: "revuelto",
+                name: "revuelto"
+            };
+        }
+
+
+        if (
+            /\b(frito|fritos)\b/.test(
+                normalized
+            )
+        ) {
+
+            return {
+                id: "frito",
+                name: "frito"
+            };
+        }
+    }
+
+
+    return null;
+}
+// ======================================================
+// CALORIETRACK FOODS AR - MEDIDAS NATURALES
+// ======================================================
+
+function detectFoodMeasureAR(
+    text,
+    match
+) {
+
+    const normalized =
+        normalize(text);
+
+
+    if (
+        !match ||
+        !match.food ||
+        !Number.isFinite(match.index)
+    ) {
+        return null;
+    }
+
+
+    /*
+        Miramos solamente el contexto cercano
+        anterior al alimento.
+
+        Ejemplos:
+
+        "una cucharadita de aceite de oliva"
+        "2 cucharadas de aceite de oliva"
+        "un chorrito de aceite de oliva"
+
+        Esto evita que una medida perteneciente
+        a otro alimento contamine el resultado.
+    */
+
+    const before =
+        normalized.substring(
+            Math.max(
+                0,
+                match.index - 45
+            ),
+            match.index
+        );
+
+
+    const measures = [
+
+        {
+            id: "teaspoon",
+            regex:
+                /\bcucharaditas?\s+(?:de\s*)?$/
+        },
+
+        {
+            id: "tablespoon",
+            regex:
+                /\bcucharadas?\s+(?:de\s*)?$/
+        },
+
+        {
+            id: "splash",
+            regex:
+                /\bchorritos?\s+(?:de\s*)?$/
+        }
+
+    ];
+
+
+    for (const measure of measures) {
+
+        if (
+            measure.regex.test(before)
+        ) {
+
+            const portion =
+                match.food.portions
+                    ?.[measure.id];
+
+
+            if (!portion) {
+                continue;
+            }
+
+
+            let quantity = 1;
+
+/*
+    Buscamos la cantidad asociada directamente
+    a la medida.
+
+    Ejemplos:
+    "2 cucharaditas de"
+    "tres cucharadas de"
+    "un chorrito de"
+*/
+
+const quantityContext =
+    before.match(
+        /(?:^|\s)(\d+(?:[.,]\d+)?|un|una|uno|dos|tres|cuatro|cinco|seis|siete|ocho|nueve|diez|once|doce|trece|catorce|quince)\s+(?:cucharaditas?|cucharadas?|chorritos?)\s+(?:de\s*)?$/
+    );
+
+
+if (quantityContext) {
+
+    const rawQuantity =
+        quantityContext[1];
+
+
+    if (
+        /^\d+(?:[.,]\d+)?$/.test(
+            rawQuantity
+        )
+    ) {
+
+        quantity =
+            parseFloat(
+                rawQuantity.replace(",", ".")
+            );
+
+    } else if (
+        Object.prototype.hasOwnProperty.call(
+            numbers,
+            rawQuantity
+        )
+    ) {
+
+        quantity =
+            numbers[rawQuantity];
+    }
+}
+
+
+            return {
+                id:
+                    measure.id,
+
+                quantity:
+                    quantity,
+
+                grams:
+                    Number(
+                        portion.grams
+                    ),
+
+                ml:
+                    Number(
+                        portion.ml
+                    ),
+
+                estimated:
+                    portion.estimated ===
+                    true,
+
+                confidence:
+                    portion.confidence ||
+                    (
+                        portion.estimated
+                            ? "medium"
+                            : "high"
+                    )
+            };
+        }
+    }
+
+
+    return null;
+}
 function analyzeFoodAR(text) {
 
     const normalized =
@@ -1101,20 +1390,34 @@ function analyzeFoodAR(text) {
         }
 
 
+        // ------------------------------------------
+        // PREPARACIÓN
+        // ------------------------------------------
+
+        const preparation =
+            detectFoodPreparationAR(
+                normalized,
+                food.id
+            );
+
+
         const nutrition =
             food.nutrition;
 
 
-        /*
-            Nunca calculamos un alimento si sus
-            datos nutricionales no están verificados.
-        */
+        // ------------------------------------------
+        // VALIDAR INFORMACIÓN NUTRICIONAL
+        // ------------------------------------------
 
         if (
             !nutrition ||
             nutrition.source?.verified !== true ||
-            !Number.isFinite(nutrition.calories100g) ||
-            !Number.isFinite(nutrition.protein100g)
+            !Number.isFinite(
+                nutrition.calories100g
+            ) ||
+            !Number.isFinite(
+                nutrition.protein100g
+            )
         ) {
 
             console.warn(
@@ -1125,13 +1428,9 @@ function analyzeFoodAR(text) {
         }
 
 
-        /*
-            Reutilizamos el detector de cantidades
-            que ya existe en CalorieTrack.
-
-            Ejemplo:
-            "200 g de mandarina"
-        */
+        // ------------------------------------------
+        // CANTIDAD EXPLÍCITA
+        // ------------------------------------------
 
         const explicitAmount =
             getAmountNearFood(
@@ -1141,111 +1440,171 @@ function analyzeFoodAR(text) {
             );
 
 
-       /*
-    CANTIDAD DEL ALIMENTO
+        let grams = null;
 
-    Prioridad:
+        let estimated = false;
 
-    1. Si el usuario escribió gramos explícitos,
-       usamos esa cantidad exacta.
+        let confidence = "high";
 
-       Ejemplo:
-       "200 g de mandarina"
-
-    2. Si no hay gramos, intentamos utilizar
-       una unidad natural verificada/definida
-       en Foods AR.
-
-       Ejemplo:
-       "2 mandarinas"
-*/
-
-let grams = null;
-let estimated = false;
-let confidence = "high";
+        let detectedMeasure = null;
 
 
-if (
-    explicitAmount &&
-    explicitAmount.type === "grams"
-) {
+        /*
+            PRIORIDAD
 
-    /*
-        Cantidad explícita indicada por
-        el usuario.
-    */
-
-    grams =
-        explicitAmount.amount;
-
-} else {
-
-    /*
-        Intentamos resolver una cantidad
-        expresada en unidades naturales.
-    */
-
-    const unitGrams =
-        Number(
-            food.portions
-                ?.unit
-                ?.grams
-        );
+            1. Gramos explícitos
+            2. Medida natural
+            3. Unidad natural
+        */
 
 
-    if (
-        !Number.isFinite(unitGrams) ||
-        unitGrams <= 0
-    ) {
+        // ==========================================
+        // 1. GRAMOS EXPLÍCITOS
+        // ==========================================
 
-        console.info(
-            `Foods AR: ${food.name} reconocida, pero todavía no tiene un peso por unidad disponible.`
-        );
+        if (
+            explicitAmount &&
+            explicitAmount.type === "grams"
+        ) {
 
-        continue;
-    }
-
-
-    const quantity =
-        getFoodQuantity(
-            normalized,
-            match.index
-        );
+            grams =
+                explicitAmount.amount;
+        }
 
 
-    if (
-        !Number.isFinite(quantity) ||
-        quantity <= 0
-    ) {
+        // ==========================================
+        // 2. MEDIDA NATURAL
+        // ==========================================
 
-        continue;
-    }
+        else {
+
+            detectedMeasure =
+                detectFoodMeasureAR(
+                    normalized,
+                    match
+                );
 
 
-    grams =
-        quantity *
-        unitGrams;
+            if (
+                detectedMeasure &&
+                Number.isFinite(
+                    detectedMeasure.grams
+                ) &&
+                detectedMeasure.grams > 0
+            ) {
+
+                const measureQuantity =
+                    Number(
+                        detectedMeasure.quantity
+                    );
 
 
-    /*
-        El peso por unidad es una estimación.
+                if (
+                    !Number.isFinite(
+                        measureQuantity
+                    ) ||
+                    measureQuantity <= 0
+                ) {
 
-        Por ejemplo, una mandarina puede variar
-        de tamaño aunque usemos como referencia
-        una unidad mediana.
-    */
+                    continue;
+                }
 
-    estimated = true;
-    confidence = "medium";
-}
+
+                grams =
+                    detectedMeasure.grams *
+                    measureQuantity;
+
+
+                estimated =
+                    detectedMeasure.estimated ===
+                    true;
+
+
+                confidence =
+                    detectedMeasure.confidence ||
+                    (
+                        estimated
+                            ? "medium"
+                            : "high"
+                    );
+            }
+
+
+            // ======================================
+            // 3. UNIDAD NATURAL
+            // ======================================
+
+            else {
+
+                const unitGrams =
+                    Number(
+                        food.portions
+                            ?.unit
+                            ?.grams
+                    );
+
+
+                if (
+                    !Number.isFinite(
+                        unitGrams
+                    ) ||
+                    unitGrams <= 0
+                ) {
+
+                    console.info(
+                        `Foods AR: ${food.name} reconocida, pero todavía no tiene una cantidad interpretable.`
+                    );
+
+                    continue;
+                }
+
+
+                const quantity =
+                    getFoodQuantity(
+                        normalized,
+                        match.index
+                    );
+
+
+                if (
+                    !Number.isFinite(
+                        quantity
+                    ) ||
+                    quantity <= 0
+                ) {
+
+                    continue;
+                }
+
+
+                grams =
+                    quantity *
+                    unitGrams;
+
+
+                estimated = true;
+
+                confidence = "medium";
+            }
+        }
+
+
+        // ------------------------------------------
+        // VALIDACIÓN FINAL DE CANTIDAD
+        // ------------------------------------------
 
         if (
             !Number.isFinite(grams) ||
             grams <= 0
         ) {
+
             continue;
         }
 
+
+        // ------------------------------------------
+        // CÁLCULO NUTRICIONAL
+        // ------------------------------------------
 
         const factor =
             grams / 100;
@@ -1260,6 +1619,10 @@ if (
             nutrition.protein100g *
             factor;
 
+
+        // ------------------------------------------
+        // RESULTADO
+        // ------------------------------------------
 
         results.push({
 
@@ -1294,17 +1657,24 @@ if (
                 nutrition.source,
 
             estimated:
-    estimated,
+                estimated,
 
-confidence:
-    confidence
+            confidence:
+                confidence,
+
+            preparation:
+                preparation,
+
+            measure:
+                detectedMeasure
+                    ? detectedMeasure.id
+                    : null
         });
     }
 
 
     return results;
 }
-
 function findFoods(text) {
 
     const normalized =
@@ -1898,21 +2268,98 @@ function showEstimate(results) {
     });
 
 
-    const caloriesMin =
-        Math.round(
-            totalCalories * 0.85
-        );
+    /*
+    RANGO DE INCERTIDUMBRE
 
-    const caloriesMax =
-        Math.round(
-            totalCalories * 1.15
-        );
+    Calculamos el margen alimento por alimento.
 
+    high   -> dato preciso: sin margen
+    medium -> cantidad estimada: ±10 %
+    low    -> estimación débil: ±20 %
+
+    Los resultados legacy que todavía no tienen
+    metadata de confianza mantienen temporalmente
+    el margen histórico de ±15 %.
+*/
+
+let caloriesMinRaw = 0;
+let caloriesMaxRaw = 0;
+
+
+results.forEach(item => {
+
+    const calories =
+        Number(item.calories) || 0;
+
+
+    let margin = 0;
+
+
+    if (
+        item.source === "foods-ar"
+    ) {
+
+        if (
+            item.estimated !== true ||
+            item.confidence === "high"
+        ) {
+
+            margin = 0;
+
+        } else if (
+            item.confidence === "medium"
+        ) {
+
+            margin = 0.10;
+
+        } else {
+
+            margin = 0.20;
+        }
+
+    } else {
+
+        /*
+            Motor legacy / productos externos.
+
+            Todavía no poseen el mismo sistema
+            de confianza de Foods AR.
+        */
+
+        margin = 0.15;
+    }
+
+
+    caloriesMinRaw +=
+        calories * (1 - margin);
+
+    caloriesMaxRaw +=
+        calories * (1 + margin);
+});
+
+
+const caloriesMin =
+    Math.round(
+        caloriesMinRaw
+    );
+
+const caloriesMax =
+    Math.round(
+        caloriesMaxRaw
+    );
 
     if (estimatedCalories) {
 
-        estimatedCalories.textContent =
-            `${caloriesMin}-${caloriesMax}`;
+        if (caloriesMin === caloriesMax) {
+
+    estimatedCalories.textContent =
+        `${caloriesMin}`;
+
+} else {
+
+    estimatedCalories.textContent =
+        `${caloriesMin}-${caloriesMax}`;
+}
     }
 
 
@@ -2564,10 +3011,10 @@ function cleanProductSearchText(
 
 
     cleaned =
-        cleaned.replace(
-            /\b(cucharada|cucharadas|cucharadita|cucharaditas|taza|tazas|vaso|vasos|plato|platos|porcion|porciones|unidad|unidades)\b/gi,
-            " "
-        );
+    cleaned.replace(
+        /\b(cucharada|cucharadas|cucharadita|cucharaditas|chorrito|chorritos|taza|tazas|vaso|vasos|plato|platos|porcion|porciones|unidad|unidades)\b/gi,
+        " "
+    );
 
 
     cleaned =
@@ -2584,15 +3031,26 @@ function cleanProductSearchText(
             .filter(Boolean);
 
 
-    while (
-        words.length > 0 &&
-        productIgnoreWords.has(
-            normalize(words[0])
-        )
-    ) {
+    /*
+    Eliminamos conectores y determinantes
+    que no forman parte del nombre comercial.
 
-        words.shift();
-    }
+    Esto se hace en cualquier posición del texto,
+    no solamente al comienzo.
+
+    Ejemplo:
+    "con un chorrito de"
+        ↓
+    ""
+*/
+
+words =
+    words.filter(
+        word =>
+            !productIgnoreWords.has(
+                normalize(word)
+            )
+    );
 
 
     return words
@@ -2650,21 +3108,67 @@ function removeKnownFoodTerms(text) {
     let cleaned =
         normalize(text);
 
-    const terms =
-        foodDefinitions
-            .flatMap(
-                definition =>
-                    definition.terms || []
-            )
-            .map(
-                term =>
-                    normalize(term)
-            )
-            .filter(Boolean)
-            .sort(
-                (a, b) =>
-                    b.length - a.length
-            );
+    /*
+    Términos conocidos por el motor legacy.
+*/
+
+const legacyTerms =
+    foodDefinitions
+        .flatMap(
+            definition =>
+                definition.terms || []
+        );
+
+
+/*
+    Términos conocidos por Foods AR.
+
+    De esta forma, cualquier alimento que migremos
+    al nuevo catálogo queda automáticamente excluido
+    de las búsquedas de Open Food Facts.
+*/
+
+const foodsARTerms =
+    (
+        typeof calorieTrackFoodsAR !== "undefined" &&
+        Array.isArray(calorieTrackFoodsAR)
+    )
+        ? calorieTrackFoodsAR.flatMap(
+            food =>
+                Array.isArray(food.aliases)
+                    ? food.aliases
+                    : []
+        )
+        : [];
+
+
+/*
+    Unificamos ambos motores y priorizamos
+    expresiones largas.
+
+    Ejemplo:
+    "aceite de oliva" debe eliminarse antes
+    que "aceite".
+*/
+
+const terms =
+    [
+        ...legacyTerms,
+        ...foodsARTerms
+    ]
+        .map(
+            term =>
+                normalize(term)
+        )
+        .filter(Boolean)
+        .filter(
+            (term, index, array) =>
+                array.indexOf(term) === index
+        )
+        .sort(
+            (a, b) =>
+                b.length - a.length
+        );
 
     for (const term of terms) {
 
@@ -5143,7 +5647,143 @@ async function analyzeMealWithProducts(
             description
         );
 
+        /*
+    ==================================================
+    PRIORIDAD DE PREPARACIONES ESPECÍFICAS
+    ==================================================
 
+    Una preparación específica tiene prioridad
+    sobre el alimento base.
+
+    Ejemplo:
+
+    "2 huevos revueltos"
+
+    El motor legacy reconoce:
+        huevoRevuelto
+
+    Foods AR reconoce:
+        huevo
+
+    No debemos contar ambos porque el huevo
+    ya forma parte de la preparación.
+*/
+
+const preparationBaseFoods = {
+
+    huevoRevuelto:
+        "huevo",
+
+    huevoFrito:
+        "huevo",
+
+    milanesaPollo:
+        "pollo",
+
+    milanesaCarne:
+        "carne",
+
+    purePapa:
+        "papa"
+};
+
+
+/*
+    Buscamos qué alimentos base ya están
+    representados por una preparación específica.
+*/
+
+/*
+    ==================================================
+    FOODS AR V2 VS PREPARACIONES LEGACY
+    ==================================================
+
+    Si Foods AR reconoce explícitamente una
+    preparación, esa versión V2 tiene prioridad
+    sobre la preparación equivalente del motor
+    legacy.
+
+    Ejemplo:
+
+    "2 huevos revueltos"
+
+    Foods AR:
+        huevo + preparation "revuelto"
+
+    Legacy:
+        huevoRevuelto
+
+    Conservamos Foods AR y eliminamos el legacy.
+*/
+
+const preparationLegacyKeys = {
+
+    huevo: {
+        revuelto:
+            "huevoRevuelto",
+
+        frito:
+            "huevoFrito"
+    }
+
+};
+
+
+const legacyPreparationKeysToRemove =
+    new Set();
+
+
+foodsARResults.forEach(
+    item => {
+
+        const preparationId =
+            item.preparation?.id;
+
+
+        if (!preparationId) {
+            return;
+        }
+
+
+        const legacyKey =
+            preparationLegacyKeys[
+                item.foodId
+            ]?.[
+                preparationId
+            ];
+
+
+        if (legacyKey) {
+
+            legacyPreparationKeysToRemove.add(
+                legacyKey
+            );
+        }
+    }
+);
+
+
+/*
+    Quitamos solamente la preparación legacy
+    que fue reemplazada explícitamente por V2.
+*/
+
+genericResults =
+    genericResults.filter(
+        item =>
+            !legacyPreparationKeysToRemove.has(
+                item.key
+            )
+    );
+
+
+/*
+    A partir de este punto todos los resultados
+    válidos de Foods AR continúan normalmente.
+*/
+
+const filteredFoodsARResults =
+    foodsARResults;
     /*
         Evitamos duplicar un alimento cuando
         ya existe una versión V2 del mismo.
@@ -5153,31 +5793,144 @@ async function analyzeMealWithProducts(
     */
 
     if (
-        Array.isArray(foodsARResults) &&
-        foodsARResults.length > 0
-    ) {
+    Array.isArray(filteredFoodsARResults) &&
+    filteredFoodsARResults.length > 0
+) {
 
-        const foodsARIds =
-            new Set(
-                foodsARResults.map(
-                    item =>
-                        item.foodId
+        /*
+    Foods AR tiene prioridad sobre el motor legacy.
+
+    No podemos comparar solamente foodId === key,
+    porque los identificadores de ambos motores
+    no necesariamente coinciden.
+
+    Ejemplo:
+        legacy   -> aceite
+        Foods AR -> aceiteOliva
+*/
+
+const foodsARIds =
+    new Set(
+        foodsARResults.map(
+            item =>
+                item.foodId
+        )
+    );
+
+
+const foodsARMatches =
+    findFoodsAR(
+        description
+    );
+
+
+genericResults =
+    genericResults.filter(
+        item => {
+
+            /*
+                Caso simple:
+                ambos motores utilizan el mismo ID.
+
+                Ejemplo:
+                huevo -> huevo
+            */
+
+            if (
+                foodsARIds.has(
+                    item.key
                 )
-            );
+            ) {
+                return false;
+            }
 
 
-        genericResults =
-            genericResults.filter(
-                item =>
-                    !foodsARIds.has(
+            /*
+                Buscamos qué términos pertenecen
+                al alimento legacy.
+            */
+
+            const legacyDefinition =
+                foodDefinitions.find(
+                    definition =>
+                        definition.key ===
                         item.key
+                );
+
+
+            if (!legacyDefinition) {
+                return true;
+            }
+
+
+            const legacyTerms =
+                (
+                    legacyDefinition.terms ||
+                    []
+                )
+                    .map(
+                        term =>
+                            normalize(term)
                     )
-            );
+                    .filter(Boolean);
+
+
+            /*
+                Si un término legacy está contenido
+                dentro de un alias que Foods AR ya
+                reconoció, conservamos solamente
+                Foods AR.
+
+                Ejemplo:
+
+                legacy:
+                    "aceite"
+
+                Foods AR:
+                    "aceite de oliva"
+
+                "aceite" está contenido en
+                "aceite de oliva"
+                    ↓
+                eliminamos el resultado legacy.
+            */
+
+            const coveredByFoodsAR =
+                foodsARMatches.some(
+                    match => {
+
+                        const alias =
+                            normalize(
+                                match.alias ||
+                                ""
+                            );
+
+                        return legacyTerms.some(
+                            term => {
+
+                                const escapedTerm =
+                                    term.replace(
+                                        /[.*+?^${}()|[\]\\]/g,
+                                        "\\$&"
+                                    );
+
+                                return new RegExp(
+                                    `\\b${escapedTerm}\\b`
+                                ).test(alias);
+                            }
+                        );
+                    }
+                );
+
+
+            return !coveredByFoodsAR;
+        }
+    );
 
 
         genericResults.push(
-            ...foodsARResults
-        );
+    ...filteredFoodsARResults
+);
     }
 
 
