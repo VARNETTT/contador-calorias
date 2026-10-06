@@ -1411,7 +1411,8 @@ function analyzeFoodAR(text) {
 
         if (
             !nutrition ||
-            nutrition.source?.verified !== true ||
+            (nutrition.source?.verified !== true &&
+                nutrition.source?.usable !== true) ||
             !Number.isFinite(
                 nutrition.calories100g
             ) ||
