@@ -2290,88 +2290,31 @@
     }
 
     mount.innerHTML = `
-      <section class="water-card">
-        <div class="water-header">
-          <div class="water-title">
-            <div class="water-icon">💧</div>
-            <div>
-              <p class="eyebrow">HIDRATACIÓN</p>
-              <h2>Mi consumo de agua</h2>
-              <p class="water-subtitle">
-                Registrá el agua que tomaste hoy.
-              </p>
-            </div>
-          </div>
-
-          <div class="water-total">
-            <strong id="waterTotal">0 ml</strong>
-            <span id="waterEquivalent">
-              0 vasos de 250 ml
-            </span>
-          </div>
+      <section class="water-card water-modern" aria-label="Seguimiento de hidratación">
+        <div class="water-modern-top">
+          <div><p class="eyebrow">HIDRATACIÓN DIARIA</p><h2>Tu consumo de agua</h2><p class="water-modern-caption">Cada vaso cuenta para tu bienestar.</p></div>
+          <div class="water-modern-icon" aria-hidden="true">💧</div>
         </div>
-
-        <div class="water-progress">
-          <div
-            id="waterProgress"
-            class="water-progress-fill"
-          ></div>
+        <div class="water-modern-stats">
+          <div class="water-modern-stat"><strong id="waterTotal">0 ml</strong><span>Consumidos hoy</span></div>
+          <div class="water-modern-stat"><strong id="waterRemaining">2.000 ml</strong><span>Para tu referencia</span></div>
         </div>
-
-        <div class="water-progress-label">
-          <span id="waterProgressText">0%</span>
-          <span>Referencia: 2 litros</span>
+        <div class="water-modern-progress-head"><span>Progreso diario</span><strong id="waterProgressText">0%</strong></div>
+        <div class="water-progress" role="progressbar" aria-label="Progreso de agua"><div id="waterProgress" class="water-progress-fill"></div></div>
+        <p class="water-modern-equivalent" id="waterEquivalent">0 vasos de 250 ml</p>
+        <div class="water-modern-quick-title">Agregar rápidamente</div>
+        <div class="water-modern-quick">
+          <button type="button" class="water-quick-btn" data-water-ml="150"><span>💧</span><strong>+150 ml</strong></button>
+          <button type="button" class="water-quick-btn" data-water-ml="250"><span>🥛</span><strong>+250 ml</strong></button>
+          <button type="button" class="water-quick-btn" data-water-ml="500"><span>💦</span><strong>+500 ml</strong></button>
         </div>
-
-        <form id="waterForm" class="water-form">
-          <div class="water-form-group">
-            <label for="waterAmount">
-              Cantidad
-            </label>
-            <input
-              id="waterAmount"
-              type="number"
-              min="0.01"
-              step="any"
-              value="1"
-              required
-            >
-          </div>
-
-          <div class="water-form-group">
-            <label for="waterUnit">
-              Unidad
-            </label>
-            <select id="waterUnit">
-              <option value="glass">
-                Vasos (250 ml)
-              </option>
-              <option value="l">Litros</option>
-              <option value="ml">Mililitros</option>
-            </select>
-          </div>
-
-          <button
-            type="submit"
-            class="button water-add-button"
-          >
-            + Agregar agua
-          </button>
+        <form id="waterForm" class="water-form water-modern-form">
+          <div class="water-form-group"><label for="waterAmount">Otra cantidad</label><input id="waterAmount" type="number" min="0.01" step="any" value="1" required></div>
+          <div class="water-form-group"><label for="waterUnit">Unidad</label><select id="waterUnit"><option value="glass">Vasos (250 ml)</option><option value="l">Litros</option><option value="ml">Mililitros</option></select></div>
+          <button type="submit" class="button water-add-button">+ Agregar agua</button>
         </form>
-
-        <p
-          id="waterError"
-          class="form-error"
-          role="alert"
-        ></p>
-
-        <div class="water-history">
-          <h3>Registros de hoy</h3>
-          <div
-            id="waterHistoryList"
-            class="water-history-list"
-          ></div>
-        </div>
+        <p id="waterError" class="form-error" role="alert"></p>
+        <div class="water-history"><div class="water-modern-history-title"><h3>Registros de hoy</h3><span>Historial</span></div><div id="waterHistoryList" class="water-history-list"></div></div>
       </section>
     `;
 
@@ -2393,6 +2336,14 @@
               : 1;
       }
     );
+
+    mount.querySelectorAll("[data-water-ml]").forEach(button => {
+      button.addEventListener("click", () => {
+        $("waterUnit").value = "ml";
+        $("waterAmount").value = button.dataset.waterMl;
+        $("waterForm").requestSubmit();
+      });
+    });
 
     renderWater();
   }
@@ -2555,6 +2506,8 @@
       "waterEquivalent",
       `${fmt(glasses)} vasos de 250 ml`
     );
+
+    setText("waterRemaining", formatWater(Math.max(0, WATER_GOAL - total)));
 
     /* ------------------------------------------
        INDICADOR CIRCULAR
@@ -3272,7 +3225,13 @@
     goal = {
       ...goal,
       calories,
-      protein
+      protein,
+      weight,
+      height,
+      age,
+      sex,
+      activity,
+      goalType
     };
 
     if (!write(KEYS.goal, goal)) {
@@ -3617,8 +3576,10 @@
       very_active: 1.9
     };
 
-    const factor =
-      activityFactors[activity] || 1.2;
+    const numericActivity = Number(activity);
+    const factor = Number.isFinite(numericActivity) && numericActivity >= 1.2 && numericActivity <= 1.9
+      ? numericActivity
+      : (activityFactors[activity] || 1.2);
 
     let calories = bmr * factor;
 
@@ -3649,7 +3610,13 @@
     goal = {
       ...goal,
       calories,
-      protein
+      protein,
+      weight,
+      height,
+      age,
+      sex,
+      activity,
+      goalType
     };
 
     if (!write(KEYS.goal, goal)) {
@@ -3658,6 +3625,8 @@
     }
 
     setText("goalError", "");
+    const goalResultElement = $("goalResult");
+    if (goalResultElement) goalResultElement.hidden = false;
 
     setText(
       "goalResult",
@@ -3744,20 +3713,25 @@
     };
 
     recognition.onresult = event => {
-      let interim = "";
-      for (let i = event.resultIndex; i < event.results.length; i++) {
-        const transcript = event.results[i][0].transcript.trim();
-        if (event.results[i].isFinal) {
-          finalText += (finalText ? " " : "") + transcript;
-        } else {
-          interim += (interim ? " " : "") + transcript;
-        }
+      // El navegador puede reenviar resultados anteriores o corregir hipótesis.
+      // Reconstruimos la transcripción completa en cada evento, en lugar de
+      // concatenar resultados repetidos.
+      const confirmed = [];
+      const provisional = [];
+      for (let i = 0; i < event.results.length; i++) {
+        const transcript = (event.results[i][0]?.transcript || "").trim();
+        if (!transcript) continue;
+        if (event.results[i].isFinal) confirmed.push(transcript);
+        else provisional.push(transcript);
       }
-      input.value = [originalText, finalText, interim].filter(Boolean).join(" ").trim();
-      if (finalText) {
-        input.dispatchEvent(new Event("input", { bubbles: true }));
-      }
-      updateStatus(interim ? "Escuchando: " + interim : "Texto reconocido. Podés seguir hablando.");
+      finalText = confirmed.join(" ");
+      const interim = provisional.join(" ");
+      input.value = [originalText, finalText, interim]
+        .filter(Boolean).join(" ").trim();
+      input.dispatchEvent(new Event("input", { bubbles: true }));
+      updateStatus(interim
+        ? "Escuchando: " + interim
+        : "Texto reconocido. Podés seguir hablando.");
     };
 
     recognition.onerror = event => {
@@ -4076,7 +4050,18 @@
 
     bindClick(
       "openGoalModal",
-      () => openModal("goalModal")
+      () => {
+        for (const [id, field] of Object.entries({
+          goalWeight: "weight", goalHeight: "height", goalAge: "age",
+          goalSex: "sex", goalActivity: "activity", goalType: "goalType"
+        })) {
+          const input = $(id);
+          if (input && goal[field] !== undefined && goal[field] !== null) {
+            input.value = String(goal[field]);
+          }
+        }
+        openModal("goalModal");
+      }
     );
 
     bindClick(
