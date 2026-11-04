@@ -29,14 +29,14 @@
     rel="stylesheet"
   >
 
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css?v=20261104b">
 
   <script
     src="https://unpkg.com/html5-qrcode"
     defer
   ></script>
 
-  <script src="script.js" defer></script>
+  <script src="script.js?v=20261104b" defer></script>
 </head>
 
 <body>
@@ -67,13 +67,7 @@
       <a href="#productos">Productos</a>
     </nav>
 
-    <button
-      class="button button-primary header-action"
-      id="openMealModal"
-      type="button"
-    >
-      ＋ Agregar comida
-    </button>
+
 
   </header>
 
@@ -104,6 +98,12 @@
           Una forma simple y consciente de conocer
           tu alimentación y mantener hábitos saludables.
         </p>
+
+        <button class="button meal-main-action" id="openMealModal" type="button" aria-label="Agregar una comida nueva">
+          <span class="meal-action-icon" aria-hidden="true">+</span>
+          <span class="meal-action-label">Agregar comida</span>
+          <span class="meal-action-arrow" aria-hidden="true">↗</span>
+        </button>
 
       </div>
 
@@ -171,6 +171,13 @@
       </div>
       <div class="compact-meals-counter"><span>🍽️ Comidas registradas hoy</span><strong id="totalMeals">0</strong></div>
 
+    </section>
+
+
+    <section id="calendario" class="calendar-section" aria-labelledby="calendarTitle">
+      <div class="calendar-header"><div><p class="eyebrow">TU HISTORIAL</p><h2 id="calendarTitle">Calendario</h2><p class="section-subtitle">Consultá tus registros de cualquier día.</p></div><button type="button" id="calendarToday" class="button button-soft">Hoy</button></div>
+      <div class="calendar-layout"><div class="calendar-picker-card"><div class="calendar-month-bar"><button type="button" id="calendarPrev" aria-label="Mes anterior">‹</button><strong id="calendarMonth"></strong><button type="button" id="calendarNext" aria-label="Mes siguiente">›</button></div><div class="calendar-weekdays" aria-hidden="true"><span>L</span><span>M</span><span>M</span><span>J</span><span>V</span><span>S</span><span>D</span></div><div id="calendarGrid" class="calendar-grid" aria-label="Elegir día"></div><p class="calendar-legend"><span class="calendar-dot"></span> Días con registros</p></div>
+      <div class="calendar-detail-card" aria-live="polite"><p class="eyebrow">RESUMEN DEL DÍA</p><h3 id="calendarSelectedLabel">Hoy</h3><div class="calendar-metrics"><div><strong id="calendarCalories">0</strong><small>kcal</small></div><div><strong id="calendarProtein">0</strong><small>g proteínas</small></div><div><strong id="calendarWater">0</strong><small>ml agua</small></div></div><h4>Comidas registradas</h4><div id="calendarMeals" class="calendar-meals"></div></div></div>
     </section>
 
     <!-- ==========================
@@ -1103,6 +1110,15 @@
     </section>
 
   </div>
+
+
+  <nav class="app-bottom-nav" aria-label="Navegación principal móvil">
+    <a href="#inicio" data-nav="inicio"><span class="nav-symbol">⌂</span><span>Inicio</span></a>
+    <a href="#calendario" data-nav="calendario"><span class="nav-symbol">▦</span><span>Calendario</span></a>
+    <button type="button" class="nav-add" id="mobileAddMeal" aria-label="Agregar comida"><span class="nav-plus">+</span><span>Agregar</span></button>
+    <a href="#progreso" data-nav="progreso"><span class="nav-symbol">◉</span><span>Progreso</span></a>
+    <a href="#productos" data-nav="productos"><span class="nav-symbol">⌕</span><span>Alimentos</span></a>
+  </nav>
 
 </body>
 </html>
