@@ -3672,9 +3672,7 @@
   let voiceListening = false;
 
   function stopVoiceRecognition() {
-    if (voiceRecognition && voiceListening) {
-      voiceRecognition.stop();
-    }
+    if (voiceRecognition && voiceListening) voiceRecognition.stop();
   }
 
   function initializeVoiceInput() {
@@ -3686,22 +3684,27 @@
     const Recognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     if (!Recognition) {
       button.disabled = true;
-      status.textContent = "El dictado no está disponible en este navegador. Probá con Chrome o Edge actualizado.";
+      status.textContent = "El dictado no está disponible en este navegador. Probá Chrome o Edge actualizado.";
       return;
     }
 
     const recognition = new Recognition();
     voiceRecognition = recognition;
     recognition.lang = "es-AR";
-    recognition.continuous = true;
-    recognition.interimResults = true;
+    // Una frase por pulsación. Los resultados provisionales se descartan
+    // para evitar repeticiones en Chrome para Android.
+    recognition.continuous = false;
+    recognition.interimResults = false;
     recognition.maxAlternatives = 1;
 
     let originalText = "";
-    let finalText = "";
+    let capturedText = "";
+    let receivedFinal = false;
 
-    function updateStatus(message) {
-      status.textContent = message;
+    function normalizeVoiceText(text) {
+      return String(text || "").toLocaleLowerCase("es-AR")
+        .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+        .replace(/[^a-z0-9 ]/g, " ").replace(/\s+/g, " ").trim();
     }
 
     recognition.onstart = () => {
@@ -3709,40 +3712,43 @@
       button.classList.add("is-listening");
       button.setAttribute("aria-pressed", "true");
       button.textContent = "■ Detener dictado";
-      updateStatus("Escuchando... hablá con claridad.");
+      status.textContent = "Escuchando una frase...";
     };
 
     recognition.onresult = event => {
-      // El navegador puede reenviar resultados anteriores o corregir hipótesis.
-      // Reconstruimos la transcripción completa en cada evento, en lugar de
-      // concatenar resultados repetidos.
-      const confirmed = [];
-      const provisional = [];
+      if (receivedFinal) return;
+      const fragments = [];
       for (let i = 0; i < event.results.length; i++) {
-        const transcript = (event.results[i][0]?.transcript || "").trim();
-        if (!transcript) continue;
-        if (event.results[i].isFinal) confirmed.push(transcript);
-        else provisional.push(transcript);
+        if (!event.results[i].isFinal) continue;
+        const phrase = (event.results[i][0]?.transcript || "").trim();
+        if (!phrase) continue;
+        // Algunas implementaciones devuelven varias veces el mismo resultado.
+        if (fragments.some(part => normalizeVoiceText(part) === normalizeVoiceText(phrase))) continue;
+        fragments.push(phrase);
       }
-      finalText = confirmed.join(" ");
-      const interim = provisional.join(" ");
-      input.value = [originalText, finalText, interim]
-        .filter(Boolean).join(" ").trim();
+      if (!fragments.length) return;
+      const transcript = fragments.join(" ").trim();
+      if (!transcript) return;
+      receivedFinal = true;
+      capturedText = transcript;
+      const before = normalizeVoiceText(originalText);
+      const spoken = normalizeVoiceText(transcript);
+      input.value = before && (before === spoken || before.endsWith(" " + spoken))
+        ? originalText
+        : [originalText, transcript].filter(Boolean).join(" ").trim();
       input.dispatchEvent(new Event("input", { bubbles: true }));
-      updateStatus(interim
-        ? "Escuchando: " + interim
-        : "Texto reconocido. Podés seguir hablando.");
+      status.textContent = "Frase reconocida. Revisá el texto antes de agregar la comida.";
     };
 
     recognition.onerror = event => {
       const messages = {
-        "not-allowed": "No se autorizó el micrófono. Permití su uso en el navegador.",
+        "not-allowed": "Permití el acceso al micrófono en el navegador.",
         "audio-capture": "No se detectó un micrófono disponible.",
-        "no-speech": "No se detectó voz. Volvé a intentarlo.",
-        "network": "Error de conexión del servicio de reconocimiento de voz.",
-        "service-not-allowed": "El servicio de reconocimiento de voz no está permitido."
+        "no-speech": "No se detectó voz. Intentá nuevamente.",
+        "network": "Error de conexión del reconocimiento de voz.",
+        "service-not-allowed": "El servicio de voz no está permitido."
       };
-      updateStatus(messages[event.error] || "No se pudo reconocer la voz. Intentá de nuevo.");
+      status.textContent = messages[event.error] || "No se pudo reconocer la voz.";
     };
 
     recognition.onend = () => {
@@ -3750,10 +3756,10 @@
       button.classList.remove("is-listening");
       button.setAttribute("aria-pressed", "false");
       button.textContent = "🎙 Dictar comida";
-      input.dispatchEvent(new Event("input", { bubbles: true }));
-      if (input.value.trim()) analyzeFullMealPhrase();
-      if (status.textContent.startsWith("Escuchando") || status.textContent.startsWith("Texto reconocido")) {
-        updateStatus("Dictado finalizado. Revisá el texto y seleccioná los alimentos.");
+      if (receivedFinal && capturedText) {
+        analyzeFullMealPhrase();
+      } else if (status.textContent.startsWith("Escuchando")) {
+        status.textContent = "No se reconoció ninguna frase. Intentá nuevamente.";
       }
     };
 
@@ -3763,12 +3769,13 @@
         return;
       }
       originalText = input.value.trim();
-      finalText = "";
+      capturedText = "";
+      receivedFinal = false;
       try {
         recognition.start();
       } catch (error) {
         console.error("No se pudo iniciar el dictado:", error);
-        updateStatus("No se pudo iniciar el micrófono. Intentá nuevamente.");
+        status.textContent = "No se pudo iniciar el micrófono. Intentá nuevamente.";
       }
     });
   }
