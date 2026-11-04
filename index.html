@@ -1,147 +1,1108 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
   <meta name="theme-color" content="#f5f4ed">
+
   <title>CalorieTrack | Tu bienestar, en equilibrio</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <link
+    rel="preconnect"
+    href="https://fonts.googleapis.com"
+  >
+
+  <link
+    rel="preconnect"
+    href="https://fonts.gstatic.com"
+    crossorigin
+  >
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet"
+  >
+
   <link rel="stylesheet" href="style.css">
-  <script src="https://unpkg.com/html5-qrcode" defer></script>
-  <script src="foods-ar.js" defer></script>
+
+  <script
+    src="https://unpkg.com/html5-qrcode"
+    defer
+  ></script>
+
   <script src="script.js" defer></script>
 </head>
+
 <body>
+
+  <!-- ==========================
+       ENCABEZADO
+  =========================== -->
+
   <header class="site-header">
-    <a class="brand" href="#inicio" aria-label="CalorieTrack, inicio">
-      <span class="brand-mark">c</span><span>calorie<span class="brand-light">track</span></span>
+
+    <a
+      class="brand"
+      href="#inicio"
+      aria-label="CalorieTrack, inicio"
+    >
+      <span class="brand-mark">c</span>
+
+      <span>
+        calorie<span class="brand-light">track</span>
+      </span>
     </a>
+
     <nav class="main-nav" aria-label="Navegación principal">
       <a class="active" href="#inicio">Inicio</a>
       <a href="#progreso">Mi progreso</a>
+      <a href="#agua">Mi agua</a>
       <a href="#comidas">Mis comidas</a>
+      <a href="#productos">Productos</a>
     </nav>
-    <button class="button button-primary header-action" id="openMealModal" type="button">＋ Agregar comida</button>
+
+    <button
+      class="button button-primary header-action"
+      id="openMealModal"
+      type="button"
+    >
+      ＋ Agregar comida
+    </button>
+
   </header>
 
+  <!-- ==========================
+       CONTENIDO PRINCIPAL
+  =========================== -->
+
   <main id="inicio" class="page-shell">
+
+    <!-- BIENVENIDA -->
+
     <section class="welcome-row">
+
       <div>
-        <p class="eyebrow"><span class="eyebrow-dot"></span> UN PASO A LA VEZ</p>
-        <h1>Tu bienestar,<br><em>en equilibrio.</em></h1>
-        <p class="welcome-copy">Una forma simple y consciente de conocer tu alimentación, sin complicarte.</p>
+
+        <p class="eyebrow">
+          <span class="eyebrow-dot"></span>
+          UN PASO A LA VEZ
+        </p>
+
+        <h1>
+          Tu bienestar,
+          <br>
+          <em>en equilibrio.</em>
+        </h1>
+
+        <p class="welcome-copy">
+          Una forma simple y consciente de conocer
+          tu alimentación y mantener hábitos saludables.
+        </p>
+
       </div>
+
       <div class="welcome-art" aria-hidden="true">
+
         <div class="art-circle art-circle-back"></div>
         <div class="art-circle art-circle-front"></div>
-        <span class="art-leaf leaf-one">✳</span><span class="art-leaf leaf-two">✿</span>
+
+        <span class="art-leaf leaf-one">✳</span>
+        <span class="art-leaf leaf-two">✿</span>
         <span class="art-fruit">●</span>
+
       </div>
+
     </section>
+
+    <!-- ==========================
+         RESUMEN DIARIO
+    =========================== -->
 
     <section class="daily-card" id="progreso">
+
       <div class="section-heading">
-        <div><p class="eyebrow">TU RESUMEN DIARIO</p><h2>Así va tu día</h2></div>
-        <button class="button button-soft" id="openGoalModal" type="button">⚙ Mi objetivo</button>
+
+        <div>
+          <p class="eyebrow">TU RESUMEN DIARIO</p>
+          <h2>Así va tu día</h2>
+        </div>
+
+        <button
+          class="button button-soft"
+          id="openGoalModal"
+          type="button"
+        >
+          ⚙ Mi objetivo
+        </button>
+
       </div>
-      <div class="summary-grid">
-        <article class="calorie-panel">
-          <div class="calorie-topline"><span>Calorías consumidas</span><span class="today-pill" id="todayLabel">Hoy</span></div>
-          <div class="calorie-numbers"><strong id="dailyConsumedCalories">0</strong><span> / <b id="dailyTargetCalories">2000</b> kcal</span></div>
-          <p class="remaining-text" id="dailyRemainingCalories">Configurá tu objetivo para comenzar.</p>
-          <div class="progress-track"><div class="progress-fill" id="dailyProgress"></div></div>
-          <div class="progress-caption"><span>0 kcal</span><span id="progressGoalLabel">Objetivo diario</span></div>
+
+      <div class="circle-dashboard" aria-label="Progreso diario">
+        <article class="circle-stat">
+          <h3>Calorías</h3>
+          <div class="circle-progress" id="calorieCircle" style="--circle-color:#43835a;--progress:0%">
+            <div class="circle-progress-content"><strong id="dailyConsumedCalories">0</strong><span>kcal consumidas</span></div>
+          </div>
+          <p id="caloriePercent">0%</p>
+          <small>Meta: <span id="dailyTargetCalories">2000</span> kcal</small>
+          <span id="dailyRemainingCalories" class="circle-remaining">Te quedan 2000 kcal.</span>
+          <div id="dailyProgress" hidden></div><span id="progressGoalLabel" hidden></span><span id="todayLabel" hidden></span>
         </article>
-        <article class="metric-card">
-          <div class="metric-icon green-icon">↗</div><p>Proteínas</p>
-          <strong><span id="totalProtein">0</span><small> g</small></strong>
-          <span class="metric-foot">Consumidas hoy</span>
+        <article class="circle-stat">
+          <h3>Proteínas</h3>
+          <div class="circle-progress" id="proteinCircle" style="--circle-color:#e4a44d;--progress:0%">
+            <div class="circle-progress-content"><strong><span id="totalProtein">0</span> g</strong><span>consumidas</span></div>
+          </div>
+          <p id="proteinPercent">0%</p><small id="proteinGoalLabel">Meta: 120 g</small>
         </article>
-        <article class="metric-card">
-          <div class="metric-icon peach-icon">◷</div><p>Comidas</p>
-          <strong id="totalMeals">0</strong>
-          <span class="metric-foot">Registradas hoy</span>
+        <article class="circle-stat">
+          <h3>Agua</h3>
+          <div class="circle-progress" id="waterCircle" style="--circle-color:#4799d3;--progress:0%">
+            <div class="circle-progress-content"><strong id="waterCircleTotal">0 ml</strong><span>consumidos</span></div>
+          </div>
+          <p id="waterCirclePercent">0%</p><small>Referencia: 2 L</small>
         </article>
       </div>
+      <div class="compact-meals-counter"><span>🍽️ Comidas registradas hoy</span><strong id="totalMeals">0</strong></div>
+
     </section>
+
+    <!-- ==========================
+         CONTADOR DE AGUA
+    =========================== -->
+
+    <section id="agua" class="water-section">
+
+      <!--
+        El JavaScript actualizado insertará aquí
+        el contador de agua.
+
+        Tendrá:
+        - Total consumido hoy
+        - Cantidad
+        - Vasos de 250 ml
+        - Litros
+        - Mililitros
+        - Historial diario
+        - Opción para eliminar registros
+      -->
+
+      <div id="waterTrackerMount"></div>
+
+    </section>
+
+    <!-- ==========================
+         MIS COMIDAS
+    =========================== -->
 
     <section class="meals-section" id="comidas">
+
       <div class="section-heading meals-heading">
-        <div><p class="eyebrow">TU ALIMENTACIÓN</p><h2>Mis comidas</h2><p class="section-subtitle">Cada registro te ayuda a entender mejor tus hábitos.</p></div>
-        <button class="button button-primary" id="dashboardAddMeal" type="button">＋ Registrar comida</button>
-      </div>
-      <div class="meal-list" id="mealList">
-        <div class="empty-state" id="emptyState">
-          <span class="empty-icon">☼</span><h3>Tu día empieza acá</h3>
-          <p>Todavía no registraste comidas. Cuando agregues una, la vas a ver en esta lista.</p>
-          <button class="button button-outline" id="emptyAddMeal" type="button">Agregar mi primera comida</button>
+
+        <div>
+
+          <p class="eyebrow">
+            TU ALIMENTACIÓN
+          </p>
+
+          <h2>Mis comidas</h2>
+
+          <p class="section-subtitle">
+            Cada registro te ayuda a entender
+            mejor tus hábitos.
+          </p>
+
         </div>
+
+        <button
+          class="button button-primary"
+          id="dashboardAddMeal"
+          type="button"
+        >
+          ＋ Registrar comida
+        </button>
+
       </div>
+
+      <div class="meal-list" id="mealList"></div>
+
     </section>
+
+    <!-- ==========================
+         CATÁLOGO DE PRODUCTOS
+    =========================== -->
+
+    <section class="meals-section" id="productos">
+
+      <div class="section-heading">
+
+        <div>
+
+          <p class="eyebrow">
+            BASE DE DATOS NUTRICIONAL
+          </p>
+
+          <h2>Buscar alimentos</h2>
+
+          <p class="section-subtitle">
+            Encontrá productos por nombre o marca.
+          </p>
+
+        </div>
+
+        <button
+          class="button button-soft"
+          id="openProductModal"
+          type="button"
+        >
+          ＋ Crear producto
+        </button>
+
+      </div>
+
+      <div class="product-search-box">
+
+        <label for="productSearch">
+          Buscar producto
+        </label>
+
+        <div class="product-search-row">
+
+          <input
+            type="search"
+            id="productSearch"
+            placeholder="Ej: alfajor Milka, yogur Ser, galletitas Oreo"
+            autocomplete="off"
+          >
+
+          <button
+            class="button button-primary"
+            id="searchProductButton"
+            type="button"
+          >
+            Buscar
+          </button>
+
+        </div>
+
+        <p
+          id="productSearchStatus"
+          class="helper-text"
+          aria-live="polite"
+        ></p>
+
+        <div
+          id="productResults"
+          class="product-results"
+        ></div>
+
+      </div>
+
+      <div class="saved-products-section">
+
+        <div class="section-heading">
+
+          <div>
+            <h2>Mis productos guardados</h2>
+            <p class="section-subtitle">
+              Tus alimentos favoritos en un solo lugar.
+            </p>
+          </div>
+
+        </div>
+
+        <div
+          id="savedProductsList"
+          class="product-results"
+        ></div>
+
+      </div>
+
+    </section>
+
+    <!-- RECORDATORIO -->
 
     <section class="tip-card">
-      <div class="tip-icon">✿</div><div><p class="eyebrow">UN RECORDATORIO</p><h3>La constancia vale más que la perfección.</h3><p>Los valores nutricionales son estimaciones. Usalos como una guía, no como una regla rígida.</p></div>
+
+      <div class="tip-icon">✿</div>
+
+      <div>
+
+        <p class="eyebrow">
+          UN RECORDATORIO
+        </p>
+
+        <h3>
+          La constancia vale más que la perfección.
+        </h3>
+
+        <p>
+          Los valores nutricionales son estimaciones.
+          Usalos como una guía, no como una regla rígida.
+        </p>
+
+      </div>
+
     </section>
+
   </main>
 
-  <footer class="site-footer">CalorieTrack <span>·</span> Tu alimentación, bajo control y sin presiones.</footer>
+  <!-- ==========================
+       PIE DE PÁGINA
+  =========================== -->
 
-  <!-- Modal: registrar comida -->
-  <div class="modal" id="mealModal" aria-hidden="true">
-    <div class="modal-backdrop" data-close="meal"></div>
-    <section class="modal-panel" role="dialog" aria-modal="true" aria-labelledby="mealModalTitle">
-      <button class="modal-close" type="button" data-close="meal" aria-label="Cerrar">×</button>
-      <p class="eyebrow">NUEVO REGISTRO</p><h2 id="mealModalTitle">¿Qué comiste?</h2>
-      <p class="modal-intro">Describí tu comida con palabras simples. Por ejemplo: “2 huevos, 2 tostadas y una banana”.</p>
+  <footer class="site-footer">
+
+    CalorieTrack
+
+    <span>·</span>
+
+    Tu alimentación, bajo control y sin presiones.
+
+  </footer>
+
+  <!-- ==========================
+       MODAL REGISTRAR COMIDA
+  =========================== -->
+
+  <div
+    class="modal"
+    id="mealModal"
+    aria-hidden="true"
+  >
+
+    <div
+      class="modal-backdrop"
+      data-close="meal"
+    ></div>
+
+    <section
+      class="modal-panel"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="mealModalTitle"
+    >
+
+      <button
+        class="modal-close"
+        type="button"
+        data-close="meal"
+        aria-label="Cerrar"
+      >
+        ×
+      </button>
+
+      <p class="eyebrow">
+        NUEVO REGISTRO
+      </p>
+
+      <h2 id="mealModalTitle">
+        ¿Qué comiste?
+      </h2>
+
+      <p class="modal-intro">
+        Buscá el alimento que consumiste,
+        seleccioná el producto y elegí la cantidad.
+      </p>
+
       <form id="mealForm">
-        <label for="mealType">Momento del día</label>
+
+        <!-- MOMENTO DEL DÍA -->
+
+        <label for="mealType">
+          Momento del día
+        </label>
+
         <select id="mealType" required>
-          <option value="Desayuno">Desayuno</option><option value="Almuerzo">Almuerzo</option>
-          <option value="Merienda">Merienda</option><option value="Cena">Cena</option><option value="Colación">Colación</option>
+
+          <option value="Desayuno">Desayuno</option>
+          <option value="Almuerzo">Almuerzo</option>
+          <option value="Merienda">Merienda</option>
+          <option value="Cena">Cena</option>
+          <option value="Colación">Colación</option>
+
         </select>
-        <label for="mealDescription">Alimentos y cantidades</label>
-        <textarea id="mealDescription" rows="3" placeholder="Ej: 150 g de pollo, 1 taza de arroz y ensalada" required></textarea>
-        <div class="portion-row"><span>Porción general</span><label class="radio-label"><input type="radio" name="portion" value="poco"> Pequeña</label><label class="radio-label"><input type="radio" name="portion" value="normal" checked> Normal</label><label class="radio-label"><input type="radio" name="portion" value="abundante"> Abundante</label></div>
+
+        <!-- BUSCADOR AUTOMÁTICO -->
+
+        <label for="mealDescription">
+          ¿Qué alimento comiste?
+        </label>
+
+        <textarea
+          id="mealDescription"
+          rows="2"
+          placeholder="Ej: alfajor Milka"
+          autocomplete="off"
+        ></textarea>
+
+        <div class="voice-entry">
+          <button type="button" id="voiceMealButton" class="button button-outline voice-button" aria-pressed="false">
+            🎙 Dictar comida
+          </button>
+          <span id="voiceMealStatus" class="helper-text" role="status" aria-live="polite">Podés describir tu comida usando la voz.</span>
+        </div>
+
+        <div class="phrase-actions">
+          <button type="button" id="analyzePhraseButton" class="button button-primary">✦ Analizar comida completa</button>
+          <span class="helper-text">Podés escribir o dictar varios alimentos juntos.</span>
+        </div>
+        <div class="phrase-actions"><button type="button" id="analyzeAIButton" class="button button-outline">✨ Analizar con IA (marcas y recetas)</button><span class="helper-text">Requiere iniciar el servidor y configurar Gemini.</span></div>
+        <div id="aiAnalysis" class="phrase-analysis" aria-live="polite" hidden></div>
+        <div id="phraseAnalysis" class="phrase-analysis" aria-live="polite" hidden></div>
+
+        <!--
+          El JavaScript mostrará aquí los productos
+          que coincidan mientras escribís.
+        -->
+
+        <div
+          id="instantFoodResults"
+          class="instant-food-results"
+          aria-live="polite"
+        ></div>
+
+        <!-- PORCIÓN GENERAL -->
+
+        <div class="portion-row">
+
+          <span>Porción general</span>
+
+          <label class="radio-label">
+            <input
+              type="radio"
+              name="portion"
+              value="poco"
+            >
+            Pequeña
+          </label>
+
+          <label class="radio-label">
+            <input
+              type="radio"
+              name="portion"
+              value="normal"
+              checked
+            >
+            Normal
+          </label>
+
+          <label class="radio-label">
+            <input
+              type="radio"
+              name="portion"
+              value="abundante"
+            >
+            Abundante
+          </label>
+
+        </div>
+
+        <!-- BÚSQUEDA ADICIONAL -->
+
+        <div class="meal-product-search-section">
+
+          <h3>Buscar productos</h3>
+
+          <p class="helper-text">
+            También podés buscar directamente
+            en la base de datos nutricional.
+          </p>
+
+          <div class="product-search-row">
+
+            <input
+              type="search"
+              id="mealProductSearch"
+              placeholder="Nombre o marca del producto"
+              autocomplete="off"
+            >
+
+            <button
+              class="button button-outline"
+              id="mealProductSearchButton"
+              type="button"
+            >
+              Buscar
+            </button>
+
+          </div>
+
+          <p
+            id="mealProductSearchStatus"
+            class="helper-text"
+            aria-live="polite"
+          ></p>
+
+          <div
+            id="mealProductResults"
+            class="product-results"
+          ></div>
+
+        </div>
+
+        <!-- PRODUCTO SELECCIONADO -->
+
+        <div
+          id="selectedProductPanel"
+          class="selected-product-panel"
+          hidden
+        >
+
+          <h3>Producto seleccionado</h3>
+
+          <p id="selectedProductName"></p>
+
+          <label for="selectedProductAmount">
+            Cantidad consumida
+          </label>
+
+          <!--
+            El JavaScript agrega el selector
+            de gramos, ml o unidades.
+          -->
+
+          <input
+            type="number"
+            id="selectedProductAmount"
+            min="0.1"
+            step="any"
+            value="100"
+          >
+
+          <p
+            id="selectedProductNutrition"
+            class="helper-text"
+          ></p>
+
+          <button
+            class="button button-primary"
+            id="addSelectedProduct"
+            type="button"
+          >
+            ＋ Agregar alimento
+          </button>
+
+        </div>
+
+        <!-- ESCÁNER -->
+
         <div class="scanner-tools">
-          <button class="button button-outline" type="button" id="scanButton">▦ Escanear producto</button>
-          <span class="helper-text">También podés buscar un producto por su código de barras.</span>
+
+          <button
+            class="button button-outline"
+            type="button"
+            id="scanButton"
+          >
+            ▦ Escanear producto
+          </button>
+
+          <span class="helper-text">
+            También podés usar el código de barras.
+          </span>
+
         </div>
-        <div class="scanner-box" id="scannerSection" hidden>
+
+        <div
+          class="scanner-box"
+          id="scannerSection"
+          hidden
+        >
+
           <div id="reader"></div>
-          <p id="scannerStatus" class="helper-text" aria-live="polite">Preparando cámara…</p>
-          <button class="button button-soft" type="button" id="stopScanner">Detener cámara</button>
+
+          <p
+            id="scannerStatus"
+            class="helper-text"
+            aria-live="polite"
+          >
+            Preparando cámara...
+          </p>
+
+          <button
+            class="button button-soft"
+            type="button"
+            id="stopScanner"
+          >
+            Detener cámara
+          </button>
+
         </div>
-        <div id="scannedProduct" class="scanned-product" hidden></div>
-        <div class="estimate-preview" id="estimatePreview" hidden>
-          <div><span>Calorías estimadas</span><strong id="previewCalories">0 kcal</strong></div>
-          <div><span>Proteínas estimadas</span><strong id="previewProtein">0 g</strong></div>
+
+        <div
+          id="scannedProduct"
+          class="scanned-product"
+          hidden
+        ></div>
+
+        <!-- RESUMEN NUTRICIONAL -->
+
+        <div
+          class="estimate-preview"
+          id="estimatePreview"
+          hidden
+        >
+
+          <div>
+
+            <span>Calorías estimadas</span>
+
+            <strong id="previewCalories">
+              0 kcal
+            </strong>
+
+          </div>
+
+          <div>
+
+            <span>Proteínas estimadas</span>
+
+            <strong id="previewProtein">
+              0 g
+            </strong>
+
+          </div>
+
           <p id="previewDetails"></p>
+
         </div>
-        <p class="form-error" id="mealError" role="alert"></p>
-        <div class="modal-actions"><button class="button button-soft" type="button" data-close="meal">Cancelar</button><button class="button button-primary" type="submit">Guardar comida</button></div>
+
+        <p
+          class="form-error"
+          id="mealError"
+          role="alert"
+        ></p>
+
+        <div class="modal-actions">
+
+          <button
+            class="button button-soft"
+            type="button"
+            data-close="meal"
+          >
+            Cancelar
+          </button>
+
+          <button
+            class="button button-primary"
+            type="submit"
+          >
+            Guardar comida
+          </button>
+
+        </div>
+
       </form>
+
     </section>
+
   </div>
 
-  <!-- Modal: objetivo -->
-  <div class="modal" id="goalModal" aria-hidden="true">
-    <div class="modal-backdrop" data-close="goal"></div>
-    <section class="modal-panel goal-panel" role="dialog" aria-modal="true" aria-labelledby="goalModalTitle">
-      <button class="modal-close" type="button" data-close="goal" aria-label="Cerrar">×</button>
-      <p class="eyebrow">TU PLAN PERSONAL</p><h2 id="goalModalTitle">Definí tu objetivo</h2>
-      <p class="modal-intro">Completá tus datos para obtener una estimación inicial de tus necesidades energéticas.</p>
+  <!-- ==========================
+       MODAL OBJETIVO
+  =========================== -->
+
+  <div
+    class="modal"
+    id="goalModal"
+    aria-hidden="true"
+  >
+
+    <div
+      class="modal-backdrop"
+      data-close="goal"
+    ></div>
+
+    <section
+      class="modal-panel goal-panel"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="goalModalTitle"
+    >
+
+      <button
+        class="modal-close"
+        type="button"
+        data-close="goal"
+        aria-label="Cerrar"
+      >
+        ×
+      </button>
+
+      <p class="eyebrow">
+        TU PLAN PERSONAL
+      </p>
+
+      <h2 id="goalModalTitle">
+        Definí tu objetivo
+      </h2>
+
+      <p class="modal-intro">
+        Completá tus datos para obtener una
+        estimación inicial de tus necesidades energéticas.
+      </p>
+
       <form id="goalForm" class="goal-form">
-        <div class="form-two"><div><label for="goalWeight">Peso actual (kg)</label><input id="goalWeight" type="number" min="20" max="400" step="0.1" required></div><div><label for="goalHeight">Altura (cm)</label><input id="goalHeight" type="number" min="100" max="250" required></div></div>
-        <div class="form-two"><div><label for="goalAge">Edad</label><input id="goalAge" type="number" min="13" max="110" required></div><div><label for="goalSex">Sexo biológico</label><select id="goalSex"><option value="male">Masculino</option><option value="female">Femenino</option></select></div></div>
-        <label for="goalActivity">Actividad física</label><select id="goalActivity"><option value="1.2">Sedentaria</option><option value="1.375">Ligera (1–3 días/semana)</option><option value="1.55">Moderada (3–5 días/semana)</option><option value="1.725">Alta (6–7 días/semana)</option></select>
-        <label for="goalType">Objetivo</label><select id="goalType"><option value="deficit">Perder peso</option><option value="maintenance">Mantener peso</option><option value="surplus">Ganar peso</option></select>
-        <div id="goalResult" class="goal-result" hidden></div>
-        <p class="form-error" id="goalError" role="alert"></p>
-        <div class="modal-actions"><button class="button button-soft" type="button" data-close="goal">Cancelar</button><button class="button button-primary" type="submit">Calcular y guardar</button></div>
+
+        <div class="form-two">
+
+          <div>
+
+            <label for="goalWeight">
+              Peso actual (kg)
+            </label>
+
+            <input
+              id="goalWeight"
+              type="number"
+              min="20"
+              max="400"
+              step="0.1"
+              required
+            >
+
+          </div>
+
+          <div>
+
+            <label for="goalHeight">
+              Altura (cm)
+            </label>
+
+            <input
+              id="goalHeight"
+              type="number"
+              min="100"
+              max="250"
+              required
+            >
+
+          </div>
+
+        </div>
+
+        <div class="form-two">
+
+          <div>
+
+            <label for="goalAge">
+              Edad
+            </label>
+
+            <input
+              id="goalAge"
+              type="number"
+              min="13"
+              max="110"
+              required
+            >
+
+          </div>
+
+          <div>
+
+            <label for="goalSex">
+              Sexo biológico
+            </label>
+
+            <select id="goalSex">
+
+              <option value="male">
+                Masculino
+              </option>
+
+              <option value="female">
+                Femenino
+              </option>
+
+            </select>
+
+          </div>
+
+        </div>
+
+        <label for="goalActivity">
+          Actividad física
+        </label>
+
+        <select id="goalActivity">
+
+          <option value="1.2">
+            Sedentaria
+          </option>
+
+          <option value="1.375">
+            Ligera (1–3 días/semana)
+          </option>
+
+          <option value="1.55">
+            Moderada (3–5 días/semana)
+          </option>
+
+          <option value="1.725">
+            Alta (6–7 días/semana)
+          </option>
+
+        </select>
+
+        <label for="goalType">
+          Objetivo
+        </label>
+
+        <select id="goalType">
+
+          <option value="deficit">
+            Perder peso
+          </option>
+
+          <option value="maintenance">
+            Mantener peso
+          </option>
+
+          <option value="surplus">
+            Ganar peso
+          </option>
+
+        </select>
+
+        <div
+          id="goalResult"
+          class="goal-result"
+          hidden
+        ></div>
+
+        <p
+          class="form-error"
+          id="goalError"
+          role="alert"
+        ></p>
+
+        <div class="modal-actions">
+
+          <button
+            class="button button-soft"
+            type="button"
+            data-close="goal"
+          >
+            Cancelar
+          </button>
+
+          <button
+            class="button button-primary"
+            type="submit"
+          >
+            Calcular y guardar
+          </button>
+
+        </div>
+
       </form>
+
     </section>
+
   </div>
+
+  <!-- ==========================
+       MODAL CREAR PRODUCTO
+  =========================== -->
+
+  <div
+    class="modal"
+    id="productModal"
+    aria-hidden="true"
+  >
+
+    <div
+      class="modal-backdrop"
+      data-close="product"
+    ></div>
+
+    <section
+      class="modal-panel"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="productModalTitle"
+    >
+
+      <button
+        class="modal-close"
+        type="button"
+        data-close="product"
+        aria-label="Cerrar"
+      >
+        ×
+      </button>
+
+      <p class="eyebrow">
+        MI CATÁLOGO
+      </p>
+
+      <h2 id="productModalTitle">
+        Crear producto
+      </h2>
+
+      <p class="modal-intro">
+        Registrá manualmente un producto
+        que no aparezca en el buscador.
+      </p>
+
+      <form id="productForm">
+
+        <label for="newProductName">
+          Nombre del producto
+        </label>
+
+        <input
+          id="newProductName"
+          type="text"
+          placeholder="Ej: Alfajor de chocolate"
+          required
+        >
+
+        <label for="newProductBrand">
+          Marca
+        </label>
+
+        <input
+          id="newProductBrand"
+          type="text"
+          placeholder="Ej: Milka"
+        >
+
+        <label for="newProductBarcode">
+          Código de barras (opcional)
+        </label>
+
+        <input
+          id="newProductBarcode"
+          type="text"
+          inputmode="numeric"
+          placeholder="Código del envase"
+        >
+
+        <label for="newProductReference">
+          Información nutricional indicada por
+        </label>
+
+        <select id="newProductReference">
+
+          <option value="100">
+            Cada 100 g / 100 ml
+          </option>
+
+          <option value="portion">
+            Por porción
+          </option>
+
+        </select>
+
+        <div
+          id="newProductPortionGroup"
+          hidden
+        >
+
+          <label for="newProductPortionGrams">
+            Peso o volumen de la porción
+          </label>
+
+          <input
+            id="newProductPortionGrams"
+            type="number"
+            min="0.1"
+            step="any"
+            placeholder="Ej: 55"
+          >
+
+        </div>
+
+        <div class="form-two">
+
+          <div>
+
+            <label for="newProductCalories">
+              Calorías (kcal)
+            </label>
+
+            <input
+              id="newProductCalories"
+              type="number"
+              min="0"
+              step="any"
+              required
+            >
+
+          </div>
+
+          <div>
+
+            <label for="newProductProtein">
+              Proteínas (g)
+            </label>
+
+            <input
+              id="newProductProtein"
+              type="number"
+              min="0"
+              step="any"
+              required
+            >
+
+          </div>
+
+        </div>
+
+        <label for="newProductUnit">
+          Unidad de referencia
+        </label>
+
+        <select id="newProductUnit">
+
+          <option value="g">
+            Gramos (g)
+          </option>
+
+          <option value="ml">
+            Mililitros (ml)
+          </option>
+
+        </select>
+
+        <p
+          class="form-error"
+          id="productError"
+          role="alert"
+        ></p>
+
+        <div class="modal-actions">
+
+          <button
+            class="button button-soft"
+            type="button"
+            data-close="product"
+          >
+            Cancelar
+          </button>
+
+          <button
+            class="button button-primary"
+            type="submit"
+          >
+            Guardar producto
+          </button>
+
+        </div>
+
+      </form>
+
+    </section>
+
+  </div>
+
 </body>
 </html>
