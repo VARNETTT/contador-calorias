@@ -29,15 +29,15 @@
     rel="stylesheet"
   >
 
-  <link rel="stylesheet" href="style.css?v=20261104c">
+  <link rel="stylesheet" href="style.css?v=20261106c">
 
   <script
     src="https://unpkg.com/html5-qrcode"
     defer
   ></script>
 
-  <script src="script.js?v=20261104c" defer></script>
-  <script src="calendar.js?v=20261104c" defer></script>
+  <script src="script.js?v=20261105a" defer></script>
+  <script src="calendar.js?v=20261106c" defer></script>
 </head>
 
 <body>
@@ -169,16 +169,43 @@
           </div>
           <p id="waterCirclePercent">0%</p><small>Referencia: 2 L</small>
         </article>
+        <article class="circle-stat macro-stat">
+          <h3>Carbohidratos</h3>
+          <div class="circle-progress" id="carbCircle" style="--circle-color:#8b78d7;--progress:0%"><div class="circle-progress-content"><strong id="totalCarbs">—</strong><span>g registrados</span></div></div>
+          <p id="carbPercent">Sin datos</p><small>Meta: <span id="carbGoalLabel">250</span> g</small>
+        </article>
+        <article class="circle-stat macro-stat">
+          <h3>Grasas</h3>
+          <div class="circle-progress" id="fatCircle" style="--circle-color:#dd8b63;--progress:0%"><div class="circle-progress-content"><strong id="totalFats">—</strong><span>g registrados</span></div></div>
+          <p id="fatPercent">Sin datos</p><small>Meta: <span id="fatGoalLabel">67</span> g</small>
+        </article>
       </div>
+      <p class="macro-data-note" id="macroDataNote">Los carbohidratos y las grasas se calculan cuando los alimentos tienen esos datos nutricionales.</p>
       <div class="compact-meals-counter"><span>🍽️ Comidas registradas hoy</span><strong id="totalMeals">0</strong></div>
 
     </section>
 
+    <section class="steps-section" id="pasos" aria-labelledby="stepsTitle">
+      <div class="steps-icon" aria-hidden="true">👟</div>
+      <div class="steps-body">
+        <div class="steps-heading"><div><p class="eyebrow">ACTIVIDAD OPCIONAL</p><h2 id="stepsTitle">Mis pasos de hoy</h2></div><span class="steps-optional">Opcional</span></div>
+        <p class="steps-description">Si contás tus pasos, podés registrarlos acá. No hace falta hacerlo para usar CalorieTrack.</p>
+        <form id="stepsForm" class="steps-form"><label for="stepsInput" class="sr-only">Cantidad de pasos de hoy</label><input id="stepsInput" type="number" inputmode="numeric" min="0" max="100000" step="1" placeholder="Ej: 7500"><button class="button button-primary" type="submit">Guardar pasos</button></form>
+        <div class="steps-result" id="stepsResult" aria-live="polite">Todavía no registraste pasos hoy.</div>
+        <button type="button" class="steps-clear" id="stepsClear" hidden>Eliminar registro de hoy</button>
+      </div>
+    </section>
 
-    <section id="calendario" class="calendar-section" aria-labelledby="calendarTitle">
-      <div class="calendar-header"><div><p class="eyebrow">TU HISTORIAL</p><h2 id="calendarTitle">Calendario</h2><p class="section-subtitle">Consultá tus registros de cualquier día.</p></div><button type="button" id="calendarToday" class="button button-soft">Hoy</button></div>
-      <div class="calendar-layout"><div class="calendar-picker-card"><div class="calendar-month-bar"><button type="button" id="calendarPrev" aria-label="Mes anterior">‹</button><strong id="calendarMonth"></strong><button type="button" id="calendarNext" aria-label="Mes siguiente">›</button></div><div class="calendar-weekdays" aria-hidden="true"><span>L</span><span>M</span><span>M</span><span>J</span><span>V</span><span>S</span><span>D</span></div><div id="calendarGrid" class="calendar-grid" aria-label="Elegir día"></div><p class="calendar-legend"><span class="calendar-dot"></span> Días con registros</p></div>
-      <div class="calendar-detail-card" aria-live="polite"><p class="eyebrow">RESUMEN DEL DÍA</p><h3 id="calendarSelectedLabel">Hoy</h3><div class="calendar-metrics"><div><strong id="calendarCalories">0</strong><small>kcal</small></div><div><strong id="calendarProtein">0</strong><small>g proteínas</small></div><div><strong id="calendarWater">0</strong><small>ml agua</small></div></div><h4>Comidas registradas</h4><div id="calendarMeals" class="calendar-meals"></div></div></div>
+    <section id="calendario" class="calendar-section calendar-compact" aria-labelledby="calendarTitle">
+      <div class="calendar-header">
+        <div><p class="eyebrow">TU HISTORIAL</p><h2 id="calendarTitle">Esta semana</h2></div>
+        <button type="button" id="calendarToggle" class="button button-soft" aria-expanded="false" aria-controls="calendarExpanded">▦ Ver calendario</button>
+      </div>
+      <div class="week-strip" id="weekStrip" aria-label="Elegir un día de la semana"></div>
+      <div id="calendarExpanded" hidden>
+        <div class="calendar-layout"><div class="calendar-picker-card"><div class="calendar-month-bar"><button type="button" id="calendarPrev" aria-label="Mes anterior">‹</button><strong id="calendarMonth"></strong><button type="button" id="calendarNext" aria-label="Mes siguiente">›</button></div><div class="calendar-weekdays" aria-hidden="true"><span>L</span><span>M</span><span>M</span><span>J</span><span>V</span><span>S</span><span>D</span></div><div id="calendarGrid" class="calendar-grid" aria-label="Elegir día"></div><p class="calendar-legend"><span class="calendar-dot"></span> Días con registros</p><button type="button" id="calendarToday" class="button button-soft">Volver a hoy</button></div>
+        <div class="calendar-detail-card" aria-live="polite"><p class="eyebrow">RESUMEN DEL DÍA</p><h3 id="calendarSelectedLabel">Hoy</h3><div class="calendar-metrics"><div><strong id="calendarCalories">0</strong><small>kcal</small></div><div><strong id="calendarProtein">0</strong><small>g proteínas</small></div><div><strong id="calendarWater">0</strong><small>ml agua</small></div></div><h4>Comidas registradas</h4><div id="calendarMeals" class="calendar-meals"></div></div></div>
+      </div>
     </section>
 
     <!-- ==========================
@@ -879,6 +906,12 @@
 
         </select>
 
+        <div class="form-two macro-goal-fields">
+          <div><label for="goalCarbs">Meta de carbohidratos (g)</label><input id="goalCarbs" type="number" min="1" max="1500" step="1" required></div>
+          <div><label for="goalFats">Meta de grasas (g)</label><input id="goalFats" type="number" min="1" max="500" step="1" required></div>
+        </div>
+        <p class="helper-text">Metas iniciales orientativas, editables según tus necesidades.</p>
+
         <div
           id="goalResult"
           class="goal-result"
@@ -1065,6 +1098,10 @@
 
         </div>
 
+        <div class="form-two macro-product-fields">
+          <div><label for="newProductCarbs">Carbohidratos (g, opcional)</label><input id="newProductCarbs" type="number" min="0" step="any" placeholder="Sin dato"></div>
+          <div><label for="newProductFats">Grasas (g, opcional)</label><input id="newProductFats" type="number" min="0" step="any" placeholder="Sin dato"></div>
+        </div>
         <label for="newProductUnit">
           Unidad de referencia
         </label>
