@@ -23,7 +23,7 @@
   };
 
   const API = "https://world.openfoodfacts.org";
-  const AI_API = "https://contador-calorias-vjdx.onrender.com";
+  const AI_API = "https://contador-calorias-yiqx.onrender.com";
 
   const OFF_FIELDS = [
     "code",
