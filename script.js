@@ -18,10 +18,12 @@
     meals: "calorietrack_meals_v2",
     products: "calorietrack_products_v1",
     goal: "calorietrack_goal_v2",
-    water: "calorietrack_water_v1"
+    water: "calorietrack_water_v1",
+    steps: "calorietrack_steps_v1"
   };
 
   const API = "https://world.openfoodfacts.org";
+  const AI_API = "https://contador-calorias-vjdx.onrender.com";
 
   const OFF_FIELDS = [
     "code",
@@ -188,6 +190,8 @@
   let products = read(KEYS.products, []);
 
   let waterEntries = read(KEYS.water, []);
+  let stepsByDate = read(KEYS.steps, {});
+  if (!stepsByDate || typeof stepsByDate !== "object" || Array.isArray(stepsByDate)) stepsByDate = {};
 
   let goal = read(KEYS.goal, {
     calories: 2000,
@@ -209,7 +213,9 @@
   if (!goal || typeof goal !== "object") {
     goal = {
       calories: 2000,
-      protein: 120
+      protein: 120,
+      carbs: 250,
+      fats: 67
     };
   }
 
@@ -333,6 +339,8 @@
     const protein = nonnegative(n.proteins_100g)
       ? num(n.proteins_100g)
       : null;
+    const carbs = nonnegative(n.carbohydrates_100g) ? num(n.carbohydrates_100g) : null;
+    const fats = nonnegative(n.fat_100g) ? num(n.fat_100g) : null;
 
     const quantityUnit = String(
       raw.product_quantity_unit || ""
@@ -348,6 +356,8 @@
 
       kcal,
       protein,
+      carbs,
+      fats,
 
       unit: ["ml", "cl", "l"].includes(quantityUnit)
         ? "ml"
@@ -710,6 +720,8 @@
       kcal: num(product.kcal),
 
       protein: num(product.protein),
+      carbs: nonnegative(product.carbs) ? num(product.carbs) : null,
+      fats: nonnegative(product.fats) ? num(product.fats) : null,
 
       unit: product.unit === "ml"
         ? "ml"
@@ -1320,7 +1332,9 @@
 
     return {
       calories: num(product.kcal) * factor,
-      protein: num(product.protein) * factor
+      protein: num(product.protein) * factor,
+      carbs: nonnegative(product.carbs) ? num(product.carbs) * factor : null,
+      fats: nonnegative(product.fats) ? num(product.fats) * factor : null
     };
   }
 
@@ -1406,7 +1420,9 @@
 
       calories: nutrition.calories,
 
-      protein: nutrition.protein
+      protein: nutrition.protein,
+      carbs: nutrition.carbs,
+      fats: nutrition.fats
     });
 
     selectedProduct = null;
@@ -1441,15 +1457,15 @@
           item.calories || 0
         );
 
-        total.protein += Number(
-          item.protein || 0
-        );
-
+        total.protein += Number(item.protein || 0);
+        if (nonnegative(item.carbs)) { total.carbs += num(item.carbs); total.carbCount++; }
+        if (nonnegative(item.fats)) { total.fats += num(item.fats); total.fatCount++; }
         return total;
       },
       {
         calories: 0,
-        protein: 0
+        protein: 0,
+        carbs: 0, fats: 0, carbCount: 0, fatCount: 0
       }
     );
   }
@@ -1610,7 +1626,9 @@
 
       calories: totals.calories,
 
-      protein: totals.protein
+      protein: totals.protein,
+      carbs: totals.carbCount ? totals.carbs : null,
+      fats: totals.fatCount ? totals.fats : null
     };
 
     const previous = meals.slice();
@@ -1744,7 +1762,9 @@
       "p",
       "meal-nutrition",
       `${fmt(meal.calories)} kcal · ` +
-      `${fmt(meal.protein)} g de proteínas`
+      `${fmt(meal.protein)} g de proteínas` +
+      (nonnegative(meal.carbs) ? ` · ${fmt(meal.carbs)} g carb.` : "") +
+      (nonnegative(meal.fats) ? ` · ${fmt(meal.fats)} g grasas` : "")
     );
 
     content.append(
@@ -1835,10 +1855,14 @@
           meal.calories || 0
         );
 
-        totals.protein += Number(
-          meal.protein || 0
-        );
-
+        totals.protein += Number(meal.protein || 0);
+        if (Array.isArray(meal.products)) {
+          for (const item of meal.products) {
+            totals.foodCount++;
+            if (nonnegative(item.carbs)) { totals.carbs += num(item.carbs); totals.carbCount++; }
+            if (nonnegative(item.fats)) { totals.fats += num(item.fats); totals.fatCount++; }
+          }
+        } else { totals.foodCount++; }
         totals.meals += 1;
 
         return totals;
@@ -1846,6 +1870,7 @@
       {
         calories: 0,
         protein: 0,
+        carbs: 0, fats: 0, carbCount: 0, fatCount: 0, foodCount: 0,
         meals: 0
       }
     );
@@ -2048,6 +2073,7 @@
 
     const calorieGoal = getCalorieGoal();
     const proteinGoal = getProteinGoal();
+    renderMacroRings(totals);
 
     const remainingCalories = Math.max(
       0,
@@ -2687,9 +2713,9 @@
       }
     }
 
-    pendingImage = safeImage(
-      product?.image
-    );
+    pendingImage = safeImage(product?.image);
+    if ($("newProductCarbs")) $("newProductCarbs").value = nonnegative(product?.carbs) ? product.carbs : "";
+    if ($("newProductFats")) $("newProductFats").value = nonnegative(product?.fats) ? product.fats : "";
 
     updateReference();
 
@@ -2721,9 +2747,14 @@
       $("newProductCalories")?.value
     );
 
-    const protein = num(
-      $("newProductProtein")?.value
-    );
+    const protein = num($("newProductProtein")?.value);
+    const carbsRaw = $("newProductCarbs")?.value?.trim() || "";
+    const fatsRaw = $("newProductFats")?.value?.trim() || "";
+    const carbs = carbsRaw === "" ? null : num(carbsRaw);
+    const fats = fatsRaw === "" ? null : num(fatsRaw);
+    if ((carbs !== null && !nonnegative(carbs)) || (fats !== null && !nonnegative(fats))) {
+      setText("productError", "Los carbohidratos y grasas deben ser números positivos o quedar vacíos."); return;
+    }
 
     const byPortion =
       $("newProductReference")?.value === "portion";
@@ -2797,6 +2828,8 @@
 
       kcal: caloriesPer100,
       protein: proteinPer100,
+      carbs: carbs === null ? null : carbs * 100 / portion,
+      fats: fats === null ? null : fats * 100 / portion,
 
       unit,
 
@@ -3132,6 +3165,10 @@
 
     const calorieInput = $("goalCalories");
     const proteinInput = $("goalProtein");
+    const carbInput = $("goalCarbs");
+    const fatInput = $("goalFats");
+    if (carbInput) carbInput.value = positive(goal.carbs) ? goal.carbs : Math.round(getCalorieGoal() * .5 / 4);
+    if (fatInput) fatInput.value = positive(goal.fats) ? goal.fats : Math.round(getCalorieGoal() * .3 / 9);
 
     if (calorieInput) {
       calorieInput.value = calories;
@@ -3175,9 +3212,13 @@
       $("goalCalories")?.value
     );
 
-    const protein = num(
-      $("goalProtein")?.value
-    );
+    const protein = num($("goalProtein")?.value);
+    const carbs = num($("goalCarbs")?.value);
+    const fats = num($("goalFats")?.value);
+    if (!positive(carbs) || carbs > 1500 || !positive(fats) || fats > 500) {
+      setText("goalError", "Ingresá metas válidas de carbohidratos y grasas.");
+      return;
+    }
 
     /* ------------------------------------------
        VALIDACIONES
@@ -3226,6 +3267,8 @@
       ...goal,
       calories,
       protein,
+      carbs,
+      fats,
       weight,
       height,
       age,
@@ -3601,9 +3644,12 @@
 
     calories = Math.round(calories);
 
-    const protein = Math.round(
-      weight * 1.6
-    );
+    const protein = Math.round(weight * 1.6);
+    const carbs = num($("goalCarbs")?.value);
+    const fats = num($("goalFats")?.value);
+    if (!positive(carbs) || carbs > 1500 || !positive(fats) || fats > 500) {
+      setText("goalError", "Revisá las metas de carbohidratos y grasas."); return;
+    }
 
     const previous = { ...goal };
 
@@ -3611,6 +3657,8 @@
       ...goal,
       calories,
       protein,
+      carbs,
+      fats,
       weight,
       height,
       age,
@@ -4009,7 +4057,9 @@
           id: uid(), productId: null, name: item.name + (item.brand ? ` (${item.brand})` : ""),
           amount: item.amount, unit: item.unit,
           calories: item.kcal_per_100 * item.amount / 100,
-          protein: item.protein_per_100 * item.amount / 100
+          protein: item.protein_per_100 * item.amount / 100,
+          carbs: item.carbs_per_100 * item.amount / 100,
+          fats: item.fats_per_100 * item.amount / 100
         }));
         aiDraft=[]; root.replaceChildren(); root.hidden=true;
         const description=$("mealDescription"); if(description) description.value="";
@@ -4021,11 +4071,12 @@
   async function analyzeMealWithAI() {
     const description = $("mealDescription")?.value.trim();
     if (!description) { setText("mealError", "Primero escribí o dictá tu comida."); return; }
+    if (description.length < 3 || description.length > 1200) { setText("mealError", "Escribí una descripción de entre 3 y 1200 caracteres."); return; }
     const button = $("analyzeAIButton");
     if (button) {button.disabled=true; button.textContent="Analizando receta...";}
     setText("mealError", "");
     try {
-      const response=await fetch("/api/analyze", {
+      const response=await fetch(`${AI_API}/api/analyze`, {
         method:"POST", headers:{"Content-Type":"application/json"},
         body:JSON.stringify({description})
       });
@@ -4034,13 +4085,66 @@
       if(!Array.isArray(data.ingredients) || !data.ingredients.length) throw new Error("No se identificaron ingredientes; probá una descripción más detallada.");
       showAIResult(data);
     } catch(error) {
-      setText("mealError", `${error.message} (Para usar IA, abrí la página desde el servidor Python, no Live Server.)`);
+      setText("mealError", error instanceof TypeError
+        ? "No se pudo conectar con Render. Comprobá que el servidor esté activo y que permita el origen de tu página."
+        : error.message);
     } finally {
       if(button) {button.disabled=false;button.textContent="✨ Analizar con IA (marcas y recetas)";}
     }
   }
 
+  // Macronutrientes: no inventar valores cuando la fuente no los informa.
+  function renderMacroRings(totals = getDailyTotals()) {
+    for (const item of [
+      {key:"carbs",count:"carbCount",ring:"carbCircle",value:"totalCarbs",percent:"carbPercent",goal:"carbGoalLabel",ratio:.5,divisor:4},
+      {key:"fats",count:"fatCount",ring:"fatCircle",value:"totalFats",percent:"fatPercent",goal:"fatGoalLabel",ratio:.3,divisor:9}
+    ]) {
+      const target = positive(goal[item.key]) ? num(goal[item.key]) : Math.round(getCalorieGoal() * item.ratio / item.divisor);
+      const known = totals[item.count] > 0;
+      const percentage = known ? calculateProgress(totals[item.key], target) : 0;
+      const ring = $(item.ring);
+      if (ring) { ring.style.setProperty("--progress", `${percentage}%`); ring.setAttribute("aria-label", `${item.key === 'carbs' ? 'Carbohidratos' : 'Grasas'}: ${known ? fmt(totals[item.key]) + ' gramos' : 'sin datos'}`); }
+      setText(item.value, known ? fmt(totals[item.key]) : "—");
+      setText(item.percent, known ? `${Math.round(percentage)}%` : "Sin datos");
+      setText(item.goal, fmt(target));
+    }
+    const incomplete = totals.foodCount > 0 && (totals.carbCount < totals.foodCount || totals.fatCount < totals.foodCount);
+    setText("macroDataNote", incomplete ? "Datos parciales: algunos alimentos no tienen carbohidratos o grasas informados. No se estiman automáticamente." : "Los carbohidratos y grasas se calculan a partir de los datos nutricionales disponibles.");
+  }
+
+  function renderSteps() {
+    const value = stepsByDate[today()];
+    const recorded = Number.isInteger(value) && value >= 0;
+    setText("stepsResult", recorded ? `${fmt(value)} pasos registrados hoy` : "Todavía no registraste pasos hoy.");
+    if ($("stepsInput")) $("stepsInput").value = recorded ? String(value) : "";
+    if ($("stepsClear")) $("stepsClear").hidden = !recorded;
+  }
+  function initializeSteps() {
+    $("stepsForm")?.addEventListener("submit", event => {
+      event.preventDefault();
+      const raw = $("stepsInput")?.value?.trim() || "";
+      const value = Number(raw);
+      if (raw === "" || !Number.isInteger(value) || value < 0 || value > 100000) {
+        setText("stepsResult", "Ingresá un número entero entre 0 y 100.000."); return;
+      }
+      const previous = {...stepsByDate};
+      stepsByDate[today()] = value;
+      if (!write(KEYS.steps, stepsByDate)) { stepsByDate = previous; return; }
+      renderSteps();
+      document.dispatchEvent(new Event("calorietrack:steps-updated"));
+    });
+    $("stepsClear")?.addEventListener("click", () => {
+      const previous = {...stepsByDate};
+      delete stepsByDate[today()];
+      if (!write(KEYS.steps, stepsByDate)) { stepsByDate = previous; return; }
+      renderSteps(); document.dispatchEvent(new Event("calorietrack:steps-updated"));
+    });
+    document.addEventListener("visibilitychange", () => { if (!document.hidden) renderSteps(); });
+    renderSteps();
+  }
+
   function initialize() {
+    initializeSteps();
     /* ------------------------------------------
        ABRIR FORMULARIOS
     ------------------------------------------ */
