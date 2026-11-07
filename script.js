@@ -4007,89 +4007,238 @@
 
   // Análisis avanzado mediante servidor local: la clave API nunca va en el navegador.
   let aiDraft = [];
+  
+  // Análisis de comidas mediante Gemini a través de Render.
+ 
+
   function showAIResult(data) {
-    const root = $("aiAnalysis");
-    if (!root) return;
-    root.hidden = false;
-    root.replaceChildren();
-    const title = node("h3", "", "Ingredientes identificados por IA");
-    root.append(title);
-    root.append(node("p", "helper-text", "Valores aproximados. Revisá marcas, pesos, aceite y cantidades antes de guardar."));
-    if (data.notes) root.append(node("p", "phrase-warning", data.notes));
+    let root = $("aiAnalysis");
+
+    if (!root) {
+      root = node("div", "phrase-analysis");
+      root.id = "aiAnalysis";
+
+      const button = $("analyzeAIButton");
+      if (!button || !button.parentElement) {
+        throw new Error("No se encontró dónde mostrar el análisis.");
+      }
+
+      button.insertAdjacentElement("afterend", root);
+    }
+
+    if (!Array.isArray(data.ingredients) || !data.ingredients.length) {
+      throw new Error("Gemini no devolvió ingredientes.");
+    }
+
     aiDraft = data.ingredients.map(item => ({ ...item }));
+    root.replaceChildren();
+    root.hidden = false;
+
+    root.append(
+      node("h3", "", "Ingredientes identificados por IA"),
+      node(
+        "p",
+        "helper-text",
+        "Valores aproximados. Revisá las cantidades antes de guardar."
+      )
+    );
+
+    if (data.notes) {
+      root.append(node("p", "phrase-warning", data.notes));
+    }
+
+    // Crear el total ANTES de actualizarlo.
+    const totalElement = node("p", "phrase-total", "");
+    totalElement.id = "aiTotal";
+
+    function updateTotal() {
+      const totals = aiDraft.reduce(
+        (acc, item) => {
+          const amount = positive(item.amount) ? num(item.amount) : 0;
+          const factor = amount / 100;
+
+          acc.calories += num(item.kcal_per_100) * factor;
+          acc.protein += num(item.protein_per_100) * factor;
+
+          return acc;
+        },
+        { calories: 0, protein: 0 }
+      );
+
+      totalElement.textContent =
+        `Total estimado: ${fmt(totals.calories)} kcal · ` +
+        `${fmt(totals.protein)} g proteínas`;
+    }
+
     aiDraft.forEach(item => {
       const row = node("div", "phrase-item");
       const info = node("div");
-      info.append(node("strong", "", item.name + (item.brand ? ` (${item.brand})` : "")));
+
+      info.append(
+        node(
+          "strong",
+          "",
+          item.name + (item.brand ? ` (${item.brand})` : "")
+        )
+      );
+
       const summary = node("small", "", "");
-      const update = () => {
-        const multiplier = item.amount / 100;
-        summary.textContent = `${fmt(item.kcal_per_100 * multiplier)} kcal · ${fmt(item.protein_per_100 * multiplier)} g proteínas` + (item.assumed ? " · cantidad estimada" : "");
-        const total = aiDraft.reduce((acc, v) => ({
-          kcal: acc.kcal + v.kcal_per_100 * v.amount / 100,
-          protein: acc.protein + v.protein_per_100 * v.amount / 100
-        }), {kcal:0, protein:0});
-        setText("aiTotal", `Total estimado: ${fmt(total.kcal)} kcal · ${fmt(total.protein)} g proteínas`);
-      };
+
       const input = document.createElement("input");
-      input.type = "number"; input.min = "0.1"; input.step = "any";
+      input.type = "number";
+      input.min = "0.1";
+      input.step = "any";
       input.value = String(item.amount);
-      input.setAttribute("aria-label", `Cantidad en ${item.unit} de ${item.name}`);
+      input.setAttribute(
+        "aria-label",
+        `Cantidad en ${item.unit} de ${item.name}`
+      );
+
+      function updateItem() {
+        const amount = positive(item.amount) ? num(item.amount) : 0;
+        const factor = amount / 100;
+
+        summary.textContent =
+          `${fmt(num(item.kcal_per_100) * factor)} kcal · ` +
+          `${fmt(num(item.protein_per_100) * factor)} g proteínas` +
+          (item.assumed ? " · cantidad estimada" : "");
+
+        updateTotal();
+      }
+
       input.addEventListener("input", () => {
         item.amount = num(input.value);
         item.assumed = false;
-        update();
+        updateItem();
       });
+
       info.append(summary);
       row.append(info, input);
       root.append(row);
-      update();
+
+      updateItem();
     });
-    const total = node("p", "phrase-total", ""); total.id = "aiTotal"; root.append(total);
-    if (aiDraft.length) {
-      const totals = () => aiDraft.reduce((acc,v) => ({kcal:acc.kcal+v.kcal_per_100*v.amount/100,protein:acc.protein+v.protein_per_100*v.amount/100}),{kcal:0,protein:0});
-      const t=totals(); total.textContent=`Total estimado: ${fmt(t.kcal)} kcal · ${fmt(t.protein)} g proteínas`;
-      root.append(makeButton("＋ Agregar ingredientes al registro", "button button-primary", () => {
-        if (aiDraft.some(item => !positive(item.amount) || item.amount > 10000)) {
-          setText("mealError", "Revisá las cantidades antes de agregarlas."); return;
+
+    root.append(totalElement);
+    updateTotal();
+
+    root.append(
+      makeButton(
+        "＋ Agregar ingredientes al registro",
+        "button button-primary",
+        () => {
+          if (
+            aiDraft.some(item =>
+              !positive(item.amount) ||
+              num(item.amount) > 10000
+            )
+          ) {
+            setText(
+              "mealError",
+              "Revisá las cantidades antes de agregarlas."
+            );
+            return;
+          }
+
+          const newProducts = aiDraft.map(item => {
+            const factor = num(item.amount) / 100;
+
+            return {
+              id: uid(),
+              productId: null,
+              name: item.name +
+                (item.brand ? ` (${item.brand})` : ""),
+              amount: num(item.amount),
+              unit: item.unit,
+              calories: num(item.kcal_per_100) * factor,
+              protein: num(item.protein_per_100) * factor,
+              carbs: nonnegative(item.carbs_per_100)
+                ? num(item.carbs_per_100) * factor
+                : null,
+              fats: nonnegative(item.fats_per_100)
+                ? num(item.fats_per_100) * factor
+                : null
+            };
+          });
+
+          mealProducts.push(...newProducts);
+          aiDraft = [];
+
+          root.replaceChildren();
+          root.hidden = true;
+
+          const description = $("mealDescription");
+          if (description) description.value = "";
+
+          $("instantFoodResults")?.replaceChildren();
+          setText("mealError", "");
+          updatePreview();
         }
-        aiDraft.forEach(item => mealProducts.push({
-          id: uid(), productId: null, name: item.name + (item.brand ? ` (${item.brand})` : ""),
-          amount: item.amount, unit: item.unit,
-          calories: item.kcal_per_100 * item.amount / 100,
-          protein: item.protein_per_100 * item.amount / 100,
-          carbs: item.carbs_per_100 * item.amount / 100,
-          fats: item.fats_per_100 * item.amount / 100
-        }));
-        aiDraft=[]; root.replaceChildren(); root.hidden=true;
-        const description=$("mealDescription"); if(description) description.value="";
-        $("instantFoodResults")?.replaceChildren();
-        setText("mealError", ""); updatePreview();
-      }));
-    }
+      )
+    );
   }
+
   async function analyzeMealWithAI() {
     const description = $("mealDescription")?.value.trim();
-    if (!description) { setText("mealError", "Primero escribí o dictá tu comida."); return; }
-    if (description.length < 3 || description.length > 1200) { setText("mealError", "Escribí una descripción de entre 3 y 1200 caracteres."); return; }
+
+    if (!description || description.length < 3) {
+      setText("mealError", "Primero describí tu comida.");
+      return;
+    }
+
+    if (description.length > 1200) {
+      setText("mealError", "La descripción es demasiado larga.");
+      return;
+    }
+
     const button = $("analyzeAIButton");
-    if (button) {button.disabled=true; button.textContent="Analizando receta...";}
+
+    if (button) {
+      button.disabled = true;
+      button.textContent = "Analizando receta...";
+    }
+
     setText("mealError", "");
+
     try {
-      const response=await fetch(`${AI_API}/api/analyze`, {
-        method:"POST", headers:{"Content-Type":"application/json"},
-        body:JSON.stringify({description})
+      const response = await fetch(`${AI_API}/api/analyze`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ description })
       });
-      const data=await response.json();
-      if(!response.ok) throw new Error(data.error || "No se pudo analizar la comida.");
-      if(!Array.isArray(data.ingredients) || !data.ingredients.length) throw new Error("No se identificaron ingredientes; probá una descripción más detallada.");
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(
+          data.error || `Error del servidor: ${response.status}`
+        );
+      }
+
+      if (!Array.isArray(data.ingredients) ||
+          !data.ingredients.length) {
+        throw new Error(
+          "No se identificaron ingredientes. Probá con otra descripción."
+        );
+      }
+
       showAIResult(data);
-    } catch(error) {
-      setText("mealError", error instanceof TypeError
-        ? "No se pudo conectar con Render. Comprobá que el servidor esté activo y que permita el origen de tu página."
-        : error.message);
+
+    } catch (error) {
+      console.error("Error al analizar comida:", error);
+
+      setText(
+        "mealError",
+        error.message || "No se pudo analizar la comida."
+      );
+
     } finally {
-      if(button) {button.disabled=false;button.textContent="✨ Analizar con IA (marcas y recetas)";}
+      if (button) {
+        button.disabled = false;
+        button.textContent = "✨ Analizar con IA (marcas y recetas)";
+      }
     }
   }
 
