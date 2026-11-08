@@ -6,7 +6,6 @@ import time
 import urllib.error
 import urllib.parse
 import urllib.request
-import urllib.parse
 from flask import Flask, jsonify, request
 
 app = Flask(__name__)
@@ -115,7 +114,7 @@ def off_get(path, params=None):
         data = json.load(result)
     if len(CACHE) > 150:
         CACHE.clear()
-    CACHE[url] = (now + 300, data)
+    CACHE[url] = (time.monotonic() + 1800, data)
     return data
 
 @app.route('/api/products/search', methods=['GET', 'OPTIONS'])
@@ -128,7 +127,14 @@ def products_search():
     if not 2 <= len(query) <= 100:
         return jsonify(error='Ingresá entre 2 y 100 caracteres.'), 400
     try:
-        data = off_get('/cgi/search.pl', {'search_terms': query, 'search_simple': 1, 'action': 'process', 'json': 1, 'page_size': 40, 'fields': OFF_FIELDS})
+       data = off_get('/cgi/search.pl', {
+    'search_terms': query,
+    'search_simple': 1,
+    'action': 'process',
+    'json': 1,
+    'page_size': 15,
+    'fields': OFF_FIELDS
+})
         return jsonify(products=data.get('products', []))
     except (urllib.error.HTTPError, urllib.error.URLError, TimeoutError, ValueError) as error:
         app.logger.warning('Open Food Facts search failed: %s', error)
@@ -149,70 +155,6 @@ def products_barcode(code):
         app.logger.warning('Open Food Facts barcode failed: %s', error)
         return jsonify(error='No se pudo consultar el código de barras.'), 502
     # ---------------------------------------
-# BUSCADOR DE OPEN FOOD FACTS
-# ---------------------------------------
 
-@app.route("/api/products/search", methods=["GET", "OPTIONS"])
-def search_products():
-
-    if request.method == "OPTIONS":
-        return ("", 204)
-
-    query = request.args.get("q", "").strip()
-
-    if len(query) < 2 or len(query) > 100:
-        return jsonify({
-            "error": "Ingresá entre 2 y 100 caracteres."
-        }), 400
-
-    params = urllib.parse.urlencode({
-        "search_terms": query,
-        "search_simple": 1,
-        "action": "process",
-        "json": 1,
-        "page_size": 8,
-        "fields": (
-            "code,product_name,product_name_es,"
-            "generic_name_es,brands,nutriments,"
-            "quantity,serving_size,product_quantity,"
-            "product_quantity_unit,image_front_url,"
-            "image_url,countries_tags"
-        )
-    })
-
-    url = (
-        "https://world.openfoodfacts.org/cgi/search.pl?"
-        + params
-    )
-
-    req = urllib.request.Request(
-        url,
-        headers={
-            "User-Agent": "CalorieTrack/1.0 (nutrition app)",
-            "Accept": "application/json"
-        }
-    )
-
-    try:
-        with urllib.request.urlopen(req, timeout=15) as response:
-            data = json.load(response)
-
-        return jsonify({
-            "products": data.get("products", [])
-        })
-
-    except urllib.error.HTTPError as error:
-        app.logger.warning(
-            "Open Food Facts HTTP %s", error.code
-        )
-
-        return jsonify({
-            "error": "Open Food Facts no está disponible."
-        }), 502
-
-    except (urllib.error.URLError, TimeoutError):
-        return jsonify({
-            "error": "No se pudo conectar con Open Food Facts."
-        }), 504
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=int(os.getenv('PORT', '5000')))
