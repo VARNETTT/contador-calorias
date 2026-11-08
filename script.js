@@ -465,7 +465,8 @@
   /* ============================================
      BUSCADOR ONLINE DE ALIMENTOS
   ============================================ */
-
+  const productSearchCache = new Map();
+const CACHE_DURATION = 10 * 60 * 1000;
   async function searchOFF(query) {
     const terms = normalize(query)
       .split(" ")
@@ -476,8 +477,15 @@
     }
 
     // Una sola consulta a nuestro backend; Render consulta Open Food Facts.
-    const url = `${AI_API}/api/products/search?q=${encodeURIComponent(query)}`;
-    const data = await fetchJSON(url);
+    const cacheKey = normalize(query);
+const cached = productSearchCache.get(cacheKey);
+
+if (cached && Date.now() - cached.time < CACHE_DURATION) {
+  return cached.products;
+}
+
+const url = `${AI_API}/api/products/search?q=${encodeURIComponent(query)}`;
+const data = await fetchJSON(url);
     const remote = (data.products || []).map(fromOFF).filter(Boolean);
 
     // Ordenar resultados por coincidencia
@@ -526,11 +534,18 @@
         };
       });
 
-    return ranked
-      .filter(result => result.allMatch)
-      .sort((a, b) => b.score - a.score)
-      .slice(0, 40)
-      .map(result => result.product);
+   const results = ranked
+  .filter(result => result.score >= 20)
+  .sort((a, b) => b.score - a.score)
+  .slice(0, 40)
+  .map(result => result.product);
+
+productSearchCache.set(cacheKey, {
+  time: Date.now(),
+  products: results
+});
+
+return results;
   }
 
   /* ============================================
