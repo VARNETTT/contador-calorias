@@ -475,109 +475,10 @@
       return [];
     }
 
-    const urls = [];
-
-    // Búsqueda por nombre del producto
-
-    const textURL = new URL(
-      `${API}/cgi/search.pl`
-    );
-
-    textURL.searchParams.set(
-      "search_terms",
-      query
-    );
-
-    textURL.searchParams.set(
-      "search_simple",
-      "1"
-    );
-
-    textURL.searchParams.set(
-      "action",
-      "process"
-    );
-
-    textURL.searchParams.set(
-      "json",
-      "1"
-    );
-
-    textURL.searchParams.set(
-      "page_size",
-      "100"
-    );
-
-    textURL.searchParams.set(
-      "fields",
-      OFF_FIELDS
-    );
-
-    urls.push(textURL.toString());
-
-    // Búsquedas adicionales por marca
-
-    const brandCandidates = new Set();
-
-    terms.forEach(term => {
-      if (term.length >= 3) {
-        brandCandidates.add(term);
-      }
-    });
-
-    for (let i = 0; i < terms.length - 1; i++) {
-      brandCandidates.add(
-        `${terms[i]} ${terms[i + 1]}`
-      );
-    }
-
-    for (
-      const brand of [...brandCandidates].slice(0, 4)
-    ) {
-      const url = new URL(
-        `${API}/api/v2/search`
-      );
-
-      url.searchParams.set(
-        "brands_tags",
-        brand.replace(/\s+/g, "-")
-      );
-
-      url.searchParams.set(
-        "page_size",
-        "100"
-      );
-
-      url.searchParams.set(
-        "fields",
-        OFF_FIELDS
-      );
-
-      urls.push(url.toString());
-    }
-
-    // Consultar las fuentes
-
-    const responses = await Promise.allSettled(
-      urls.map(fetchJSON)
-    );
-
-    const fulfilled = responses.filter(
-      result => result.status === "fulfilled"
-    );
-
-    if (!fulfilled.length) {
-      throw new Error(
-        "No se pudo consultar la base de datos."
-      );
-    }
-
-    const remote = fulfilled.flatMap(
-      result =>
-        (result.value.products || [])
-          .map(fromOFF)
-          .filter(Boolean)
-    );
+    // Una sola consulta a nuestro backend; Render consulta Open Food Facts.
+    const url = `${AI_API}/api/products/search?q=${encodeURIComponent(query)}`;
+    const data = await fetchJSON(url);
+    const remote = (data.products || []).map(fromOFF).filter(Boolean);
 
     // Ordenar resultados por coincidencia
 
@@ -646,8 +547,8 @@
     }
 
     const data = await fetchJSON(
-      `${API}/api/v2/product/` +
-      `${encodeURIComponent(code)}.json`
+      `${AI_API}/api/products/barcode/` +
+      `${encodeURIComponent(code)}`
     );
 
     return data.status === 1
@@ -1243,10 +1144,11 @@
       return;
     }
 
-    instantTimer = setTimeout(
-      () => instantSearch(text),
-      450
-    );
+    // Las descripciones de comidas se analizan con Gemini.
+    // No consultar Open Food Facts automáticamente por cada frase.
+    // Mantener sugerencias únicamente de productos guardados.
+    const local = localSearch(text);
+    renderInstantResults(local);
   }
 
   /* ============================================
