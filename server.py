@@ -170,7 +170,7 @@ def search_products():
         "search_simple": 1,
         "action": "process",
         "json": 1,
-        "page_size": 30,
+        "page_size": 8,
         "fields": (
             "code,product_name,product_name_es,"
             "generic_name_es,brands,nutriments,"
