@@ -4178,13 +4178,58 @@ return results;
     setText("macroDataNote", incomplete ? "Datos parciales: algunos alimentos no tienen carbohidratos o grasas informados. No se estiman automáticamente." : "Los carbohidratos y grasas se calculan a partir de los datos nutricionales disponibles.");
   }
 
-  function renderSteps() {
-    const value = stepsByDate[today()];
-    const recorded = Number.isInteger(value) && value >= 0;
-    setText("stepsResult", recorded ? `${fmt(value)} pasos registrados hoy` : "Todavía no registraste pasos hoy.");
-    if ($("stepsInput")) $("stepsInput").value = recorded ? String(value) : "";
-    if ($("stepsClear")) $("stepsClear").hidden = !recorded;
+    
+function renderSteps() {
+  const value = stepsByDate[today()];
+  const recorded = Number.isInteger(value) && value >= 0;
+
+  if (!recorded) {
+    setText(
+      "stepsResult",
+      "Todavía no registraste pasos hoy."
+    );
+  } else {
+    // Parámetros iniciales de estimación
+    const pesoKg = 89;
+    const longitudPasoMetros = 0.70;
+
+    // Distancia recorrida estimada
+    const distanciaKm =
+      (value * longitudPasoMetros) / 1000;
+
+    // Aproximación de calorías activas caminando
+    // en terreno plano: 0.5 kcal / kg / km
+    const calorias =
+      pesoKg * distanciaKm * 0.5;
+
+    setText(
+      "stepsResult",
+      `${fmt(value)} pasos registrados hoy\n` +
+      `Distancia estimada: ${fmt(distanciaKm)} km\n` +
+      `🔥 Calorías quemadas caminando: ` +
+      `aprox. ${Math.round(calorias)} kcal`
+    );
+
+    const result = $("stepsResult");
+
+    if (result) {
+      result.style.whiteSpace = "pre-line";
+      result.style.lineHeight = "1.8";
+    }
   }
+
+  if ($("stepsInput")) {
+    $("stepsInput").value = recorded
+      ? String(value)
+      : "";
+  }
+
+  if ($("stepsClear")) {
+    $("stepsClear").hidden = !recorded;
+  }
+}
+
+    
   function initializeSteps() {
     $("stepsForm")?.addEventListener("submit", event => {
       event.preventDefault();
