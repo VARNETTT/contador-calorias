@@ -453,8 +453,9 @@ def off_get(path, params=None, timeout=12):
     req = urllib.request.Request(url, headers=OFF_HEADERS)
     with urllib.request.urlopen(req, timeout=timeout) as result:
         data = json.load(result)
-    if len(CACHE) > 150:
-        CACHE.clear()
+    if len(CACHE) >= 150:
+        # Remove the oldest expiring entry rather than flushing all entries.
+        CACHE.pop(min(CACHE, key=lambda key: CACHE[key][0]), None)
     CACHE[url] = (time.monotonic() + 1800, data)
     return data
 
@@ -490,8 +491,10 @@ def products_barcode(code):
     if not re.fullmatch(r'\d{8,14}', code):
         return jsonify(error='Código de barras inválido.'), 400
     try:
-        data = off_get('/api/v2/product/' + code + '.json', {'fields': OFF_FIELDS})
-        return jsonify(data)
+        data = off_get('/api/v2/product/' + code + '.json', {'fields': OFF_FIELDS}, timeout=7)
+        response = jsonify(data)
+        response.headers['Cache-Control'] = 'public, max-age=300' if data.get('status') == 1 else 'public, max-age=60'
+        return response
     except (urllib.error.HTTPError, urllib.error.URLError, TimeoutError, ValueError) as error:
         app.logger.warning('Open Food Facts barcode failed: %s', error)
         return jsonify(error='No se pudo consultar el código de barras.'), 502
