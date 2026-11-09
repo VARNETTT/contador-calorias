@@ -29,16 +29,17 @@
     rel="stylesheet"
   >
 
-  <link rel="stylesheet" href="style.css?v=20261108coach">
+  <link rel="stylesheet" href="style.css?v=20261109coachmodern2">
 
   <script
     src="https://unpkg.com/html5-qrcode"
     defer
   ></script>
 
-  <script src="script.js?v=20261105a" defer></script>
-  <script src="calendar.js?v=20261106c" defer></script>
-  <script src="coach.js?v=20261109a" defer></script>
+  <script src="script.js?v=20261109bundle" defer></script>
+  <script src="calendar.js?v=20261109bundle" defer></script>
+  <script src="coach.js?v=20261109bundle" defer></script>
+  <link rel="stylesheet" href="coach-chat-fix.css?v=20261109fix1">
 </head>
 
 <body>
@@ -389,8 +390,8 @@
       <div class="coach-avatar">✦</div>
 
       <div class="coach-chat-identity">
-        <strong>Coach CalorieTrack</strong>
-        <span>Asistente de alimentación y hábitos</span>
+        <strong>Coach CalorieTrack <span class="coach-ai-tag">IA</span></strong>
+        <span class="coach-online"><span class="coach-online-dot"></span> Tu espacio de bienestar</span>
       </div>
 
       <button type="button" id="coachClear"
@@ -426,22 +427,22 @@
     <div class="coach-suggestions">
       <button type="button" class="coach-suggestion"
         data-coach-prompt="Analizá mi alimentación de hoy y decime qué podría mejorar.">
-        Analizar mi día
+        📊 Analizar mi día
       </button>
 
       <button type="button" class="coach-suggestion"
         data-coach-prompt="¿Qué podría cenar hoy según mi objetivo calórico?">
-        ¿Qué puedo cenar?
+        🥗 ¿Qué puedo cenar?
       </button>
 
       <button type="button" class="coach-suggestion"
         data-coach-prompt="Explicame cómo mantener un déficit calórico saludable.">
-        Mi déficit calórico
+        🎯 Mi déficit calórico
       </button>
 
       <button type="button" class="coach-suggestion"
         data-coach-prompt="Dame ideas de comidas con buenas fuentes de proteínas.">
-        Ideas de comidas
+        ✨ Ideas de comidas
       </button>
     </div>
 
@@ -455,7 +456,7 @@
         id="coachInput"
         rows="1"
         maxlength="1500"
-        placeholder="Preguntale algo a tu coach..."
+        placeholder="Escribí tu mensaje..."
         required
       ></textarea>
 
