@@ -41,7 +41,7 @@ Respetá las cantidades explícitas; si faltan, estimá una porción habitual
 indicando assumed=true y explicando el supuesto en notes.
 No agregues aceite, manteca, azúcar, leche u otros ingredientes no mencionados.
 Si se menciona Fritolín, registrá aceite en aerosol con cantidad pequeña estimada.
-Diferenciá gelatina preparada con azúcar de gelatina sin azúcar; diferenciá
+Diferenciá gelatina preparada con azúcar de gelatina sin azúcar. Para gelatina preparada, no uses los valores del polvo seco; si no se conoce la receta, aclaralo. Diferenciá
 productos clásicos de versiones light. No confundas porciones con valores por 100 g.
 Estimá valores nutricionales razonables por 100 g o 100 ml, incluyendo proteínas,
 carbohidratos y grasas. No afirmes haber consultado etiquetas ni bases de datos.
@@ -114,6 +114,39 @@ def _verified_off_nutrition(item):
         app.logger.info('OFF nutrition lookup unavailable: %s', exc)
     return None
 
+# Valores orientativos por 100 g de porción comestible, sin aceite ni agregados.
+# Tabla pequeña y conservadora: no sustituye etiquetas ni una base oficial completa.
+# Solo se aplica a nombres inequívocos, sin marcas y en gramos.
+GENERIC_FOODS = {
+    'huevo': (143, 12.6, 0.7, 9.5),
+    'huevo de gallina': (143, 12.6, 0.7, 9.5),
+    'huevos': (143, 12.6, 0.7, 9.5),
+    'banana': (89, 1.1, 22.8, 0.3),
+    'platano': (89, 1.1, 22.8, 0.3),
+    'manzana': (52, 0.3, 13.8, 0.2),
+    'zanahoria cruda': (41, 0.9, 9.6, 0.2),
+    'arroz blanco cocido': (130, 2.7, 28.2, 0.3),
+    'arroz cocido': (130, 2.7, 28.2, 0.3),
+    'pechuga de pollo cocida': (165, 31.0, 0.0, 3.6),
+    'pechuga de pollo a la plancha': (165, 31.0, 0.0, 3.6),
+    'papa hervida': (87, 1.9, 20.1, 0.1),
+    'papa cocida': (87, 1.9, 20.1, 0.1),
+}
+
+
+def _generic_nutrition(item):
+    if item.get('brand') or item.get('unit') != 'g':
+        return None
+    name = unicodedata.normalize('NFKD', str(item.get('name') or '').lower())
+    name = ''.join(c for c in name if not unicodedata.combining(c))
+    name = ' '.join(re.findall(r'[a-z0-9]+', name))
+    values = GENERIC_FOODS.get(name)
+    if not values:
+        return None
+    return dict(zip(('kcal_per_100', 'protein_per_100',
+                     'carbs_per_100', 'fats_per_100'), values))
+
+
 @app.route('/api/analyze', methods=['POST', 'OPTIONS'])
 def analyze():
     if request.method == 'OPTIONS':
@@ -159,7 +192,11 @@ def analyze():
         checked = 0
         for item in clean:
             item['nutrition_source'] = 'gemini_estimate'
-            if item['brand'] and item['unit'] == 'g' and checked < 2:
+            generic = _generic_nutrition(item)
+            if generic:
+                item.update(generic)
+                item['nutrition_source'] = 'generic_reference'
+            elif item['brand'] and item['unit'] == 'g' and checked < 2:
                 checked += 1
                 found = _verified_off_nutrition(item)
                 if found:
@@ -167,9 +204,13 @@ def analyze():
                     item.update(nutrients)
                     item['nutrition_source'] = 'open_food_facts'
                     item['off_barcode'] = code
-        notes = str(parsed.get('notes') or '')[:450]
+        notes = str(parsed.get('notes') or '')[:380]
         verified = sum(i['nutrition_source'] == 'open_food_facts' for i in clean)
-        notes += f' | Fuentes: {verified} coincidencia(s) de producto en Open Food Facts (datos colaborativos); los demás son estimaciones de Gemini. Revisá la etiqueta si está disponible.'
+        generic_count = sum(i['nutrition_source'] == 'generic_reference' for i in clean)
+        estimated = sum(i['nutrition_source'] == 'gemini_estimate' for i in clean)
+        notes += (f' | Fuentes: {verified} coincidencia(s) Open Food Facts (datos colaborativos), '
+                  f'{generic_count} referencia(s) genérica(s) orientativa(s), '
+                  f'{estimated} estimación(es) Gemini. Revisá etiquetas y preparación.')
         return jsonify(ingredients=clean, notes=notes[:600])
     except urllib.error.HTTPError as error:
         # Log the actual provider response on Render, but never expose API keys or raw provider data.
