@@ -1231,3 +1231,397 @@ body{background:linear-gradient(145deg,#eaf7f2 0%,#f1f6ff 58%,#fff5ed 100%);colo
 .instant-food-results,.phrase-analysis,.selected-product-panel,.meal-product-search-section{color:#203f34}
 .product-search-box,.steps-section,.calendar-section,.meals-section .empty-state{background:#fff;border-color:#c8ded3}
 @media(max-width:700px){.modal-panel{border-radius:20px}.modal-panel .button{min-height:40px}.circle-dashboard .circle-stat{box-shadow:none}}
+
+/* ==========================================
+   CALORIETRACK — COACH IA
+   ========================================== */
+
+.coach-section {
+  margin: 36px 0;
+  scroll-margin-top: 105px;
+}
+
+.coach-heading {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 22px;
+}
+
+.coach-heading-icon {
+  width: 58px;
+  height: 58px;
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  border-radius: 19px;
+  background: linear-gradient(135deg, #e4f2e7, #d4e9dc);
+  color: #326d4d;
+  font-size: 30px;
+}
+
+.coach-heading .eyebrow {
+  margin-bottom: 5px;
+}
+
+.coach-heading h2 {
+  margin: 0;
+  color: #26382e;
+  font-family: Manrope, sans-serif;
+  font-size: clamp(25px, 3vw, 34px);
+  letter-spacing: -1px;
+}
+
+.coach-subtitle {
+  margin: 5px 0 0;
+  color: #788278;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+/* Contenedor del chat */
+
+.coach-card {
+  overflow: hidden;
+  background: #fffefa;
+  border: 1px solid #e2e9df;
+  border-radius: 26px;
+  box-shadow: 0 16px 48px rgba(38, 62, 45, .07);
+}
+
+/* Encabezado */
+
+.coach-chat-header {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  padding: 20px 24px;
+  border-bottom: 1px solid #edf0e9;
+  background: linear-gradient(120deg, #f6faf4, #fffefa);
+}
+
+.coach-avatar {
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  flex-shrink: 0;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #527b61, #2e6346);
+  color: white;
+  font-size: 25px;
+  box-shadow: 0 7px 18px rgba(48, 105, 70, .18);
+}
+
+.coach-chat-identity {
+  display: flex;
+  flex: 1;
+  min-width: 0;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.coach-chat-identity strong {
+  color: #26382e;
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.coach-chat-identity span {
+  color: #849188;
+  font-size: 11px;
+}
+
+.coach-clear-button {
+  border: 1px solid #dce8dc;
+  background: #fff;
+  color: #50745a;
+  border-radius: 12px;
+  padding: 10px 13px;
+  font-size: 12px;
+  font-weight: 700;
+  transition: background .2s, border-color .2s;
+}
+
+.coach-clear-button:hover {
+  background: #eaf3e9;
+  border-color: #b9d4bd;
+}
+
+/* Área de mensajes */
+
+.coach-messages {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  min-height: 330px;
+  max-height: 520px;
+  overflow-y: auto;
+  padding: 28px 24px;
+  background:
+    radial-gradient(circle at 85% 5%, rgba(221, 237, 222, .4), transparent 45%),
+    #fffefa;
+  scrollbar-width: thin;
+  scrollbar-color: #cbdccb transparent;
+}
+
+.coach-message {
+  display: flex;
+  align-items: flex-end;
+  gap: 11px;
+  max-width: 88%;
+}
+
+.coach-message-ai {
+  align-self: flex-start;
+}
+
+.coach-message-user {
+  align-self: flex-end;
+  flex-direction: row-reverse;
+}
+
+.coach-message-avatar {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+  border-radius: 12px;
+  background: #e6f1e7;
+  color: #427953;
+  font-size: 19px;
+}
+
+.coach-bubble {
+  min-width: 0;
+  padding: 16px 19px;
+  border-radius: 19px 19px 19px 5px;
+  background: #f0f5ee;
+  color: #354b3b;
+  font-size: 14px;
+  line-height: 1.75;
+  overflow-wrap: anywhere;
+}
+
+.coach-bubble strong {
+  display: block;
+  margin-bottom: 7px;
+  color: #2d563c;
+  font-weight: 800;
+}
+
+.coach-bubble p {
+  margin: 0 0 10px;
+}
+
+.coach-bubble p:last-child {
+  margin-bottom: 0;
+}
+
+.coach-message-user .coach-bubble {
+  background: linear-gradient(135deg, #527b61, #366448);
+  color: white;
+  border-radius: 19px 19px 5px 19px;
+  box-shadow: 0 7px 18px rgba(54, 100, 72, .12);
+}
+
+/* Preguntas sugeridas */
+
+.coach-suggestions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+  padding: 16px 24px;
+  border-top: 1px solid #edf0e9;
+}
+
+.coach-suggestion {
+  padding: 10px 14px;
+  border: 1px solid #dce8dc;
+  border-radius: 999px;
+  background: #f6faf5;
+  color: #416b4e;
+  font-size: 12px;
+  font-weight: 700;
+  transition: background .2s, transform .2s;
+}
+
+.coach-suggestion:hover {
+  background: #e4f1e5;
+  transform: translateY(-1px);
+}
+
+/* Campo para escribir */
+
+.coach-composer {
+  display: flex;
+  align-items: flex-end;
+  gap: 12px;
+  margin: 0 24px;
+  padding: 9px;
+  background: #f6f8f4;
+  border: 1px solid #dfe8dc;
+  border-radius: 19px;
+  transition: border-color .2s, box-shadow .2s;
+}
+
+.coach-composer:focus-within {
+  border-color: #8eb49a;
+  box-shadow: 0 0 0 3px rgba(82, 123, 97, .09);
+}
+
+.coach-composer textarea {
+  flex: 1;
+  min-width: 0;
+  min-height: 43px;
+  max-height: 150px;
+  resize: vertical;
+  padding: 12px 10px;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: #26382e;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.coach-composer textarea::placeholder {
+  color: #98a59a;
+}
+
+.coach-send-button {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+  border: 0;
+  border-radius: 14px;
+  background: #527b61;
+  color: white;
+  font-size: 19px;
+  transition: background .2s, transform .2s;
+}
+
+.coach-send-button:hover {
+  background: #365c46;
+  transform: translateY(-1px);
+}
+
+.coach-send-button:disabled {
+  opacity: .55;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.coach-status {
+  min-height: 18px;
+  margin: 10px 28px 0;
+  color: #6b8975;
+  font-size: 12px;
+}
+
+.coach-disclaimer {
+  margin: 8px 24px 19px;
+  color: #98a49a;
+  font-size: 11px;
+  line-height: 1.6;
+  text-align: center;
+}
+
+/* Accesibilidad */
+
+.coach-section button:focus-visible,
+.coach-section textarea:focus-visible {
+  outline: 3px solid #8ebc98;
+  outline-offset: 3px;
+}
+
+/* Adaptación a celulares */
+
+@media (max-width: 650px) {
+  .coach-section {
+    margin: 24px 0;
+    scroll-margin-top: 80px;
+  }
+
+  .coach-heading {
+    gap: 12px;
+  }
+
+  .coach-heading-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 15px;
+    font-size: 25px;
+  }
+
+  .coach-card {
+    border-radius: 21px;
+  }
+
+  .coach-chat-header {
+    padding: 16px 14px;
+    flex-wrap: wrap;
+  }
+
+  .coach-clear-button {
+    margin-left: auto;
+    padding: 8px 10px;
+    font-size: 11px;
+  }
+
+  .coach-messages {
+    min-height: 300px;
+    max-height: 460px;
+    padding: 20px 12px;
+    gap: 16px;
+  }
+
+  .coach-message {
+    max-width: 96%;
+    gap: 7px;
+  }
+
+  .coach-bubble {
+    padding: 13px 14px;
+    font-size: 13px;
+  }
+
+  .coach-message-avatar {
+    width: 28px;
+    height: 28px;
+  }
+
+  .coach-suggestions {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding: 14px 12px;
+    scrollbar-width: none;
+  }
+
+  .coach-suggestions::-webkit-scrollbar {
+    display: none;
+  }
+
+  .coach-suggestion {
+    flex-shrink: 0;
+    white-space: nowrap;
+  }
+
+  .coach-composer {
+    margin: 0 12px;
+    gap: 6px;
+  }
+
+  .coach-disclaimer {
+    margin: 8px 15px 16px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .coach-section button {
+    transition: none;
+  }
+}
