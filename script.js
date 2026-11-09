@@ -552,12 +552,16 @@ return results;
      BUSCAR POR CÓDIGO DE BARRAS
   ============================================ */
 
+  const barcodeCache = new Map();
   async function lookupBarcode(code) {
+    const cached = barcodeCache.get(code);
+    if (cached && Date.now() - cached.at < 30 * 60 * 1000) return cached.product;
     const local = products.find(
       product => product.barcode === code
     );
 
     if (local) {
+      barcodeCache.set(code, { at: Date.now(), product: local });
       return local;
     }
 
@@ -566,12 +570,11 @@ return results;
       `${encodeURIComponent(code)}`
     );
 
-    return data.status === 1
-      ? fromOFF({
-          ...data.product,
-          code
-        })
+    const found = data.status === 1
+      ? fromOFF({ ...data.product, code })
       : null;
+    barcodeCache.set(code, { at: Date.now(), product: found });
+    return found;
   }
 
   
@@ -2807,102 +2810,49 @@ return results;
   async function startScanner() {
     const section = $("scannerSection");
     const button = $("scanButton");
-
-    if (!window.Html5Qrcode) {
-      setText(
-        "scannerStatus",
-        "No se pudo cargar el escáner. Revisá la conexión a Internet."
-      );
-
-      if (section) {
-        section.hidden = false;
-      }
-
+    if (!window.Html5Qrcode || !window.Html5QrcodeSupportedFormats) {
+      setText("scannerStatus", "No se pudo cargar el lector de códigos de barras.");
+      if (section) section.hidden = false;
       return;
     }
-
-    if (
-      scannerStarting ||
-      scanner?.isScanning
-    ) {
-      return;
-    }
-
+    if (scannerStarting || scanner?.isScanning) return;
     scannerStarting = true;
-
-    if (section) {
-      section.hidden = false;
-    }
-
-    setText(
-      "scannerStatus",
-      "Solicitando acceso a la cámara..."
-    );
-
+    if (section) section.hidden = false;
+    setText("scannerStatus", "Iniciando cámara trasera...");
+    const startedAt = performance.now();
     try {
       if (!scanner) {
-        scanner = new Html5Qrcode(
-          "reader"
-        );
+        const F = window.Html5QrcodeSupportedFormats;
+        scanner = new Html5Qrcode("reader", {
+          formatsToSupport: [F.EAN_13, F.EAN_8, F.UPC_A, F.UPC_E],
+          verbose: false
+        });
       }
-
-      const cameras =
-        await Html5Qrcode.getCameras();
-
-      if (!cameras.length) {
-        throw new Error(
-          "No se encontró ninguna cámara disponible."
-        );
+      const config = {
+        fps: 15,
+        qrbox: (viewWidth, viewHeight) => ({
+          width: Math.max(120, Math.min(320, Math.floor(viewWidth * 0.88))),
+          height: Math.max(75, Math.min(160, Math.floor(viewHeight * 0.55)))
+        }),
+        aspectRatio: 1.777778,
+        disableFlip: true
+      };
+      // Evita enumerar cámaras antes de abrir la trasera.
+      // En dispositivos sin cámara 'environment' usamos selección manual automática.
+      try {
+        await scanner.start({ facingMode: "environment" }, config, onBarcodeScanned);
+      } catch (firstError) {
+        const cameras = await Html5Qrcode.getCameras();
+        if (!cameras.length) throw firstError;
+        const camera = cameras.find(c => /back|rear|trasera|environment/i.test(c.label)) || cameras[0];
+        await scanner.start(camera.id, config, onBarcodeScanned);
       }
-
-      // Priorizar la cámara trasera del celular.
-
-      const camera = cameras.find(
-        item =>
-          /back|rear|trasera|environment/i
-            .test(item.label)
-      ) || cameras[0];
-
-      await scanner.start(
-        camera.id,
-        {
-          fps: 10,
-
-          qrbox: {
-            width: 250,
-            height: 150
-          }
-        },
-
-        onBarcodeScanned,
-
-        () => {
-          // Los intentos de lectura fallidos
-          // son normales mientras se enfoca.
-        }
-      );
-
-      if (button) {
-        button.disabled = true;
-      }
-
-      setText(
-        "scannerStatus",
-        "Apuntá la cámara al código de barras del producto."
-      );
-
+      if (button) button.disabled = true;
+      setText("scannerStatus", "Cámara lista. Centrá el código de barras y acercalo hasta que se vea nítido.");
+      console.info(`[CalorieTrack] Cámara iniciada en ${Math.round(performance.now() - startedAt)} ms`);
     } catch (error) {
-      console.error(
-        "Error al iniciar el escáner:",
-        error
-      );
-
-      setText(
-        "scannerStatus",
-        error.message ||
-        "No se pudo iniciar la cámara. Revisá los permisos del navegador."
-      );
-
+      console.error("Error al iniciar el escáner:", error);
+      setText("scannerStatus", error?.message || "No se pudo iniciar la cámara. Revisá los permisos.");
     } finally {
       scannerStarting = false;
     }
@@ -2912,7 +2862,7 @@ return results;
      DETENER ESCÁNER
   ============================================ */
 
-  async function stopScanner() {
+  async function stopScanner({ keepStatus = false } = {}) {
     const button = $("scanButton");
 
     if (button) {
@@ -2934,7 +2884,7 @@ return results;
     const section = $("scannerSection");
 
     if (section) {
-      section.hidden = true;
+      section.hidden = !keepStatus;
     }
   }
 
@@ -2945,10 +2895,19 @@ return results;
   async function onBarcodeScanned(code) {
     if (scanBusy) return;
 
+    const barcode = String(code || "").trim();
+    if (!/^\d{8,14}$/.test(barcode)) {
+      setText("scannerStatus", "El código detectado no es un EAN/UPC válido. Intentá nuevamente.");
+      return;
+    }
+
     scanBusy = true;
 
     try {
-      await stopScanner();
+      const scannedAt = performance.now();
+      setText("scannerStatus", `Código detectado: ${String(code).trim()}. Buscando producto...`);
+      await stopScanner({ keepStatus: true });
+      setText("scannerStatus", `Código ${barcode} detectado. Consultando el producto...`);
 
       const box = $("scannedProduct");
 
@@ -2969,9 +2928,8 @@ return results;
       // Buscar primero en productos guardados
       // y después en la base de datos online.
 
-      const product = await lookupBarcode(
-        String(code).trim()
-      );
+      const product = await lookupBarcode(barcode);
+      console.info(`[CalorieTrack] Consulta de producto: ${Math.round(performance.now() - scannedAt)} ms`);
 
       box.replaceChildren();
 
@@ -2980,6 +2938,7 @@ return results;
       ------------------------------------------ */
 
       if (!product) {
+        setText("scannerStatus", `No encontramos el código ${barcode}. Podés crear el producto o volver a escanear.`);
         box.append(
           node(
             "p",
@@ -2990,8 +2949,9 @@ return results;
           makeButton(
             "Crear producto",
             "button button-primary",
-            () => openProductForm(code)
-          )
+            () => openProductForm(barcode)
+          ),
+          makeButton("Volver a escanear", "button button-soft", startScanner)
         );
 
         return;
@@ -3001,6 +2961,7 @@ return results;
          PRODUCTO ENCONTRADO
       ------------------------------------------ */
 
+      setText("scannerStatus", `Producto encontrado para el código ${barcode}.`);
       const productName = node(
         "h3",
         "",
@@ -3059,8 +3020,16 @@ return results;
 
       setText(
         "scannerStatus",
-        "No se pudo consultar el producto. Intentá nuevamente."
+        "No se pudo consultar el producto. Revisá tu conexión e intentá nuevamente."
       );
+      const box = $("scannedProduct");
+      if (box) {
+        box.hidden = false;
+        box.replaceChildren(
+          node("p", "", "La consulta falló; el producto no se guardó."),
+          makeButton("Volver a escanear", "button button-primary", startScanner)
+        );
+      }
 
     } finally {
       scanBusy = false;
@@ -3928,236 +3897,395 @@ return results;
   // Análisis de comidas mediante Gemini a través de Render.
  
 
-  function showAIResult(data) {
-    let root = $("aiAnalysis");
+  
+function showAIResult(data) {
+  let root = $("aiAnalysis");
 
-    if (!root) {
-      root = node("div", "phrase-analysis");
-      root.id = "aiAnalysis";
+  if (!root) {
+    root = node("div", "phrase-analysis");
+    root.id = "aiAnalysis";
 
-      const button = $("analyzeAIButton");
-      if (!button || !button.parentElement) {
-        throw new Error("No se encontró dónde mostrar el análisis.");
-      }
+    const button = $("analyzeAIButton");
 
-      button.insertAdjacentElement("afterend", root);
+    if (!button) {
+      throw new Error(
+        "No se encontró el botón de análisis."
+      );
     }
 
-    if (!Array.isArray(data.ingredients) || !data.ingredients.length) {
-      throw new Error("Gemini no devolvió ingredientes.");
-    }
+    button.insertAdjacentElement("afterend", root);
+  }
 
-    aiDraft = data.ingredients.map(item => ({ ...item }));
+  if (!Array.isArray(data.ingredients) ||
+      !data.ingredients.length) {
+    throw new Error("Gemini no devolvió ingredientes.");
+  }
+
+  aiDraft = data.ingredients.map(item => ({
+    ...item,
+    amount: num(item.amount),
+    assumed: Boolean(item.assumed)
+  }));
+
+  root.hidden = false;
+
+  function calculateItem(item) {
+    const factor = positive(item.amount)
+      ? num(item.amount) / 100
+      : 0;
+
+    return {
+      calories: nonnegative(item.kcal_per_100)
+        ? num(item.kcal_per_100) * factor : 0,
+      protein: nonnegative(item.protein_per_100)
+        ? num(item.protein_per_100) * factor : 0,
+      carbs: nonnegative(item.carbs_per_100)
+        ? num(item.carbs_per_100) * factor : null,
+      fats: nonnegative(item.fats_per_100)
+        ? num(item.fats_per_100) * factor : null
+    };
+  }
+
+  function renderReview() {
     root.replaceChildren();
-    root.hidden = false;
 
     root.append(
-      node("h3", "", "Ingredientes identificados por IA"),
+      node("h3", "", "Revisá tu comida"),
       node(
         "p",
         "helper-text",
-        "Valores aproximados. Revisá las cantidades antes de guardar."
+        "Gemini estimó estos ingredientes. " +
+        "Corregí las cantidades o eliminá los " +
+        "que no consumiste antes de agregarlos."
       )
     );
 
     if (data.notes) {
-      root.append(node("p", "phrase-warning", data.notes));
+      root.append(
+        node("p", "phrase-warning", data.notes)
+      );
     }
 
-    // Crear el total ANTES de actualizarlo.
-    const totalElement = node("p", "phrase-total", "");
+    if (!aiDraft.length) {
+      root.append(
+        node(
+          "p",
+          "phrase-warning",
+          "Eliminaste todos los ingredientes. " +
+          "Volvé a analizar la comida."
+        )
+      );
+      return;
+    }
+
+    const totalElement = node(
+      "p",
+      "phrase-total",
+      ""
+    );
     totalElement.id = "aiTotal";
 
+    const confirmButton = makeButton(
+      "✓ Confirmar y agregar ingredientes",
+      "button button-primary",
+      confirmIngredients
+    );
+
     function updateTotal() {
-      const totals = aiDraft.reduce(
-        (acc, item) => {
-          const amount = positive(item.amount) ? num(item.amount) : 0;
-          const factor = amount / 100;
+      const totals = {
+        calories: 0,
+        protein: 0,
+        carbs: 0,
+        fats: 0,
+        carbsComplete: true,
+        fatsComplete: true
+      };
 
-          acc.calories += num(item.kcal_per_100) * factor;
-          acc.protein += num(item.protein_per_100) * factor;
+      let valid = true;
 
-          return acc;
-        },
-        { calories: 0, protein: 0 }
-      );
+      aiDraft.forEach(item => {
+        if (!positive(item.amount) ||
+            num(item.amount) > 10000) {
+          valid = false;
+          return;
+        }
+
+        const nutrition = calculateItem(item);
+
+        totals.calories += nutrition.calories;
+        totals.protein += nutrition.protein;
+
+        if (nutrition.carbs === null) {
+          totals.carbsComplete = false;
+        } else {
+          totals.carbs += nutrition.carbs;
+        }
+
+        if (nutrition.fats === null) {
+          totals.fatsComplete = false;
+        } else {
+          totals.fats += nutrition.fats;
+        }
+      });
+
+      const carbsText = totals.carbsComplete
+        ? `${fmt(totals.carbs)} g carb.`
+        : "Carbohidratos incompletos";
+
+      const fatsText = totals.fatsComplete
+        ? `${fmt(totals.fats)} g grasas`
+        : "Grasas incompletas";
 
       totalElement.textContent =
         `Total estimado: ${fmt(totals.calories)} kcal · ` +
-        `${fmt(totals.protein)} g proteínas`;
+        `${fmt(totals.protein)} g proteínas · ` +
+        `${carbsText} · ${fatsText}`;
+
+      confirmButton.disabled = !valid;
     }
 
     aiDraft.forEach(item => {
       const row = node("div", "phrase-item");
-      const info = node("div");
 
-      info.append(
-        node(
-          "strong",
-          "",
-          item.name + (item.brand ? ` (${item.brand})` : "")
-        )
+      const info = node("div");
+      info.style.flex = "1";
+      info.style.minWidth = "0";
+
+      const name = node(
+        "strong",
+        "",
+        item.name +
+        (item.brand ? ` (${item.brand})` : "")
       );
 
       const summary = node("small", "", "");
 
-      const input = document.createElement("input");
-      input.type = "number";
-      input.min = "0.1";
-      input.step = "any";
-      input.value = String(item.amount);
-      input.setAttribute(
-        "aria-label",
-        `Cantidad en ${item.unit} de ${item.name}`
+      
+const amountContainer = node("div");
+
+amountContainer.style.cssText = `
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 8px;
+  flex-wrap: wrap;
+  width: 100%;
+  margin-top: 8px;
+`;
+
+
+      
+const amountInput = document.createElement("input");
+
+amountInput.type = "number";
+amountInput.min = "0.1";
+amountInput.max = "10000";
+amountInput.step = "1";
+amountInput.value = String(item.amount);
+
+amountInput.className = "ai-amount-input";
+
+amountInput.style.cssText = `
+  display: block;
+  width: 90px;
+  min-width: 90px;
+  height: 42px;
+  padding: 8px 10px;
+  border: 1px solid #94a3b8;
+  border-radius: 10px;
+  background: #ffffff;
+  color: #0f172a;
+  font-size: 16px;
+  font-weight: 600;
+  text-align: center;
+  box-sizing: border-box;
+  opacity: 1;
+  visibility: visible;
+`;
+
+      const unit = node(
+        "span",
+        "",
+        item.unit || "g"
+      );
+
+      const removeButton = makeButton(
+        "Eliminar",
+        "button button-outline",
+        () => {
+          aiDraft = aiDraft.filter(
+            draft => draft !== item
+          );
+
+          renderReview();
+        }
       );
 
       function updateItem() {
-        const amount = positive(item.amount) ? num(item.amount) : 0;
-        const factor = amount / 100;
+        const nutrition = calculateItem(item);
 
         summary.textContent =
-          `${fmt(num(item.kcal_per_100) * factor)} kcal · ` +
-          `${fmt(num(item.protein_per_100) * factor)} g proteínas` +
+          `${fmt(nutrition.calories)} kcal · ` +
+          `${fmt(nutrition.protein)} g proteínas` +
           (item.assumed ? " · cantidad estimada" : "");
 
         updateTotal();
       }
 
-      input.addEventListener("input", () => {
-        item.amount = num(input.value);
+      amountInput.setAttribute(
+        "aria-label",
+        `Cantidad de ${item.name} en ${item.unit || "g"}`
+      );
+
+      amountInput.addEventListener("input", () => {
+        item.amount = num(amountInput.value);
         item.assumed = false;
         updateItem();
       });
 
-      info.append(summary);
-      row.append(info, input);
+      amountContainer.append(
+        amountInput,
+        unit,
+        removeButton
+      );
+
+      info.append(name, summary);
+      row.append(info, amountContainer);
       root.append(row);
 
       updateItem();
     });
 
-    root.append(totalElement);
+    root.append(totalElement, confirmButton);
     updateTotal();
-
-    root.append(
-      makeButton(
-        "＋ Agregar ingredientes al registro",
-        "button button-primary",
-        () => {
-          if (
-            aiDraft.some(item =>
-              !positive(item.amount) ||
-              num(item.amount) > 10000
-            )
-          ) {
-            setText(
-              "mealError",
-              "Revisá las cantidades antes de agregarlas."
-            );
-            return;
-          }
-
-          const newProducts = aiDraft.map(item => {
-            const factor = num(item.amount) / 100;
-
-            return {
-              id: uid(),
-              productId: null,
-              name: item.name +
-                (item.brand ? ` (${item.brand})` : ""),
-              amount: num(item.amount),
-              unit: item.unit,
-              calories: num(item.kcal_per_100) * factor,
-              protein: num(item.protein_per_100) * factor,
-              carbs: nonnegative(item.carbs_per_100)
-                ? num(item.carbs_per_100) * factor
-                : null,
-              fats: nonnegative(item.fats_per_100)
-                ? num(item.fats_per_100) * factor
-                : null
-            };
-          });
-
-          mealProducts.push(...newProducts);
-          aiDraft = [];
-
-          root.replaceChildren();
-          root.hidden = true;
-
-          const description = $("mealDescription");
-          if (description) description.value = "";
-
-          $("instantFoodResults")?.replaceChildren();
-          setText("mealError", "");
-          updatePreview();
-        }
-      )
-    );
   }
 
-  async function analyzeMealWithAI() {
-    const description = $("mealDescription")?.value.trim();
-
-    if (!description || description.length < 3) {
-      setText("mealError", "Primero describí tu comida.");
-      return;
-    }
-
-    if (description.length > 1200) {
-      setText("mealError", "La descripción es demasiado larga.");
-      return;
-    }
-
-    const button = $("analyzeAIButton");
-
-    if (button) {
-      button.disabled = true;
-      button.textContent = "Analizando receta...";
-    }
-
-    setText("mealError", "");
-
-    try {
-      const response = await fetch(`${AI_API}/api/analyze`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ description })
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(
-          data.error || `Error del servidor: ${response.status}`
-        );
-      }
-
-      if (!Array.isArray(data.ingredients) ||
-          !data.ingredients.length) {
-        throw new Error(
-          "No se identificaron ingredientes. Probá con otra descripción."
-        );
-      }
-
-      showAIResult(data);
-
-    } catch (error) {
-      console.error("Error al analizar comida:", error);
-
+  function confirmIngredients() {
+    if (!aiDraft.length ||
+        aiDraft.some(item =>
+          !positive(item.amount) ||
+          num(item.amount) > 10000
+        )) {
       setText(
         "mealError",
-        error.message || "No se pudo analizar la comida."
+        "Revisá las cantidades antes de confirmar."
       );
+      return;
+    }
 
-    } finally {
-      if (button) {
-        button.disabled = false;
-        button.textContent = "✨ Analizar con IA (marcas y recetas)";
-      }
+    const newProducts = aiDraft.map(item => {
+      const nutrition = calculateItem(item);
+
+      return {
+        id: uid(),
+        productId: null,
+        name: item.name +
+          (item.brand ? ` (${item.brand})` : ""),
+        amount: num(item.amount),
+        unit: item.unit || "g",
+        calories: nutrition.calories,
+        protein: nutrition.protein,
+        carbs: nutrition.carbs,
+        fats: nutrition.fats
+      };
+    });
+
+    mealProducts.push(...newProducts);
+    aiDraft = [];
+
+    root.replaceChildren();
+    root.hidden = true;
+
+    const description = $("mealDescription");
+
+    if (description) {
+      description.value = "";
+    }
+
+    $("instantFoodResults")?.replaceChildren();
+
+    setText("mealError", "");
+    updatePreview();
+  }
+
+  renderReview();
+}
+
+  
+async function analyzeMealWithAI() {
+  const description = $("mealDescription")?.value.trim();
+
+  if (!description || description.length < 3) {
+    setText("mealError", "Primero describí tu comida.");
+    return;
+  }
+
+  if (description.length > 1200) {
+    setText("mealError", "La descripción es demasiado larga.");
+    return;
+  }
+
+  const button = $("analyzeAIButton");
+  const controller = new AbortController();
+
+  // Máximo 35 segundos de espera
+  const timeout = setTimeout(() => {
+    controller.abort();
+  }, 35000);
+
+  if (button) {
+    button.disabled = true;
+    button.textContent = "Analizando comida...";
+  }
+
+  setText("mealError", "");
+
+  try {
+    const response = await fetch(`${AI_API}/api/analyze`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ description }),
+      signal: controller.signal
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(
+        data.error || `Error del servidor (${response.status})`
+      );
+    }
+
+    if (!Array.isArray(data.ingredients) ||
+        !data.ingredients.length) {
+      throw new Error(
+        "La IA no identificó ingredientes."
+      );
+    }
+
+    showAIResult(data);
+
+  } catch (error) {
+    console.error("Error al analizar comida:", error);
+
+    const message = error.name === "AbortError"
+      ? "El análisis tardó demasiado. Intentá nuevamente."
+      : error.message || "No se pudo analizar la comida.";
+
+    setText("mealError", message);
+
+  } finally {
+    clearTimeout(timeout);
+
+    if (button) {
+      button.disabled = false;
+      button.textContent = "✨ Analizar con IA (marcas y recetas)";
     }
   }
+}
+
 
   // Macronutrientes: no inventar valores cuando la fuente no los informa.
   function renderMacroRings(totals = getDailyTotals()) {
