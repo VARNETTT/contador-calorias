@@ -1219,6 +1219,7 @@ return results;
       }
     }
 
+    configureConsumptionUnits(product);
     updateSelectedProductNutrition();
 
     // Abrir el registro de comidas cuando
@@ -1227,6 +1228,56 @@ return results;
     openModal("mealModal");
 
     updatePreview();
+  }
+
+  // La tabla nutricional está expresada por 100 g o por 100 ml.
+  // No inferimos el peso de una galletita a partir del peso total del paquete.
+  function servingWeight(product) {
+    if (positive(product.unitWeight)) return num(product.unitWeight);
+    const raw = String(product.servingSize || "").toLowerCase().replace(",", ".");
+    const match = raw.match(/(\d+(?:\.\d+)?)\s*(ml|g)\b/);
+    if (!match) return null;
+    if (match[2] !== product.unit) return null;
+    return Number(match[1]);
+  }
+
+  function configureConsumptionUnits(product) {
+    const select = $("selectedProductUnit");
+    if (!select) return;
+    select.querySelector('[value="g"]').hidden = product.unit !== "g";
+    select.querySelector('[value="ml"]').hidden = product.unit !== "ml";
+    select.querySelector('[value="l"]').hidden = product.unit !== "ml";
+    select.value = product.unit;
+    const weight = $("selectedProductWeight");
+    if (weight) weight.value = servingWeight(product) || "";
+    syncConsumptionUnits();
+  }
+
+  function syncConsumptionUnits() {
+    if (!selectedProduct) return;
+    const unit = $("selectedProductUnit")?.value || selectedProduct.unit;
+    const group = $("selectedProductWeightGroup");
+    if (group) group.hidden = unit !== "unit" && unit !== "portion";
+    const label = document.querySelector('label[for="selectedProductAmount"]');
+    if (label) label.textContent = unit === "unit" ? "Cantidad de unidades" : unit === "portion" ? "Cantidad de porciones" : "Cantidad consumida";
+    setText("selectedProductWeightSuffix", `${selectedProduct.unit} por ${unit === "portion" ? "porción" : "unidad"}`);
+    setText("selectedProductWeightHint", unit === "unit" ? "Ingresá el peso de una galletita/unidad según el envase; no el peso total del paquete." : "Ingresá el peso o volumen de una porción según la etiqueta.");
+    const input = $("selectedProductAmount");
+    if (input) input.value = unit === "unit" || unit === "portion" ? "1" : unit === "l" ? "0.25" : String(positive(selectedProduct.portion) ? selectedProduct.portion : 100);
+    updateSelectedProductNutrition(); updatePreview();
+  }
+
+  function consumedAmount() {
+    if (!selectedProduct) return null;
+    const count = num($("selectedProductAmount")?.value);
+    if (!positive(count)) return null;
+    const unit = $("selectedProductUnit")?.value || selectedProduct.unit;
+    if (unit === "l") return count * 1000;
+    if (unit === "unit" || unit === "portion") {
+      const each = num($("selectedProductWeight")?.value);
+      return positive(each) ? count * each : null;
+    }
+    return count;
   }
 
   /* ============================================
@@ -1274,14 +1325,12 @@ return results;
 
     const amountInput = $("selectedProductAmount");
 
-    const amount = num(
-      amountInput?.value
-    );
+    const amount = consumedAmount();
 
     if (!positive(amount)) {
       setText(
         "selectedProductNutrition",
-        "Ingresá una cantidad mayor a cero."
+        "Ingresá una cantidad válida y, para unidades o porciones, el peso de cada una según el envase."
       );
       return;
     }
@@ -1293,7 +1342,7 @@ return results;
 
     setText(
       "selectedProductNutrition",
-      `${fmt(amount)} ${selectedProduct.unit} · ` +
+      `${fmt(num(amountInput?.value))} ${$("selectedProductUnit")?.selectedOptions[0]?.textContent || selectedProduct.unit} (${fmt(amount)} ${selectedProduct.unit}) · ` +
       `${fmt(nutrition.calories)} kcal · ` +
       `${fmt(nutrition.protein)} g de proteínas`
     );
@@ -1310,14 +1359,12 @@ return results;
 
     const amountInput = $("selectedProductAmount");
 
-    const amount = num(
-      amountInput?.value
-    );
+    const amount = consumedAmount();
 
     if (!positive(amount)) {
       setText(
         "mealError",
-        "Ingresá una cantidad válida."
+        "Ingresá la cantidad y el peso de cada unidad o porción (según el envase)."
       );
       return;
     }
@@ -1439,9 +1486,7 @@ return results;
     // no fue agregado, mostrar su aporte estimado.
 
     if (selectedProduct) {
-      const amount = num(
-        $("selectedProductAmount")?.value
-      );
+      const amount = consumedAmount();
 
       if (positive(amount)) {
         const selectedNutrition =
@@ -1624,94 +1669,77 @@ return results;
   ============================================ */
 
   function createMealCard(meal) {
-    const card = node(
-      "article",
-      "meal-item"
-    );
+    const card = node("article", "meal-item meal-card-v2");
+    const typeName = String(meal.type || "Comida");
+    const icons = {Desayuno:"☀", Almuerzo:"☼", Merienda:"◕", Cena:"☾"};
+    const time = meal.timestamp && !Number.isNaN(new Date(meal.timestamp).getTime())
+      ? new Date(meal.timestamp).toLocaleTimeString("es-AR", {hour:"2-digit",minute:"2-digit"}) : "";
+    const category = node("div", "meal-card-category");
+    const symbol = node("span", "meal-card-symbol", icons[typeName] || "✦");
+    symbol.setAttribute("aria-hidden", "true");
+    const catText = node("div", "meal-card-category-text");
+    catText.append(node("strong", "", typeName), node("span", "", time));
+    category.append(symbol, catText);
 
-    const content = node(
-      "div",
-      "meal-item-content"
-    );
-
-    const heading = node(
-      "div",
-      "meal-item-heading"
-    );
-
-    const type = node(
-      "span",
-      "meal-type",
-      meal.type || "Comida"
-    );
-
-    let time = "";
-
-    if (meal.timestamp) {
-      const date = new Date(meal.timestamp);
-
-      if (!Number.isNaN(date.getTime())) {
-        time = date.toLocaleTimeString(
-          "es-AR",
-          {
-            hour: "2-digit",
-            minute: "2-digit"
-          }
-        );
-      }
-    }
-
-    const timeLabel = node(
-      "span",
-      "meal-time",
-      time
-    );
-
-    heading.append(
-      type,
-      timeLabel
-    );
-
-    const description = node(
-      "h3",
-      "",
-      meal.description || "Comida registrada"
-    );
-
-    const nutrition = node(
-      "p",
-      "meal-nutrition",
-      `${fmt(meal.calories)} kcal · ` +
-      `${fmt(meal.protein)} g de proteínas` +
-      (nonnegative(meal.carbs) ? ` · ${fmt(meal.carbs)} g carb.` : "") +
-      (nonnegative(meal.fats) ? ` · ${fmt(meal.fats)} g grasas` : "")
-    );
-
-    content.append(
-      heading,
-      description,
-      nutrition
-    );
-
-    const actions = node(
-      "div",
-      "meal-item-actions"
-    );
-
-    actions.append(
-      makeButton(
-        "Eliminar",
-        "button button-outline",
-        () => deleteMeal(meal.id)
-      )
-    );
-
-    card.append(
-      content,
-      actions
-    );
-
+    const main = node("div", "meal-card-main");
+    main.append(node("h3", "meal-card-name", meal.description || "Comida registrada"));
+    const chips = node("div", "meal-card-macros");
+    const macros = [
+      ["calories", "♨", `${fmt(meal.calories)} kcal`, true],
+      ["protein", "✦", `${fmt(meal.protein)} g Prot.`, true],
+      ["carbs", "◈", nonnegative(meal.carbs) ? `${fmt(meal.carbs)} g Carb.` : "Carb. sin datos", nonnegative(meal.carbs)],
+      ["fats", "◉", nonnegative(meal.fats) ? `${fmt(meal.fats)} g Grasas` : "Grasas sin datos", nonnegative(meal.fats)]
+    ];
+    macros.forEach(([key,icon,label,known]) => {
+      const chip=node("span", `meal-macro-chip meal-macro-${key}${known?"":" meal-macro-unknown"}`);
+      chip.append(node("span", "meal-macro-icon", icon), document.createTextNode(label));
+      chips.append(chip);
+    });
+    main.append(chips);
+    const actions = node("div", "meal-item-actions meal-card-actions");
+    const remove = makeButton("Eliminar", "meal-delete-v2", () => deleteMeal(meal.id));
+    remove.setAttribute("aria-label", `Eliminar ${meal.description || typeName}`);
+    remove.prepend(node("span", "meal-delete-icon", "♲"));
+    actions.append(remove);
+    card.append(category, main, actions);
     return card;
+  }
+
+  function renderMealDaySummary(todayMeals) {
+    const root = $("mealDaySummary");
+    if (!root) return;
+    root.replaceChildren();
+    if (!todayMeals.length) { root.hidden=true; return; }
+    root.hidden=false;
+    const sum = key => todayMeals.reduce((total, meal) => {
+      const value = Number(meal[key]);
+      return total + (Number.isFinite(value) && value >= 0 ? value : 0);
+    }, 0);
+    const summaryTitle=node("div", "meal-summary-title");
+    const summaryIcon=node("span", "meal-summary-icon", "▥");
+    summaryIcon.setAttribute("aria-hidden", "true");
+    const titleText=node("div", "meal-summary-title-text");
+    titleText.append(node("strong", "", "Total del día"), node("span", "", `${todayMeals.length} ${todayMeals.length===1?"comida registrada":"comidas registradas"}`));
+    summaryTitle.append(summaryIcon,titleText);
+    root.append(summaryTitle);
+    const stats=node("div", "meal-summary-stats");
+    const entries=[
+      ["♨", `${fmt(sum("calories"))} kcal`, "Calorías"],
+      ["✦", `${fmt(sum("protein"))} g`, "Proteínas"],
+      ["◈", todayMeals.every(m=>nonnegative(m.carbs)) ? `${fmt(sum("carbs"))} g` : "—", "Carbohidratos"],
+      ["◉", todayMeals.every(m=>nonnegative(m.fats)) ? `${fmt(sum("fats"))} g` : "—", "Grasas"]
+    ];
+    entries.forEach(([icon,value,label])=>{
+      const item=node("div", "meal-summary-stat");
+      item.append(node("span", "meal-summary-stat-icon", icon));
+      const detail=node("div", "meal-summary-stat-detail");
+      detail.append(node("strong", "", value),node("span", "", label));
+      item.append(detail);stats.append(item);
+    });
+    root.append(stats);
+    if (!todayMeals.every(m=>nonnegative(m.carbs)&&nonnegative(m.fats))) {
+      root.append(node("p", "meal-summary-note", "— indica datos nutricionales incompletos; no se muestra un total parcial como si fuera completo."));
+    }
   }
 
   /* ============================================
@@ -1726,6 +1754,7 @@ return results;
     root.replaceChildren();
 
     const todayMeals = getTodayMeals();
+    renderMealDaySummary(todayMeals);
 
     if (!todayMeals.length) {
       const empty = node(
@@ -2353,6 +2382,7 @@ return results;
   ============================================ */
 
   function deleteWaterEntry(id) {
+    if (!window.confirm("¿Querés eliminar este registro de agua?")) return;
     const previous = waterEntries.slice();
 
     waterEntries = waterEntries.filter(
@@ -2372,51 +2402,20 @@ return results;
   ============================================ */
 
   function createWaterEntryCard(entry) {
-    const item = node(
-      "div",
-      "water-history-item"
-    );
-
-    const details = node("div");
-
-    const amountLabel = node(
-      "strong",
-      "",
-      formatWater(num(entry.ml) || 0)
-    );
-
+    const item = node("div", "water-history-item");
+    const icon = node("span", "water-entry-icon", "💧");
+    icon.setAttribute("aria-hidden", "true");
+    const details = node("div", "water-entry-details");
+    const amountLabel = node("strong", "water-entry-amount", formatWater(num(entry.ml) || 0));
     let original = "";
-
-    if (entry.unit === "glass") {
-      original = `${fmt(entry.amount)} vaso(s)`;
-    } else if (entry.unit === "l") {
-      original = `${fmt(entry.amount)} litro(s)`;
-    } else {
-      original = `${fmt(entry.amount)} ml`;
-    }
-
-    const description = node(
-      "span",
-      "",
-      ` · ${original}`
-    );
-
-    details.append(
-      amountLabel,
-      description
-    );
-
-    const removeButton = makeButton(
-      "Eliminar",
-      "water-delete",
-      () => deleteWaterEntry(entry.id)
-    );
-
-    item.append(
-      details,
-      removeButton
-    );
-
+    if (entry.unit === "glass") original = `${fmt(entry.amount)} vaso(s)`;
+    else if (entry.unit === "l") original = `${fmt(entry.amount)} litro(s)`;
+    else original = `${fmt(entry.amount)} ml`;
+    details.append(amountLabel, node("span", "water-entry-description", `Cantidad ingresada: ${original}`));
+    const removeButton = makeButton("×", "water-delete", () => deleteWaterEntry(entry.id));
+    removeButton.setAttribute("aria-label", `Eliminar registro de ${formatWater(num(entry.ml) || 0)}`);
+    removeButton.title = "Eliminar registro";
+    item.append(icon, details, removeButton);
     return item;
   }
 
@@ -4545,6 +4544,8 @@ document.addEventListener("click", event => {
       "selectedProductAmount"
     );
 
+    $("selectedProductUnit")?.addEventListener("change", syncConsumptionUnits);
+    $("selectedProductWeight")?.addEventListener("input", () => { updateSelectedProductNutrition(); updatePreview(); });
     if (selectedAmount) {
       selectedAmount.addEventListener(
         "input",
