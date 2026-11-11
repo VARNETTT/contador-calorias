@@ -29,14 +29,14 @@
     rel="stylesheet"
   >
 
-  <link rel="stylesheet" href="style.css?v=20261109coachmodern2">
+  <link rel="stylesheet" href="style.css?v=20261110meals1">
 
   <script
     src="https://unpkg.com/html5-qrcode"
     defer
   ></script>
 
-  <script src="script.js?v=20261109bundle" defer></script>
+  <script src="script.js?v=20261110meals1" defer></script>
   <script src="calendar.js?v=20261109bundle" defer></script>
   <script src="coach.js?v=20261109bundle" defer></script>
   <link rel="stylesheet" href="coach-chat-fix.css?v=20261109fix1">
@@ -241,7 +241,7 @@
          MIS COMIDAS
     =========================== -->
 
-    <section class="meals-section" id="comidas">
+    <section class="meals-section meals-redesign" id="comidas">
 
       <div class="section-heading meals-heading">
 
@@ -271,6 +271,7 @@
       </div>
 
       <div class="meal-list" id="mealList"></div>
+      <div id="mealDaySummary" class="meal-day-summary" aria-live="polite"></div>
 
     </section>
 
@@ -717,11 +718,14 @@
             Cantidad consumida
           </label>
 
-          <!--
-            El JavaScript agrega el selector
-            de gramos, ml o unidades.
-          -->
-
+          <div class="ct-quantity-controls">
+            <select id="selectedProductUnit" aria-label="Unidad de consumo">
+              <option value="g">Gramos (g)</option>
+              <option value="ml">Mililitros (ml)</option>
+              <option value="l">Litros (L)</option>
+              <option value="unit">Unidades</option>
+              <option value="portion">Porciones</option>
+            </select>
           <input
             type="number"
             id="selectedProductAmount"
@@ -729,6 +733,12 @@
             step="any"
             value="100"
           >
+          </div>
+          <div id="selectedProductWeightGroup" class="ct-unit-weight" hidden>
+            <label for="selectedProductWeight">Peso o volumen de una unidad/porción</label>
+            <div class="ct-quantity-controls"><input type="number" id="selectedProductWeight" min="0.1" step="any" placeholder="Ej.: 25"><span id="selectedProductWeightSuffix">g por unidad</span></div>
+            <p id="selectedProductWeightHint" class="helper-text">Consultá el envase para saber cuánto pesa cada unidad.</p>
+          </div>
 
           <p
             id="selectedProductNutrition"
