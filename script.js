@@ -4297,7 +4297,7 @@ async function analyzeMealWithAI() {
       const percentage = known ? calculateProgress(totals[item.key], target) : 0;
       const ring = $(item.ring);
       if (ring) { ring.style.setProperty("--progress", `${percentage}%`); ring.setAttribute("aria-label", `${item.key === 'carbs' ? 'Carbohidratos' : 'Grasas'}: ${known ? fmt(totals[item.key]) + ' gramos' : 'sin datos'}`); }
-      setText(item.value, known ? fmt(totals[item.key]) : "—");
+      setText(item.value, known ? `${fmt(totals[item.key])} g` : "—");
       setText(item.percent, known ? `${Math.round(percentage)}%` : "Sin datos");
       setText(item.goal, fmt(target));
     }
