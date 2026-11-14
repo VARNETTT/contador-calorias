@@ -3,6 +3,7 @@ import json
 import os
 import re
 import time
+import random
 import unicodedata
 import urllib.error
 import urllib.parse
@@ -375,10 +376,17 @@ def coach():
     )
 
     try:
-        with urllib.request.urlopen(
-            req, timeout=35
-        ) as result:
-            response = json.load(result)
+        # Reintentos breves solo para errores transitorios del proveedor.
+        for attempt in range(3):
+            try:
+                with urllib.request.urlopen(req, timeout=35) as result:
+                    response = json.load(result)
+                break
+            except urllib.error.HTTPError as transient:
+                if transient.code not in (429, 500, 502, 503, 504) or attempt == 2:
+                    raise
+                app.logger.warning('Coach Gemini error transitorio HTTP %s (intento %s/3)', transient.code, attempt + 1)
+                time.sleep(min(2 ** attempt + random.uniform(0, .3), 3))
 
         candidates = response.get('candidates', [])
 
@@ -402,6 +410,7 @@ def coach():
         return jsonify(reply=answer)
 
     except urllib.error.HTTPError as error:
+        # No registrar la clave ni el cuerpo completo del proveedor.
         app.logger.warning(
             'Coach Gemini HTTP %s, model=%s',
             error.code,
@@ -423,7 +432,7 @@ def coach():
                 error.code,
                 'No se pudo consultar Gemini.'
             )
-        ), 429 if error.code == 429 else 502
+        ), (429 if error.code == 429 else 503 if error.code == 503 else 502)
 
     except (urllib.error.URLError, TimeoutError):
         app.logger.exception('Coach Gemini sin respuesta')
