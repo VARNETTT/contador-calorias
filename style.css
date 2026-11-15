@@ -1889,3 +1889,25 @@ body{background:linear-gradient(145deg,#eaf7f2 0%,#f1f6ff 58%,#fff5ed 100%);colo
   #coach .coach-suggestion {min-width:0 !important; width:100% !important; white-space:normal !important;}
   #coach .coach-composer textarea {min-width:0 !important; flex:1 1 auto !important;}
 }
+
+/* CalorieTrack 2026: nueva identidad lavanda / índigo */
+:root{--bg:#f3f2fb;--surface:#fff;--surface-soft:#f0edfc;--ink:#24243d;--muted:#74738b;--green:#7562c9;--green-dark:#5944ac;--green-soft:#ede9fb;--line:#e6e2f3;--peach:#fff0e9;--shadow:0 14px 38px rgba(74,57,136,.09)}
+body{background:var(--bg);color:var(--ink)}
+.site-header{background:rgba(255,255,255,.93);border-bottom-color:var(--line)}
+.brand-mark,.button-primary{background:var(--green)}
+.button-primary:hover{background:var(--green-dark)}
+.water-collapse{border:1px solid var(--line);border-radius:22px;background:var(--surface);box-shadow:var(--shadow);overflow:hidden}
+.water-collapse-toggle{list-style:none;display:flex;align-items:center;gap:12px;padding:18px 20px;cursor:pointer;user-select:none;min-height:80px}
+.water-collapse-toggle::-webkit-details-marker{display:none}
+.water-collapse-toggle:focus-visible{outline:3px solid var(--green);outline-offset:-3px}
+.water-collapse-icon{display:grid;place-items:center;background:#e9f5ff;border-radius:14px;width:44px;height:44px;font-size:23px;flex-shrink:0}
+.water-collapse-label{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.water-collapse-label strong{font-size:1.05rem;color:var(--ink)}
+.water-collapse-label small{font-size:.8rem;color:var(--muted)}
+.water-collapse-action{font-size:.85rem;font-weight:700;color:var(--green-dark);white-space:nowrap}
+.water-collapse-action span{display:inline-block;transition:transform .2s}
+.water-collapse[open] .water-collapse-action span{transform:rotate(180deg)}
+.water-collapse[open] .water-collapse-toggle{border-bottom:1px solid var(--line)}
+.water-collapse #waterTrackerMount{padding:12px}
+.water-collapse .water-card{box-shadow:none!important;border:0!important;margin:0!important}
+@media(max-width:600px){.water-collapse-toggle{padding:14px}.water-collapse #waterTrackerMount{padding:6px}}
