@@ -1911,3 +1911,38 @@ body{background:var(--bg);color:var(--ink)}
 .water-collapse #waterTrackerMount{padding:12px}
 .water-collapse .water-card{box-shadow:none!important;border:0!important;margin:0!important}
 @media(max-width:600px){.water-collapse-toggle{padding:14px}.water-collapse #waterTrackerMount{padding:6px}}
+
+
+/* Tarjeta de canal de WhatsApp de CalorieTrack */
+.ct-whatsapp{display:flex;align-items:center;gap:18px;margin:18px 0 20px;padding:21px 24px;border:1px solid #dce8dd;border-radius:22px;background:linear-gradient(110deg,#f5faf4,#fffefa);box-shadow:0 10px 30px rgba(38,94,64,.06)}
+.ct-whatsapp-icon{width:54px;height:54px;flex:0 0 54px;display:grid;place-items:center;background:#e3f5e7;border-radius:17px;font-size:26px}
+.ct-whatsapp-copy{flex:1;min-width:0}
+.ct-whatsapp-copy .eyebrow{margin:0 0 5px;font-size:10px}
+.ct-whatsapp-copy h2{margin:0 0 5px;font-size:19px;letter-spacing:-.5px}
+.ct-whatsapp-copy p:last-child{margin:0;color:var(--muted,#788278);font-size:13px;line-height:1.55}
+.ct-whatsapp-link{display:inline-flex;align-items:center;justify-content:center;gap:8px;flex-shrink:0;padding:13px 18px;border-radius:13px;background:#218b50;color:#fff;text-decoration:none;font-size:14px;font-weight:800;transition:background .2s,transform .2s}
+.ct-whatsapp-link:hover{background:#176b3c;transform:translateY(-2px)}
+.ct-whatsapp-link:focus-visible{outline:3px solid #70c58b;outline-offset:3px}
+@media(max-width:650px){.ct-whatsapp{padding:18px;flex-wrap:wrap;gap:12px}.ct-whatsapp-icon{width:45px;height:45px;flex-basis:45px}.ct-whatsapp-copy{flex-basis:calc(100% - 60px)}.ct-whatsapp-copy h2{font-size:17px}.ct-whatsapp-link{width:100%}}
+
+
+/* Acceso a la comunidad en la navegación superior */
+.main-nav { gap: clamp(12px, 2vw, 28px); }
+.main-nav .nav-community { color: #276b47; font-weight: 800; white-space: nowrap; }
+.main-nav .nav-community:hover { color: #17472e; }
+.header-community-mobile { display: none; }
+@media (max-width: 800px) {
+  .header-community-mobile { display: inline-flex; align-items: center; justify-content: center; padding: 9px 12px; border: 1px solid #c9ddce; border-radius: 12px; color: #276b47; font: 800 12px Manrope, sans-serif; text-decoration: none; white-space: nowrap; background: #eef5ee; }
+}
+/* El calendario se ubica primero en el HTML, antes del resumen diario. */
+
+
+/* Calendario: contenedor de los días de la semana */
+
+
+/* Bordes redondeados del contenedor exterior del calendario */
+
+.calendar-section {
+  border-radius: 30px !important;
+  overflow: hidden;
+}
