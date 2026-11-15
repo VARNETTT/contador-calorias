@@ -29,7 +29,7 @@
     rel="stylesheet"
   >
 
-  <link rel="stylesheet" href="./style.css?v=20261115v2">
+  <link rel="stylesheet" href="./style.css?v=20261115-comunidad-calendario">
 
   <script
     src="https://unpkg.com/html5-qrcode"
@@ -71,7 +71,9 @@
       <a href="#comidas">Mis comidas</a>
       <a href="#productos">Productos</a>
       <a href="#coach">✦ Coach IA</a>
+      <a class="nav-community" href="https://whatsapp.com/channel/0029VbDNVad7z4kkLml40j0H" target="_blank" rel="noopener noreferrer" aria-label="Seguir canal de CalorieTrack en WhatsApp">Comunidad ↗</a>
     </nav>
+    <a class="header-community-mobile" href="https://whatsapp.com/channel/0029VbDNVad7z4kkLml40j0H" target="_blank" rel="noopener noreferrer" aria-label="Seguir canal de CalorieTrack en WhatsApp">Comunidad ↗</a>
 
 
 
@@ -82,6 +84,19 @@
   =========================== -->
 
   <main id="inicio" class="page-shell">
+
+    <!-- CALENDARIO AL INICIO -->
+    <section id="calendario" class="calendar-section calendar-compact" aria-labelledby="calendarTitle">
+      <div class="calendar-header">
+        <div><p class="eyebrow">TU HISTORIAL</p><h2 id="calendarTitle">Esta semana</h2></div>
+        <button type="button" id="calendarToggle" class="button button-soft" aria-expanded="false" aria-controls="calendarExpanded">▦ Ver calendario</button>
+      </div>
+      <div class="week-strip" id="weekStrip" aria-label="Elegir un día de la semana"></div>
+      <div id="calendarExpanded" hidden>
+        <div class="calendar-layout"><div class="calendar-picker-card"><div class="calendar-month-bar"><button type="button" id="calendarPrev" aria-label="Mes anterior">‹</button><strong id="calendarMonth"></strong><button type="button" id="calendarNext" aria-label="Mes siguiente">›</button></div><div class="calendar-weekdays" aria-hidden="true"><span>L</span><span>M</span><span>M</span><span>J</span><span>V</span><span>S</span><span>D</span></div><div id="calendarGrid" class="calendar-grid" aria-label="Elegir día"></div><p class="calendar-legend"><span class="calendar-dot"></span> Días con registros</p><button type="button" id="calendarToday" class="button button-soft">Volver a hoy</button></div>
+        <div class="calendar-detail-card" aria-live="polite"><p class="eyebrow">RESUMEN DEL DÍA</p><h3 id="calendarSelectedLabel">Hoy</h3><div class="calendar-metrics"><div><strong id="calendarCalories">0</strong><small>kcal</small></div><div><strong id="calendarProtein">0</strong><small>g proteínas</small></div><div><strong id="calendarWater">0</strong><small>ml agua</small></div></div><h4>Comidas registradas</h4><div id="calendarMeals" class="calendar-meals"></div></div></div>
+      </div>
+    </section>
 
     <!-- BIENVENIDA -->
 
@@ -200,18 +215,6 @@
         <form id="stepsForm" class="steps-form"><label for="stepsInput" class="sr-only">Cantidad de pasos de hoy</label><input id="stepsInput" type="number" inputmode="numeric" min="0" max="100000" step="1" placeholder="Ej: 7500"><button class="button button-primary" type="submit">Guardar pasos</button></form>
         <div class="steps-result" id="stepsResult" aria-live="polite">Todavía no registraste pasos hoy.</div>
         <button type="button" class="steps-clear" id="stepsClear" hidden>Eliminar registro de hoy</button>
-      </div>
-    </section>
-
-    <section id="calendario" class="calendar-section calendar-compact" aria-labelledby="calendarTitle">
-      <div class="calendar-header">
-        <div><p class="eyebrow">TU HISTORIAL</p><h2 id="calendarTitle">Esta semana</h2></div>
-        <button type="button" id="calendarToggle" class="button button-soft" aria-expanded="false" aria-controls="calendarExpanded">▦ Ver calendario</button>
-      </div>
-      <div class="week-strip" id="weekStrip" aria-label="Elegir un día de la semana"></div>
-      <div id="calendarExpanded" hidden>
-        <div class="calendar-layout"><div class="calendar-picker-card"><div class="calendar-month-bar"><button type="button" id="calendarPrev" aria-label="Mes anterior">‹</button><strong id="calendarMonth"></strong><button type="button" id="calendarNext" aria-label="Mes siguiente">›</button></div><div class="calendar-weekdays" aria-hidden="true"><span>L</span><span>M</span><span>M</span><span>J</span><span>V</span><span>S</span><span>D</span></div><div id="calendarGrid" class="calendar-grid" aria-label="Elegir día"></div><p class="calendar-legend"><span class="calendar-dot"></span> Días con registros</p><button type="button" id="calendarToday" class="button button-soft">Volver a hoy</button></div>
-        <div class="calendar-detail-card" aria-live="polite"><p class="eyebrow">RESUMEN DEL DÍA</p><h3 id="calendarSelectedLabel">Hoy</h3><div class="calendar-metrics"><div><strong id="calendarCalories">0</strong><small>kcal</small></div><div><strong id="calendarProtein">0</strong><small>g proteínas</small></div><div><strong id="calendarWater">0</strong><small>ml agua</small></div></div><h4>Comidas registradas</h4><div id="calendarMeals" class="calendar-meals"></div></div></div>
       </div>
     </section>
 
