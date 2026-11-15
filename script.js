@@ -969,7 +969,7 @@ productSearchCache.set(cacheKey, { time: Date.now(), products: results });
 
       setText(
         statusId,
-        `${combined.length} productos encontrados.`
+        combined.length ? `${combined.length} productos encontrados.` : "No hay coincidencias. Probá con la marca o el nombre por separado."
       );
 
     } catch (error) {
@@ -4583,27 +4583,28 @@ document.addEventListener("click", event => {
     );
 
     const productSearch = $("productSearch");
-    // Search suggestions while typing, with a debounce to respect OFF rate limits.
-    const searchDebounceTimers = { main: null, meal: null };
-    function bindLiveProductSearch(input, inMeal) {
+    // OFF limits searches to 10/min/IP: do not search remotely on each keystroke.
+    // Local suggestions are instant; online search runs on button or Enter.
+    function bindLocalSuggestions(input, inMeal) {
       if (!input) return;
       const kind = inMeal ? "meal" : "main";
+      const resultsId = inMeal ? "mealProductResults" : "productResults";
+      const statusId = inMeal ? "mealProductSearchStatus" : "productSearchStatus";
       input.addEventListener("input", () => {
-        ++searchCounters[kind]; // Discard responses for old search text.
-        clearTimeout(searchDebounceTimers[kind]);
+        ++searchCounters[kind];
         const query = input.value.trim();
-        if (query.length < 3) {
-          if (!query) {
-            const results = $(inMeal ? "mealProductResults" : "productResults");
-            if (results) results.replaceChildren();
-          }
+        if (query.length < 2) {
+          const results = $(resultsId);
+          if (results) results.replaceChildren();
+          setText(statusId, "");
           return;
         }
-        searchDebounceTimers[kind] = setTimeout(() => searchProducts(inMeal), 650);
+        renderProductResults(resultsId, localSearch(query));
+        setText(statusId, "Presioná Buscar para consultar productos online.");
       });
     }
-    bindLiveProductSearch(productSearch, false);
-    bindLiveProductSearch($("mealProductSearch"), true);
+    bindLocalSuggestions(productSearch, false);
+    bindLocalSuggestions($("mealProductSearch"), true);
 
     if (productSearch) {
       productSearch.addEventListener(
