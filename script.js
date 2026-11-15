@@ -466,7 +466,8 @@
      BUSCADOR ONLINE DE ALIMENTOS
   ============================================ */
   const productSearchCache = new Map();
-const CACHE_DURATION = 10 * 60 * 1000;
+  const pendingProductSearches = new Map();
+  const CACHE_DURATION = 10 * 60 * 1000;
   async function searchOFF(query) {
     const terms = normalize(query)
       .split(" ")
@@ -484,8 +485,13 @@ if (cached && Date.now() - cached.time < CACHE_DURATION) {
   return cached.products;
 }
 
-const url = `${AI_API}/api/products/search?q=${encodeURIComponent(query)}`;
-const data = await fetchJSON(url);
+// Share simultaneous requests for the same text (manual search + suggestions).
+    if (pendingProductSearches.has(cacheKey)) {
+      return pendingProductSearches.get(cacheKey);
+    }
+    const requestPromise = (async () => {
+      const url = `${AI_API}/api/products/search?q=${encodeURIComponent(query)}`;
+      const data = await fetchJSON(url);
     const remote = (data.products || []).map(fromOFF).filter(Boolean);
 
     // Ordenar resultados por coincidencia
@@ -540,12 +546,19 @@ const data = await fetchJSON(url);
   .slice(0, 40)
   .map(result => result.product);
 
-productSearchCache.set(cacheKey, {
-  time: Date.now(),
-  products: results
-});
-
-return results;
+productSearchCache.set(cacheKey, { time: Date.now(), products: results });
+      // Prevent unlimited growth while keeping recent queries fast.
+      if (productSearchCache.size > 60) {
+        productSearchCache.delete(productSearchCache.keys().next().value);
+      }
+      return results;
+    })();
+    pendingProductSearches.set(cacheKey, requestPromise);
+    try {
+      return await requestPromise;
+    } finally {
+      pendingProductSearches.delete(cacheKey);
+    }
   }
 
   /* ============================================
@@ -4211,6 +4224,75 @@ amountInput.style.cssText = `
 }
 
   
+// Motor rápido: usa referencias locales y evita solicitudes innecesarias a Gemini.
+// Si la frase es ambigua o incompleta, vuelve al análisis de IA existente.
+let localNutritionPromise = null;
+function getLocalNutrition() {
+  if (!localNutritionPromise) {
+    localNutritionPromise = fetch('./nutrition_ar.json?v=20261114motor1')
+      .then(response => {
+        if (!response.ok) throw new Error('Base nutricional no disponible');
+        return response.json();
+      })
+      .then(data => Array.isArray(data.foods) ? data.foods : [])
+      .catch(error => { localNutritionPromise = null; throw error; });
+  }
+  return localNutritionPromise;
+}
+
+async function tryLocalMealAnalysis(description) {
+  // No usar coincidencias genéricas para marcas o recetas que no conocemos.
+  const parsed = interpretMealPhrase(description);
+  if (!parsed.recognized.length || parsed.unknown.length) return null;
+  // Evitar interpretar parcialmente marcas, ingredientes extra o preparaciones.
+  const normalizedInput = normalize(description)
+    .replace(/\b(comi|comer|comimos|tome|tomo|desayune|merende|cene|almorce|prepare|hoy|me|un|una|dos|tres|cuatro|cinco|seis|siete|ocho|nueve|diez|y|con|mas|ademas|junto|a|de|el|la|los|las|en|al|del|gramos|gramo|gr|g|ml|mililitros|kg|litros|litro|l|porciones|porcion)\b/g, ' ')
+    .replace(/\b\d+(?:[.,]\d+)?\b/g, ' ');
+  let residue = normalizedInput;
+  for (const food of PHRASE_FOODS) {
+    const escaped = food.alias.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    residue = residue.replace(new RegExp(`\\b${escaped}\\b`, 'g'), ' ');
+  }
+  if (residue.replace(/[^a-z]+/g, '').length) return null;
+  const foods = await getLocalNutrition();
+  const byName = new Map();
+  for (const food of foods) {
+    for (const alias of [food.name, ...(food.aliases || [])]) {
+      const key = normalize(alias);
+      if (key && !byName.has(key)) byName.set(key, food);
+    }
+  }
+  const preferred = {
+    'huevo': 'huevo crudo',
+    'tostada de pan': 'tostadas de pan blanco',
+    'arroz cocido': 'arroz blanco cocido',
+    'pollo cocido': 'pechuga de pollo cocida',
+    'cafe negro': 'cafe negro preparado',
+    'leche': 'leche entera',
+    'yogur natural': 'yogur natural entero'
+  };
+  const ingredients = [];
+  for (const item of parsed.recognized) {
+    const normalized = normalize(item.name);
+    const reference = byName.get(normalize(preferred[normalized] || item.name)) || byName.get(normalized);
+    if (!reference || !Number.isFinite(Number(reference.kcal_per_100)) ||
+        !Number.isFinite(Number(reference.protein_per_100)) ||
+        !Number.isFinite(Number(reference.carbs_per_100)) ||
+        !Number.isFinite(Number(reference.fats_per_100))) return null;
+    // Las unidades de la referencia deben coincidir con las de la porción.
+    if (item.unit !== 'g' && item.unit !== 'ml') return null;
+    ingredients.push({
+      name: reference.name, brand: '', amount: item.amount, unit: item.unit,
+      kcal_per_100: Number(reference.kcal_per_100),
+      protein_per_100: Number(reference.protein_per_100),
+      carbs_per_100: Number(reference.carbs_per_100),
+      fats_per_100: Number(reference.fats_per_100),
+      assumed: item.assumed, nutrition_source: 'local_reference'
+    });
+  }
+  return { ingredients, notes: 'Cálculo rápido con referencias nutricionales orientativas. Revisá porciones y preparación antes de guardar.' };
+}
+
 async function analyzeMealWithAI() {
   const description = $("mealDescription")?.value.trim();
 
@@ -4240,6 +4322,15 @@ async function analyzeMealWithAI() {
   setText("mealError", "");
 
   try {
+    // La base local no bloquea la app: si falla, continuamos con Gemini.
+    let localResult = null;
+    try { localResult = await tryLocalMealAnalysis(description); }
+    catch (localError) { console.info('Motor local no disponible; usando Gemini.', localError); }
+    if (localResult) {
+      showAIResult(localResult);
+      return;
+    }
+    if (button) button.textContent = "Consultando Gemini...";
     const response = await fetch(`${AI_API}/api/analyze`, {
       method: "POST",
       headers: {
@@ -4280,7 +4371,7 @@ async function analyzeMealWithAI() {
 
     if (button) {
       button.disabled = false;
-      button.textContent = "✨ Analizar con IA (marcas y recetas)";
+      button.textContent = "✨ Analizar comida (rápido + IA)";
     }
   }
 }
@@ -4492,6 +4583,27 @@ document.addEventListener("click", event => {
     );
 
     const productSearch = $("productSearch");
+    // Search suggestions while typing, with a debounce to respect OFF rate limits.
+    const searchDebounceTimers = { main: null, meal: null };
+    function bindLiveProductSearch(input, inMeal) {
+      if (!input) return;
+      const kind = inMeal ? "meal" : "main";
+      input.addEventListener("input", () => {
+        ++searchCounters[kind]; // Discard responses for old search text.
+        clearTimeout(searchDebounceTimers[kind]);
+        const query = input.value.trim();
+        if (query.length < 3) {
+          if (!query) {
+            const results = $(inMeal ? "mealProductResults" : "productResults");
+            if (results) results.replaceChildren();
+          }
+          return;
+        }
+        searchDebounceTimers[kind] = setTimeout(() => searchProducts(inMeal), 650);
+      });
+    }
+    bindLiveProductSearch(productSearch, false);
+    bindLiveProductSearch($("mealProductSearch"), true);
 
     if (productSearch) {
       productSearch.addEventListener(
