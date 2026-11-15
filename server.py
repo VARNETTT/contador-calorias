@@ -522,25 +522,23 @@ def products_search():
         'page_size': 35,
         'fields': OFF_FIELDS,
     }
-    # Try the standard search endpoint, then the v2 search endpoint.
-    # A failing upstream must not be reported as "no products".
-    errors = []
-    for path in ('/cgi/search.pl', '/api/v2/search'):
-        try:
-            data = off_get(path, params, timeout=8)
-            products = data.get('products', [])
-            if not isinstance(products, list):
-                raise ValueError('Invalid OFF product list')
-            response = jsonify(products=rank_off_products(query, products), source='open_food_facts')
-            response.headers['Cache-Control'] = 'public, max-age=120'
-            return response
-        except urllib.error.HTTPError as error:
-            errors.append(str(error.code))
-            app.logger.warning('OFF %s HTTP %s for %r', path, error.code, query[:40])
-        except (urllib.error.URLError, TimeoutError, ValueError, TypeError) as error:
-            errors.append(type(error).__name__)
-            app.logger.warning('OFF %s unavailable: %s', path, error)
-    return jsonify(error='Open Food Facts no está respondiendo. Podés registrar la comida manualmente y volver a buscar más tarde.', upstream_errors=errors), 503
+    # Full-text search is only supported by the legacy search endpoint.
+    # The v2 search endpoint ignores search_terms and is NOT a valid fallback.
+    try:
+        data = off_get('/cgi/search.pl', params, timeout=10)
+        products = data.get('products')
+        if not isinstance(products, list):
+            raise ValueError('Invalid product list')
+        response = jsonify(products=rank_off_products(query, products), source='open_food_facts')
+        response.headers['Cache-Control'] = 'public, max-age=180'
+        return response
+    except urllib.error.HTTPError as error:
+        app.logger.warning('OFF search HTTP %s for %r', error.code, query[:40])
+        status = 503 if error.code in (429, 500, 502, 503, 504) else 502
+        return jsonify(error='Open Food Facts no está disponible temporalmente.', upstream_status=error.code), status
+    except (urllib.error.URLError, TimeoutError, ValueError, TypeError, OSError) as error:
+        app.logger.warning('OFF search unavailable (%s): %s', type(error).__name__, error)
+        return jsonify(error='No se pudo conectar con Open Food Facts.'), 503
 
 @app.route('/api/products/barcode/<code>', methods=['GET', 'OPTIONS'])
 def products_barcode(code):
