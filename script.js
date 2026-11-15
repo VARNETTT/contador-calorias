@@ -1155,37 +1155,36 @@ productSearchCache.set(cacheKey, { time: Date.now(), products: results });
      DETECTAR LO QUE ESCRIBE EL USUARIO
   ============================================ */
 
+  // Sugerencias en el campo principal: local al instante, online con pausa.
+  // Evitamos consultar frases completas y respetamos el límite de OFF.
+  let lastInstantOnlineAt = 0;
   function handleInstantInput() {
     clearTimeout(instantTimer);
-
-    ++searchCounters.instant;
-
+    const sequence = ++searchCounters.instant;
     const input = $("mealDescription");
-
     if (!input) return;
-
     const text = input.value.trim();
-
     updatePreview();
-
     if (text.length < 3) {
-      $("instantFoodResults")
-        ?.replaceChildren();
-
+      $("instantFoodResults")?.replaceChildren();
       return;
     }
-
-    // Las descripciones de comidas se analizan con Gemini.
-    // No consultar Open Food Facts automáticamente por cada frase.
-    // Mantener sugerencias únicamente de productos guardados.
     const local = localSearch(text);
     renderInstantResults(local);
+    // No buscar online listas de comidas, cantidades o recetas.
+    const isPhrase = /[,;\n+]|\b(?:huevos?|tostadas?|gramos?|cucharadas?|com[ií]|tom[eé]|desayun[eé]|almorc[eé])\b/i.test(text) && /\b(?:y|con|\d+)\b/i.test(text);
+    const wordCount = text.split(/\s+/).length;
+    if (isPhrase || wordCount > 5 || text.length > 65 || text.length < 4) return;
+    instantTimer = setTimeout(async () => {
+      if (sequence !== searchCounters.instant) return;
+      // Intervalo mínimo entre consultas remotas de sugerencias.
+      const wait = Math.max(0, 6500 - (Date.now() - lastInstantOnlineAt));
+      if (wait) await new Promise(resolve => setTimeout(resolve, wait));
+      if (sequence !== searchCounters.instant) return;
+      lastInstantOnlineAt = Date.now();
+      await instantSearch(text);
+    }, 950);
   }
-
-  /* ============================================
-     SELECCIÓN DE PRODUCTOS
-  ============================================ */
-
   function selectProduct(product) {
     if (!product) return;
 
@@ -3893,10 +3892,13 @@ productSearchCache.set(cacheKey, { time: Date.now(), products: results });
   }
 
   function initializePhraseAnalysis() {
-    bindClick("analyzePhraseButton", analyzeFullMealPhrase);
+    // El análisis local antiguo se conserva como función auxiliar; no tiene botón propio.
     $("mealDescription")?.addEventListener("input", () => {
       // El análisis previo deja de ser válido si cambia la frase.
       phraseDraft = [];
+      aiDraft = [];
+      const aiRoot = $("aiAnalysis");
+      if (aiRoot) { aiRoot.hidden = true; aiRoot.replaceChildren(); }
       const root = $("phraseAnalysis");
       if (root) { root.hidden = true; root.replaceChildren(); }
     });
@@ -4371,7 +4373,7 @@ async function analyzeMealWithAI() {
 
     if (button) {
       button.disabled = false;
-      button.textContent = "✨ Analizar comida (rápido + IA)";
+      button.textContent = "✨ Analizar comida";
     }
   }
 }
