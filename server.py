@@ -468,6 +468,43 @@ def off_get(path, params=None, timeout=12):
     CACHE[url] = (time.monotonic() + 1800, data)
     return data
 
+def rank_off_products(query, items):
+    """Prioritize Argentine products and complete nutrition, without inventing data."""
+    tokens = _normalize_food(query)
+    seen = set()
+    scored = []
+    for item in items:
+        if not isinstance(item, dict):
+            continue
+        name = str(item.get('product_name_es') or item.get('product_name') or item.get('generic_name_es') or '').strip()
+        if not name:
+            continue
+        brand = str(item.get('brands') or '')
+        words = _normalize_food(name + ' ' + brand)
+        matched = len(tokens & words)
+        if tokens and matched == 0:
+            continue
+        code = str(item.get('code') or '')
+        identity = code or (name + '|' + brand).casefold()
+        if identity in seen:
+            continue
+        seen.add(identity)
+        nutrients = item.get('nutriments') or {}
+        kcal = nutrients.get('energy-kcal_100g')
+        if kcal is None:
+            kcal = nutrients.get('energy_100g')
+        nutrition_fields = (kcal, nutrients.get('proteins_100g'), nutrients.get('carbohydrates_100g'), nutrients.get('fat_100g'))
+        complete = sum(value is not None for value in nutrition_fields)
+        countries = item.get('countries_tags') or []
+        argentina = isinstance(countries, list) and 'en:argentina' in countries
+        score = (matched * 25 + (90 if tokens and tokens.issubset(words) else 0)
+                 + (22 if argentina else 0) + complete * 9
+                 + (5 if item.get('image_front_url') or item.get('image_url') else 0))
+        scored.append((score, complete, item))
+    scored.sort(key=lambda x: (x[0], x[1]), reverse=True)
+    return [item for _, _, item in scored[:25]]
+
+
 @app.route('/api/products/search', methods=['GET', 'OPTIONS'])
 def products_search():
     if request.method == 'OPTIONS':
@@ -477,19 +514,33 @@ def products_search():
     query = request.args.get('q', '').strip()
     if not 2 <= len(query) <= 100:
         return jsonify(error='Ingresá entre 2 y 100 caracteres.'), 400
-    try:
-        data = off_get('/cgi/search.pl', {
-            'search_terms': query,
-            'search_simple': 1,
-            'action': 'process',
-            'json': 1,
-            'page_size': 15,
-            'fields': OFF_FIELDS
-        })
-        return jsonify(products=data.get('products', []))
-    except (urllib.error.HTTPError, urllib.error.URLError, TimeoutError, ValueError) as error:
-        app.logger.warning('Open Food Facts search failed: %s', error)
-        return jsonify(error='No se pudo consultar Open Food Facts. Intentá nuevamente.'), 502
+    params = {
+        'search_terms': query,
+        'search_simple': 1,
+        'action': 'process',
+        'json': 1,
+        'page_size': 35,
+        'fields': OFF_FIELDS,
+    }
+    # Try the standard search endpoint, then the v2 search endpoint.
+    # A failing upstream must not be reported as "no products".
+    errors = []
+    for path in ('/cgi/search.pl', '/api/v2/search'):
+        try:
+            data = off_get(path, params, timeout=8)
+            products = data.get('products', [])
+            if not isinstance(products, list):
+                raise ValueError('Invalid OFF product list')
+            response = jsonify(products=rank_off_products(query, products), source='open_food_facts')
+            response.headers['Cache-Control'] = 'public, max-age=120'
+            return response
+        except urllib.error.HTTPError as error:
+            errors.append(str(error.code))
+            app.logger.warning('OFF %s HTTP %s for %r', path, error.code, query[:40])
+        except (urllib.error.URLError, TimeoutError, ValueError, TypeError) as error:
+            errors.append(type(error).__name__)
+            app.logger.warning('OFF %s unavailable: %s', path, error)
+    return jsonify(error='Open Food Facts no está respondiendo. Podés registrar la comida manualmente y volver a buscar más tarde.', upstream_errors=errors), 503
 
 @app.route('/api/products/barcode/<code>', methods=['GET', 'OPTIONS'])
 def products_barcode(code):
