@@ -460,8 +460,21 @@ def off_get(path, params=None, timeout=12):
     if cached and cached[0] > now:
         return cached[1]
     req = urllib.request.Request(url, headers=OFF_HEADERS)
-    with urllib.request.urlopen(req, timeout=timeout) as result:
-        data = json.load(result)
+    # Reintentar solo fallos transitorios; no repetir errores permanentes.
+    for attempt in range(2):
+        try:
+            with urllib.request.urlopen(req, timeout=timeout) as result:
+                data = json.load(result)
+            break
+        except urllib.error.HTTPError as error:
+            if error.code not in (429, 502, 503, 504) or attempt == 1:
+                raise
+            retry_after = error.headers.get('Retry-After', '')
+            try:
+                delay = min(max(float(retry_after), 0), 2)
+            except (ValueError, TypeError):
+                delay = 1.0
+            time.sleep(delay)
     if len(CACHE) >= 150:
         # Remove the oldest expiring entry rather than flushing all entries.
         CACHE.pop(min(CACHE, key=lambda key: CACHE[key][0]), None)
@@ -535,9 +548,21 @@ def products_search():
     except urllib.error.HTTPError as error:
         app.logger.warning('OFF search HTTP %s for %r', error.code, query[:40])
         status = 503 if error.code in (429, 500, 502, 503, 504) else 502
+        stale = CACHE.get(OFF_BASE + '/cgi/search.pl?' + urllib.parse.urlencode(params))
+        if stale:
+            response = jsonify(products=rank_off_products(query, stale[1].get('products', [])),
+                               source='open_food_facts_cache', warning='Resultados guardados; Open Food Facts no responde ahora.')
+            response.headers['Cache-Control'] = 'no-store'
+            return response
         return jsonify(error='Open Food Facts no está disponible temporalmente.', upstream_status=error.code), status
     except (urllib.error.URLError, TimeoutError, ValueError, TypeError, OSError) as error:
         app.logger.warning('OFF search unavailable (%s): %s', type(error).__name__, error)
+        stale = CACHE.get(OFF_BASE + '/cgi/search.pl?' + urllib.parse.urlencode(params))
+        if stale:
+            response = jsonify(products=rank_off_products(query, stale[1].get('products', [])),
+                               source='open_food_facts_cache', warning='Resultados guardados; no hay conexión con Open Food Facts.')
+            response.headers['Cache-Control'] = 'no-store'
+            return response
         return jsonify(error='No se pudo conectar con Open Food Facts.'), 503
 
 @app.route('/api/products/barcode/<code>', methods=['GET', 'OPTIONS'])
