@@ -36,7 +36,7 @@
     defer
   ></script>
 
-  <script src="./script.js?v=20261115v2" defer></script>
+  <script src="./script.js?v=20261115-unificado" defer></script>
   <script src="./calendar.js?v=20261115v2" defer></script>
   <script src="./coach.js?v=20261115v2" defer></script>
   <link rel="stylesheet" href="./mobile-layout-fix.css?v=20261115v2">
@@ -610,11 +610,7 @@
           <span id="voiceMealStatus" class="helper-text" role="status" aria-live="polite">Podés describir tu comida usando la voz.</span>
         </div>
 
-        <div class="phrase-actions">
-          <button type="button" id="analyzePhraseButton" class="button button-primary">✦ Analizar comida completa</button>
-          <span class="helper-text">Podés escribir o dictar varios alimentos juntos.</span>
-        </div>
-        <div class="phrase-actions"><button type="button" id="analyzeAIButton" class="button button-outline">✨ Analizar comida (rápido + IA)</button><span class="helper-text">Primero usamos la base nutricional. Gemini ayuda con recetas y alimentos complejos.</span></div>
+        <div class="phrase-actions"><button type="button" id="analyzeAIButton" class="button button-primary">✨ Analizar comida</button><span class="helper-text">Para una comida completa, usá este botón. Para productos de marca, elegí una sugerencia mientras escribís.</span></div>
         <div id="aiAnalysis" class="phrase-analysis" aria-live="polite" hidden></div>
         <div id="phraseAnalysis" class="phrase-analysis" aria-live="polite" hidden></div>
 
