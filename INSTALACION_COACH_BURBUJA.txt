@@ -1,0 +1,9 @@
+CalorieTrack - Coach IA como burbuja flotante
+
+1. Hacé copia de seguridad de tu proyecto.
+2. Reemplazá index.html y agregá coach-floating.css y coach-floating.js a la raíz.
+3. Conservá los demás archivos de este ZIP si ya tenés instalada la versión violeta con agua plegable.
+4. Subí los archivos a GitHub y actualizá la página (Ctrl+F5).
+5. Probá la burbuja violeta: abrir, escribir, cerrar con X, volver a abrir.
+
+No requiere cambios en Render ni en Gemini.

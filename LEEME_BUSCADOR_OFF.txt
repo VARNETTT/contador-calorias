@@ -1,0 +1,29 @@
+CALORIETRACK - BUSCADOR OPEN FOOD FACTS MEJORADO
+
+Archivos modificados: script.js y server.py.
+No cambies los demas archivos ni borres tus registros del navegador.
+
+INSTALACION:
+1. Descomprimí este ZIP.
+2. Copiá script.js y server.py a tu carpeta del proyecto en VS Code, reemplazando los anteriores.
+3. Subí ambos archivos a tu repositorio GitHub y confirmá los cambios.
+4. En Render, comprobá que se haya desplegado el último commit (o usá Manual Deploy).
+5. Recargá la página con Ctrl + F5.
+
+CAMBIOS:
+- Búsqueda automática al escribir (650 ms de espera, mínimo 3 caracteres).
+- Prioridad para coincidencias completas, productos argentinos y fichas nutricionales completas.
+- Eliminación de códigos de barras duplicados en los resultados.
+- Hasta 35 candidatos de Open Food Facts, con máximo 25 resultados ordenados.
+- Caché de 10 minutos y deduplicación de consultas simultáneas.
+- Conserva Gemini, Coach, scanner, estilo y registros.
+
+PRUEBAS MANUALES:
+- Buscar: alfajor milka, leche la serenisima, yogur, coca cola.
+- Buscar por código de barras si tenés un envase disponible.
+- Verificar que el resultado seleccionado tenga datos nutricionales antes de guardarlo.
+
+LIMITACIONES:
+- La información de Open Food Facts es colaborativa y puede estar incompleta.
+- No se ha verificado la API en vivo ni ejecutado pruebas de Flask en este entorno.
+- El ranking mejora el orden de resultados, no garantiza encontrar todos los productos.

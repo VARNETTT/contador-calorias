@@ -1,0 +1,1827 @@
+{
+  "metadata": {
+    "version": "1.0",
+    "unit": "100g_or_100ml_as_applicable",
+    "quality": "indicative_reference_values_not_individually_verified",
+    "sources_to_verify": [
+      "https://fdc.nal.usda.gov/",
+      "https://www.argenfood.unlu.edu.ar/",
+      "https://www.argentina.gob.ar/node/410817"
+    ],
+    "notice": "Valores orientativos. No son transcripciones verificadas de registros oficiales ni etiquetas. No asignar marcas a entradas genericas."
+  },
+  "foods": [
+    {
+      "name": "huevo crudo",
+      "kcal_per_100": 143,
+      "protein_per_100": 12.6,
+      "carbs_per_100": 0.7,
+      "fats_per_100": 9.5,
+      "group": "huevos",
+      "aliases": [
+        "huevo",
+        "huevos",
+        "huevo de gallina"
+      ],
+      "variant": "comun",
+      "basis": "reference_estimate",
+      "note": ""
+    },
+    {
+      "name": "huevo hervido",
+      "kcal_per_100": 155,
+      "protein_per_100": 12.6,
+      "carbs_per_100": 1.1,
+      "fats_per_100": 10.6,
+      "group": "huevos",
+      "aliases": [
+        "huevo duro",
+        "huevos hervidos"
+      ],
+      "variant": "comun",
+      "basis": "reference_estimate",
+      "note": ""
+    },
+    {
+      "name": "clara de huevo",
+      "kcal_per_100": 52,
+      "protein_per_100": 10.9,
+      "carbs_per_100": 0.7,
+      "fats_per_100": 0.2,
+      "group": "huevos",
+      "aliases": [
+        "claras"
+      ],
+      "variant": "comun",
+      "basis": "reference_estimate",
+      "note": ""
+    },
+    {
+      "name": "yema de huevo",
+      "kcal_per_100": 322,
+      "protein_per_100": 15.9,
+      "carbs_per_100": 3.6,
+      "fats_per_100": 26.5,
+      "group": "huevos",
+      "aliases": [
+        "yemas"
+      ],
+      "variant": "comun",
+      "basis": "reference_estimate",
+      "note": ""
+    },
+    {
+      "name": "banana",
+      "kcal_per_100": 89,
+      "protein_per_100": 1.1,
+      "carbs_per_100": 22.8,
+      "fats_per_100": 0.3,
+      "group": "frutas",
+      "aliases": [
+        "platano"
+      ],
+      "variant": "comun",
+      "basis": "reference_estimate",
+      "note": ""
+    },
+    {
+      "name": "manzana",
+      "kcal_per_100": 52,
+      "protein_per_100": 0.3,
+      "carbs_per_100": 13.8,
+      "fats_per_100": 0.2,
+      "group": "frutas",
+      "aliases": [
+        "manzana roja",
+        "manzana verde"
+      ],
+      "variant": "comun",
+      "basis": "reference_estimate",
+      "note": ""
+    },
+    {
+      "name": "pera",
+      "kcal_per_100": 57,
+      "protein_per_100": 0.4,
+      "carbs_per_100": 15.2,
+      "fats_per_100": 0.1,
+      "group": "frutas",
+      "aliases": [],
+      "variant": "comun",
+      "basis": "reference_estimate",
+      "note": ""
+    },
+    {
+      "name": "naranja",
+      "kcal_per_100": 47,
+      "protein_per_100": 0.9,
+      "carbs_per_100": 11.8,
+      "fats_per_100": 0.1,
+      "group": "frutas",
+      "aliases": [],
+      "variant": "comun",
+      "basis": "reference_estimate",
+      "note": ""
+    },
+    {
+      "name": "mandarina",
+      "kcal_per_100": 53,
+      "protein_per_100": 0.8,
+      "carbs_per_100": 13.3,
+      "fats_per_100": 0.3,
+      "group": "frutas",
+      "aliases": [],
+      "variant": "comun",
+      "basis": "reference_estimate",
+      "note": ""
+    },
+    {
+      "name": "frutilla",
+      "kcal_per_100": 32,
+      "protein_per_100": 0.7,
+      "carbs_per_100": 7.7,
+      "fats_per_100": 0.3,
+      "group": "frutas",
+      "aliases": [
+        "frutillas"
+      ],
+      "variant": "comun",
+      "basis": "reference_estimate",
+      "note": ""
+    },
+    {
+      "name": "durazno",
+      "kcal_per_100": 39,
+      "protein_per_100": 0.9,
+      "carbs_per_100": 9.5,
+      "fats_per_100": 0.3,
+      "group": "frutas",
+      "aliases": [],
+      "variant": "comun",
+      "basis": "reference_estimate",
+      "note": ""
+    },
+    {
+      "name": "ciruela",
+      "kcal_per_100": 46,
+      "protein_per_100": 0.7,
+      "carbs_per_100": 11.4,
+      "fats_per_100": 0.3,
+      "group": "frutas",
+      "aliases": [],
+      "variant": "comun",
+      "basis": "reference_estimate",
+      "note": ""
+    },
+    {
+      "name": "kiwi",
+      "kcal_per_100": 61,
+      "protein_per_100": 1.1,
+      "carbs_per_100": 14.7,
+      "fats_per_100": 0.5,
+      "group": "frutas",
+      "aliases": [],
+      "variant": "comun",
+      "basis": "reference_estimate",
+      "note": ""
+    },
+    {
+      "name": "uva",
+      "kcal_per_100": 69,
+      "protein_per_100": 0.7,
+      "carbs_per_100": 18.1,
+      "fats_per_100": 0.2,
+      "group": "frutas",
+      "aliases": [
+        "uvas"
+      ],
+      "variant": "comun",
+      "basis": "reference_estimate",
+      "note": ""
+    },
+    {
+      "name": "sandia",
+      "kcal_per_100": 30,
+      "protein_per_100": 0.6,
+      "carbs_per_100": 7.6,
+      "fats_per_100": 0.2,
+      "group": "frutas",
+      "aliases": [],
+      "variant": "comun",
+      "basis": "reference_estimate",
+      "note": ""
+    },
+    {
+      "name": "melon",
+      "kcal_per_100": 34,
+      "protein_per_100": 0.8,
+      "carbs_per_100": 8.2,
+      "fats_per_100": 0.2,
+      "group": "frutas",
+      "aliases": [],
+      "variant": "comun",
+      "basis": "reference_estimate",
+      "note": ""
+    },
+    {
+      "name": "ananá",
+      "kcal_per_100": 50,
+      "protein_per_100": 0.5,
+      "carbs_per_100": 13.1,
+      "fats_per_100": 0.1,
+      "group": "frutas",
+      "aliases": [
+        "pina"
+      ],
+      "variant": "comun",
+      "basis": "reference_estimate",
+      "note": ""
+    },
+    {
+      "name": "palta",
+      "kcal_per_100": 160,
+      "protein_per_100": 2,
+      "carbs_per_100": 8.5,
+      "fats_per_100": 14.7,
+      "group": "frutas",
+      "aliases": [
+        "aguacate"
+      ],
+      "variant": "comun",
+      "basis": "reference_estimate",
+      "note": ""
+    },
+    {
+      "name": "limon",
+      "kcal_per_100": 29,
+      "protein_per_100": 1.1,
+      "carbs_per_100": 9.3,
+      "fats_per_100": 0.3,
+      "group": "frutas",
+      "aliases": [],
+      "variant": "comun",
+      "basis": "reference_estimate",
+      "note": ""
+    },
+    {
+      "name": "zanahoria cruda",
+      "kcal_per_100": 41,
+      "protein_per_100": 0.9,
+      "carbs_per_100": 9.6,
+      "fats_per_100": 0.2,
+      "group": "verduras",
+      "aliases": [
+        "zanahoria"
+      ],
+      "variant": "comun",
+      "basis": "reference_estimate",
+      "note": ""
+    },
+    {
+      "name": "tomate crudo",
+      "kcal_per_100": 18,
+      "protein_per_100": 0.9,
+      "carbs_per_100": 3.9,
+      "fats_per_100": 0.2,
+      "group": "verduras",
+      "aliases": [
+        "tomate"
+      ],
+      "variant": "comun",
+      "basis": "reference_estimate",
+      "note": ""
+    },
+    {
+      "name": "cebolla cruda",
+      "kcal_per_100": 40,
+      "protein_per_100": 1.1,
+      "carbs_per_100": 9.3,
+      "fats_per_100": 0.1,
+      "group": "verduras",
+      "aliases": [
+        "cebolla"
+      ],
+      "variant": "comun",
+      "basis": "reference_estimate",
+      "note": ""
+    },
+    {
+      "name": "morron rojo crudo",
+      "kcal_per_100": 31,
+      "protein_per_100": 1,
+      "carbs_per_100": 6,
+      "fats_per_100": 0.3,
+      "group": "verduras",
+      "aliases": [
+        "morron rojo",
+        "pimiento rojo"
+      ],
+      "variant": "comun",
+      "basis": "reference_estimate",
+      "note": ""
+    },
+    {
+      "name": "morron verde crudo",
+      "kcal_per_100": 20,
+      "protein_per_100": 0.9,
+      "carbs_per_100": 4.6,
+      "fats_per_100": 0.2,
+      "group": "verduras",
+      "aliases": [
+        "morron verde",
+        "pimiento verde"
+      ],
+      "variant": "comun",
+      "basis": "reference_estimate",
+      "note": ""
+    },
+    {
+      "name": "lechuga",
+      "kcal_per_100": 15,
+      "protein_per_100": 1.4,
+      "carbs_per_100": 2.9,
+      "fats_per_100": 0.2,
+      "group": "verduras",
+      "aliases": [],
+      "variant": "comun",
+      "basis": "reference_estimate",
+      "note": ""
+    },
+    {
+      "name": "espinaca cruda",
+      "kcal_per_100": 23,
+      "protein_per_100": 2.9,
+      "carbs_per_100": 3.6,
+      "fats_per_100": 0.4,
+      "group": "verduras",
+      "aliases": [
+        "espinaca"
+      ],
+      "variant": "comun",
+      "basis": "reference_estimate",
+      "note": ""
+    },
+    {
+      "name": "acelga cruda",
+      "kcal_per_100": 19,
+      "protein_per_100": 1.8,
+      "carbs_per_100": 3.7,
+      "fats_per_100": 0.2,
+      "group": "verduras",
+      "aliases": [
+        "acelga"
+      ],
+      "variant": "comun",
+      "basis": "reference_estimate",
+      "note": ""
+    },
+    {
+      "name": "brocoli cocido",
+      "kcal_per_100": 35,
+      "protein_per_100": 2.4,
+      "carbs_per_100": 7.2,
+      "fats_per_100": 0.4,
+      "group": "verduras",
+      "aliases": [
+        "brocoli hervido"
+      ],
+      "variant": "comun",
+      "basis": "reference_estimate",
+      "note": ""
+    },
+    {
+      "name": "zapallito crudo",
+      "kcal_per_100": 17,
+      "protein_per_100": 1.2,
+      "carbs_per_100": 3.1,
+      "fats_per_100": 0.3,
+      "group": "verduras",
+      "aliases": [
+        "zapallito"
+      ],
+      "variant": "comun",
+      "basis": "reference_estimate",
+      "note": ""
+    },
+    {
+      "name": "zapallo cocido",
+      "kcal_per_100": 20,
+      "protein_per_100": 0.7,
+      "carbs_per_100": 4.9,
+      "fats_per_100": 0.1,
+      "group": "verduras",
+      "aliases": [
+        "calabaza cocida"
+      ],
+      "variant": "comun",
+      "basis": "reference_estimate",
+      "note": ""
+    },
+    {
+      "name": "berenjena cruda",
+      "kcal_per_100": 25,
+      "protein_per_100": 1,
+      "carbs_per_100": 5.9,
+      "fats_per_100": 0.2,
+      "group": "verduras",
+      "aliases": [
+        "berenjena"
+      ],
+      "variant": "comun",
+      "basis": "reference_estimate",
+      "note": ""
+    },
+    {
+      "name": "pepino",
+      "kcal_per_100": 15,
+      "protein_per_100": 0.7,
+      "carbs_per_100": 3.6,
+      "fats_per_100": 0.1,
+      "group": "verduras",
+      "aliases": [],
+      "variant": "comun",
+      "basis": "reference_estimate",
+      "note": ""
+    },
+    {
+      "name": "ajo",
+      "kcal_per_100": 149,
+      "protein_per_100": 6.4,
+      "carbs_per_100": 33.1,
+      "fats_per_100": 0.5,
+      "group": "verduras",
+      "aliases": [],
+      "variant": "comun",
+      "basis": "reference_estimate",
+      "note": ""
+    },
+    {
+      "name": "choclo cocido",
+      "kcal_per_100": 96,
+      "protein_per_100": 3.4,
+      "carbs_per_100": 21,
+      "fats_per_100": 1.5,
+      "group": "verduras",
+      "aliases": [
+        "maiz cocido"
+      ],
+      "variant": "comun",
+      "basis": "reference_estimate",
+      "note": ""
+    },
+    {
+      "name": "remolacha cocida",
+      "kcal_per_100": 44,
+      "protein_per_100": 1.7,
+      "carbs_per_100": 10,
+      "fats_per_100": 0.2,
+      "group": "verduras",
+      "aliases": [],
+      "variant": "comun",
+      "basis": "reference_estimate",
+      "note": ""
+    },
+    {
+      "name": "repollo crudo",
+      "kcal_per_100": 25,
+      "protein_per_100": 1.3,
+      "carbs_per_100": 5.8,
+      "fats_per_100": 0.1,
+      "group": "verduras",
+      "aliases": [
+        "repollo"
+      ],
+      "variant": "comun",
+      "basis": "reference_estimate",
+      "note": ""
+    },
+    {
+      "name": "arroz blanco crudo",
+      "kcal_per_100": 365,
+      "protein_per_100": 7.1,
+      "carbs_per_100": 80,
+      "fats_per_100": 0.7,
+      "group": "cereales",
+      "aliases": [
+        "arroz crudo"
+      ],
+      "variant": "comun",
+      "basis": "reference_estimate",
+      "note": ""
+    },
+    {
+      "name": "arroz blanco cocido",
+      "kcal_per_100": 130,
+      "protein_per_100": 2.7,
+      "carbs_per_100": 28.2,
+      "fats_per_100": 0.3,
+      "group": "cereales",
+      "aliases": [
+        "arroz cocido",
+        "arroz hervido"
+      ],
+      "variant": "comun",
+      "basis": "reference_estimate",
+      "note": ""
+    },
+    {
+      "name": "arroz integral cocido",
+      "kcal_per_100": 123,
+      "protein_per_100": 2.7,
+      "carbs_per_100": 25.6,
+      "fats_per_100": 1,
+      "group": "cereales",
+      "aliases": [],
+      "variant": "comun",
+      "basis": "reference_estimate",
+      "note": ""
+    },
+    {
+      "name": "avena seca",
+      "kcal_per_100": 389,
+      "protein_per_100": 16.9,
+      "carbs_per_100": 66.3,
+      "fats_per_100": 6.9,
+      "group": "cereales",
+      "aliases": [
+        "avena",
+        "avena arrollada"
+      ],
+      "variant": "comun",
+      "basis": "reference_estimate",
+      "note": ""
+    },
+    {
+      "name": "harina de trigo",
+      "kcal_per_100": 364,
+      "protein_per_100": 10.3,
+      "carbs_per_100": 76.3,
+      "fats_per_100": 1,
+      "group": "cereales",
+      "aliases": [
+        "harina comun",
+        "harina 000"
+      ],
+      "variant": "comun",
+      "basis": "reference_estimate",
+      "note": ""
+    },
+    {
+      "name": "harina integral",
+      "kcal_per_100": 340,
+      "protein_per_100": 13.2,
+      "carbs_per_100": 72,
+      "fats_per_100": 2.5,
+      "group": "cereales",
+      "aliases": [
+        "harina de trigo integral"
+      ],
+      "variant": "comun",
+      "basis": "reference_estimate",
+      "note": ""
+    },
+    {
+      "name": "polenta seca",
+      "kcal_per_100": 362,
+      "protein_per_100": 8.1,
+      "carbs_per_100": 76.9,
+      "fats_per_100": 3.6,
+      "group": "cereales",
+      "aliases": [
+        "harina de maiz"
+      ],
+      "variant": "comun",
+      "basis": "reference_estimate",
+      "note": ""
+    },
+    {
+      "name": "polenta cocida con agua",
+      "kcal_per_100": 70,
+      "protein_per_100": 1.7,
+      "carbs_per_100": 15.1,
+      "fats_per_100": 0.3,
+      "group": "cereales",
+      "aliases": [
+        "polenta cocida"
+      ],
+      "variant": "comun",
+      "basis": "reference_estimate",
+      "note": ""
+    },
+    {
+      "name": "fideos secos",
+      "kcal_per_100": 371,
+      "protein_per_100": 13,
+      "carbs_per_100": 74.7,
+      "fats_per_100": 1.5,
+      "group": "cereales",
+      "aliases": [
+        "pasta seca",
+        "tallarines secos"
+      ],
+      "variant": "comun",
+      "basis": "reference_estimate",
+      "note": ""
+    },
+    {
+      "name": "fideos cocidos",
+      "kcal_per_100": 158,
+      "protein_per_100": 5.8,
+      "carbs_per_100": 30.9,
+      "fats_per_100": 0.9,
+      "group": "cereales",
+      "aliases": [
+        "pasta cocida",
+        "tallarines cocidos"
+      ],
+      "variant": "comun",
+      "basis": "reference_estimate",
+      "note": ""
+    },
+    {
+      "name": "quinoa cocida",
+      "kcal_per_100": 120,
+      "protein_per_100": 4.4,
+      "carbs_per_100": 21.3,
+      "fats_per_100": 1.9,
+      "group": "cereales",
+      "aliases": [],
+      "variant": "comun",
+      "basis": "reference_estimate",
+      "note": ""
+    },
+    {
+      "name": "cuscus cocido",
+      "kcal_per_100": 112,
+      "protein_per_100": 3.8,
+      "carbs_per_100": 23.2,
+      "fats_per_100": 0.2,
+      "group": "cereales",
+      "aliases": [],
+      "variant": "comun",
+      "basis": "reference_estimate",
+      "note": ""
+    },
+    {
+      "name": "pan blanco",
+      "kcal_per_100": 265,
+      "protein_per_100": 9,
+      "carbs_per_100": 49,
+      "fats_per_100": 3.2,
+      "group": "panificados",
+      "aliases": [
+        "pan frances",
+        "pan comun"
+      ],
+      "variant": "comun",
+      "basis": "reference_estimate",
+      "note": ""
+    },
+    {
+      "name": "pan lactal blanco",
+      "kcal_per_100": 270,
+      "protein_per_100": 8.5,
+      "carbs_per_100": 49,
+      "fats_per_100": 4.2,
+      "group": "panificados",
+      "aliases": [
+        "pan lactal",
+        "pan de molde blanco"
+      ],
+      "variant": "comun",
+      "basis": "reference_estimate",
+      "note": ""
+    },
+    {
+      "name": "pan lactal integral",
+      "kcal_per_100": 247,
+      "protein_per_100": 9,
+      "carbs_per_100": 41,
+      "fats_per_100": 4.2,
+      "group": "panificados",
+      "aliases": [
+        "pan de molde integral"
+      ],
+      "variant": "comun",
+      "basis": "reference_estimate",
+      "note": ""
+    },
+    {
+      "name": "pan integral",
+      "kcal_per_100": 247,
+      "protein_per_100": 13,
+      "carbs_per_100": 41,
+      "fats_per_100": 4.2,
+      "group": "panificados",
+      "aliases": [],
+      "variant": "comun",
+      "basis": "reference_estimate",
+      "note": ""
+    },
+    {
+      "name": "tostadas de pan blanco",
+      "kcal_per_100": 265,
+      "protein_per_100": 9,
+      "carbs_per_100": 49,
+      "fats_per_100": 3.2,
+      "group": "panificados",
+      "aliases": [
+        "tostada de pan blanco",
+        "tostadas"
+      ],
+      "variant": "comun",
+      "basis": "reference_estimate",
+      "note": ""
+    },
+    {
+      "name": "galletitas de agua",
+      "kcal_per_100": 430,
+      "protein_per_100": 10,
+      "carbs_per_100": 72,
+      "fats_per_100": 11,
+      "group": "panificados",
+      "aliases": [
+        "galletas de agua"
+      ],
+      "variant": "comun",
+      "basis": "reference_estimate",
+      "note": ""
+    },
+    {
+      "name": "factura medialuna",
+      "kcal_per_100": 406,
+      "protein_per_100": 8,
+      "carbs_per_100": 45,
+      "fats_per_100": 22,
+      "group": "panificados",
+      "aliases": [
+        "medialuna",
+        "medialunas"
+      ],
+      "variant": "comun",
+      "basis": "reference_estimate",
+      "note": ""
+    },
+    {
+      "name": "bizcochuelo simple",
+      "kcal_per_100": 297,
+      "protein_per_100": 5.4,
+      "carbs_per_100": 53,
+      "fats_per_100": 7.5,
+      "group": "panificados",
+      "aliases": [
+        "bizcochuelo"
+      ],
+      "variant": "comun",
+      "basis": "reference_estimate",
+      "note": ""
+    },
+    {
+      "name": "papa hervida",
+      "kcal_per_100": 87,
+      "protein_per_100": 1.9,
+      "carbs_per_100": 20.1,
+      "fats_per_100": 0.1,
+      "group": "tuberculos",
+      "aliases": [
+        "papa cocida"
+      ],
+      "variant": "comun",
+      "basis": "reference_estimate",
+      "note": ""
+    },
+    {
+      "name": "papa cruda",
+      "kcal_per_100": 77,
+      "protein_per_100": 2,
+      "carbs_per_100": 17,
+      "fats_per_100": 0.1,
+      "group": "tuberculos",
+      "aliases": [
+        "papa"
+      ],
+      "variant": "comun",
+      "basis": "reference_estimate",
+      "note": ""
+    },
+    {
+      "name": "batata hervida",
+      "kcal_per_100": 76,
+      "protein_per_100": 1.4,
+      "carbs_per_100": 17.7,
+      "fats_per_100": 0.1,
+      "group": "tuberculos",
+      "aliases": [
+        "batata cocida"
+      ],
+      "variant": "comun",
+      "basis": "reference_estimate",
+      "note": ""
+    },
+    {
+      "name": "pure de papa con leche",
+      "kcal_per_100": 110,
+      "protein_per_100": 2.2,
+      "carbs_per_100": 17.5,
+      "fats_per_100": 3.5,
+      "group": "preparaciones",
+      "aliases": [
+        "pure de papa"
+      ],
+      "variant": "homemade_recipe_estimate",
+      "basis": "reference_estimate",
+      "note": "La composición depende de receta, dilución y porción; estimación genérica."
+    },
+    {
+      "name": "lentejas cocidas",
+      "kcal_per_100": 116,
+      "protein_per_100": 9,
+      "carbs_per_100": 20.1,
+      "fats_per_100": 0.4,
+      "group": "legumbres",
+      "aliases": [
+        "lentejas hervidas",
+        "lenteja cocida"
+      ],
+      "variant": "comun",
+      "basis": "reference_estimate",
+      "note": ""
+    },
+    {
+      "name": "lentejas secas",
+      "kcal_per_100": 353,
+      "protein_per_100": 25.8,
+      "carbs_per_100": 60.1,
+      "fats_per_100": 1.1,
+      "group": "legumbres",
+      "aliases": [
+        "lentejas crudas"
+      ],
+      "variant": "comun",
+      "basis": "reference_estimate",
+      "note": ""
+    },
+    {
+      "name": "garbanzos cocidos",
+      "kcal_per_100": 164,
+      "protein_per_100": 8.9,
+      "carbs_per_100": 27.4,
+      "fats_per_100": 2.6,
+      "group": "legumbres",
+      "aliases": [
+        "garbanzo cocido"
+      ],
+      "variant": "comun",
+      "basis": "reference_estimate",
+      "note": ""
+    },
+    {
+      "name": "porotos cocidos",
+      "kcal_per_100": 127,
+      "protein_per_100": 8.7,
+      "carbs_per_100": 22.8,
+      "fats_per_100": 0.5,
+      "group": "legumbres",
+      "aliases": [
+        "porotos hervidos"
+      ],
+      "variant": "comun",
+      "basis": "reference_estimate",
+      "note": ""
+    },
+    {
+      "name": "arvejas cocidas",
+      "kcal_per_100": 84,
+      "protein_per_100": 5.4,
+      "carbs_per_100": 15.6,
+      "fats_per_100": 0.2,
+      "group": "legumbres",
+      "aliases": [
+        "arvejas hervidas"
+      ],
+      "variant": "comun",
+      "basis": "reference_estimate",
+      "note": ""
+    },
+    {
+      "name": "soja cocida",
+      "kcal_per_100": 172,
+      "protein_per_100": 18.2,
+      "carbs_per_100": 8.4,
+      "fats_per_100": 9,
+      "group": "legumbres",
+      "aliases": [],
+      "variant": "comun",
+      "basis": "reference_estimate",
+      "note": ""
+    },
+    {
+      "name": "pechuga de pollo cruda",
+      "kcal_per_100": 120,
+      "protein_per_100": 22.5,
+      "carbs_per_100": 0,
+      "fats_per_100": 2.6,
+      "group": "carnes",
+      "aliases": [],
+      "variant": "comun",
+      "basis": "reference_estimate",
+      "note": ""
+    },
+    {
+      "name": "pechuga de pollo cocida",
+      "kcal_per_100": 165,
+      "protein_per_100": 31,
+      "carbs_per_100": 0,
+      "fats_per_100": 3.6,
+      "group": "carnes",
+      "aliases": [
+        "pechuga de pollo a la plancha",
+        "pollo pechuga cocido"
+      ],
+      "variant": "comun",
+      "basis": "reference_estimate",
+      "note": ""
+    },
+    {
+      "name": "muslo de pollo cocido sin piel",
+      "kcal_per_100": 209,
+      "protein_per_100": 26,
+      "carbs_per_100": 0,
+      "fats_per_100": 10.9,
+      "group": "carnes",
+      "aliases": [],
+      "variant": "comun",
+      "basis": "reference_estimate",
+      "note": ""
+    },
+    {
+      "name": "carne vacuna magra cocida",
+      "kcal_per_100": 217,
+      "protein_per_100": 29,
+      "carbs_per_100": 0,
+      "fats_per_100": 10,
+      "group": "carnes",
+      "aliases": [
+        "carne de vaca magra cocida"
+      ],
+      "variant": "light_or_reduced",
+      "basis": "reference_estimate",
+      "note": ""
+    },
+    {
+      "name": "carne picada vacuna magra cruda",
+      "kcal_per_100": 172,
+      "protein_per_100": 20.7,
+      "carbs_per_100": 0,
+      "fats_per_100": 9.4,
+      "group": "carnes",
+      "aliases": [
+        "carne picada magra"
+      ],
+      "variant": "light_or_reduced",
+      "basis": "reference_estimate",
+      "note": ""
+    },
+    {
+      "name": "carne picada vacuna comun cruda",
+      "kcal_per_100": 254,
+      "protein_per_100": 17.2,
+      "carbs_per_100": 0,
+      "fats_per_100": 20,
+      "group": "carnes",
+      "aliases": [
+        "carne picada comun"
+      ],
+      "variant": "comun",
+      "basis": "reference_estimate",
+      "note": ""
+    },
+    {
+      "name": "bife de carne vacuna a la plancha",
+      "kcal_per_100": 220,
+      "protein_per_100": 29,
+      "carbs_per_100": 0,
+      "fats_per_100": 11,
+      "group": "carnes",
+      "aliases": [
+        "bife a la plancha"
+      ],
+      "variant": "comun",
+      "basis": "reference_estimate",
+      "note": ""
+    },
+    {
+      "name": "lomo vacuno cocido",
+      "kcal_per_100": 206,
+      "protein_per_100": 30,
+      "carbs_per_100": 0,
+      "fats_per_100": 8.8,
+      "group": "carnes",
+      "aliases": [
+        "lomo cocido"
+      ],
+      "variant": "comun",
+      "basis": "reference_estimate",
+      "note": ""
+    },
+    {
+      "name": "cerdo lomo cocido",
+      "kcal_per_100": 196,
+      "protein_per_100": 29,
+      "carbs_per_100": 0,
+      "fats_per_100": 7.5,
+      "group": "carnes",
+      "aliases": [
+        "lomo de cerdo cocido"
+      ],
+      "variant": "comun",
+      "basis": "reference_estimate",
+      "note": ""
+    },
+    {
+      "name": "jamon cocido",
+      "kcal_per_100": 145,
+      "protein_per_100": 20,
+      "carbs_per_100": 1.5,
+      "fats_per_100": 6,
+      "group": "fiambres",
+      "aliases": [
+        "jamon"
+      ],
+      "variant": "comun",
+      "basis": "reference_estimate",
+      "note": ""
+    },
+    {
+      "name": "salame",
+      "kcal_per_100": 407,
+      "protein_per_100": 22,
+      "carbs_per_100": 2,
+      "fats_per_100": 34,
+      "group": "fiambres",
+      "aliases": [],
+      "variant": "comun",
+      "basis": "reference_estimate",
+      "note": ""
+    },
+    {
+      "name": "chorizo cocido",
+      "kcal_per_100": 310,
+      "protein_per_100": 16,
+      "carbs_per_100": 2,
+      "fats_per_100": 27,
+      "group": "fiambres",
+      "aliases": [
+        "chorizo"
+      ],
+      "variant": "comun",
+      "basis": "reference_estimate",
+      "note": ""
+    },
+    {
+      "name": "morcilla",
+      "kcal_per_100": 379,
+      "protein_per_100": 14.6,
+      "carbs_per_100": 1.3,
+      "fats_per_100": 34.5,
+      "group": "fiambres",
+      "aliases": [],
+      "variant": "comun",
+      "basis": "reference_estimate",
+      "note": ""
+    },
+    {
+      "name": "atun al natural escurrido",
+      "kcal_per_100": 116,
+      "protein_per_100": 25.5,
+      "carbs_per_100": 0,
+      "fats_per_100": 0.8,
+      "group": "pescados",
+      "aliases": [
+        "atun al agua"
+      ],
+      "variant": "comun",
+      "basis": "reference_estimate",
+      "note": ""
+    },
+    {
+      "name": "atun en aceite escurrido",
+      "kcal_per_100": 198,
+      "protein_per_100": 29,
+      "carbs_per_100": 0,
+      "fats_per_100": 8.2,
+      "group": "pescados",
+      "aliases": [
+        "atun en aceite"
+      ],
+      "variant": "comun",
+      "basis": "reference_estimate",
+      "note": ""
+    },
+    {
+      "name": "merluza cocida",
+      "kcal_per_100": 90,
+      "protein_per_100": 19,
+      "carbs_per_100": 0,
+      "fats_per_100": 1,
+      "group": "pescados",
+      "aliases": [
+        "filet de merluza cocida"
+      ],
+      "variant": "comun",
+      "basis": "reference_estimate",
+      "note": ""
+    },
+    {
+      "name": "salmon cocido",
+      "kcal_per_100": 206,
+      "protein_per_100": 22.1,
+      "carbs_per_100": 0,
+      "fats_per_100": 12.4,
+      "group": "pescados",
+      "aliases": [],
+      "variant": "comun",
+      "basis": "reference_estimate",
+      "note": ""
+    },
+    {
+      "name": "sardinas en lata",
+      "kcal_per_100": 208,
+      "protein_per_100": 24.6,
+      "carbs_per_100": 0,
+      "fats_per_100": 11.5,
+      "group": "pescados",
+      "aliases": [
+        "sardinas"
+      ],
+      "variant": "comun",
+      "basis": "reference_estimate",
+      "note": ""
+    },
+    {
+      "name": "leche entera",
+      "kcal_per_100": 61,
+      "protein_per_100": 3.2,
+      "carbs_per_100": 4.8,
+      "fats_per_100": 3.3,
+      "group": "lacteos",
+      "aliases": [
+        "leche comun"
+      ],
+      "variant": "comun",
+      "basis": "reference_estimate",
+      "note": ""
+    },
+    {
+      "name": "leche descremada",
+      "kcal_per_100": 35,
+      "protein_per_100": 3.4,
+      "carbs_per_100": 5,
+      "fats_per_100": 0.1,
+      "group": "lacteos",
+      "aliases": [
+        "leche desnatada"
+      ],
+      "variant": "light_or_reduced",
+      "basis": "reference_estimate",
+      "note": ""
+    },
+    {
+      "name": "leche parcialmente descremada",
+      "kcal_per_100": 47,
+      "protein_per_100": 3.3,
+      "carbs_per_100": 4.9,
+      "fats_per_100": 1.5,
+      "group": "lacteos",
+      "aliases": [
+        "leche semidescremada"
+      ],
+      "variant": "light_or_reduced",
+      "basis": "reference_estimate",
+      "note": ""
+    },
+    {
+      "name": "yogur natural entero sin azucar",
+      "kcal_per_100": 61,
+      "protein_per_100": 3.5,
+      "carbs_per_100": 4.7,
+      "fats_per_100": 3.3,
+      "group": "lacteos",
+      "aliases": [
+        "yogur natural"
+      ],
+      "variant": "light_or_reduced",
+      "basis": "reference_estimate",
+      "note": ""
+    },
+    {
+      "name": "yogur natural descremado sin azucar",
+      "kcal_per_100": 43,
+      "protein_per_100": 4,
+      "carbs_per_100": 6,
+      "fats_per_100": 0.2,
+      "group": "lacteos",
+      "aliases": [
+        "yogur descremado natural"
+      ],
+      "variant": "light_or_reduced",
+      "basis": "reference_estimate",
+      "note": ""
+    },
+    {
+      "name": "yogur saborizado azucarado",
+      "kcal_per_100": 95,
+      "protein_per_100": 3.2,
+      "carbs_per_100": 15,
+      "fats_per_100": 2.5,
+      "group": "lacteos",
+      "aliases": [
+        "yogur de frutilla"
+      ],
+      "variant": "comun",
+      "basis": "reference_estimate",
+      "note": ""
+    },
+    {
+      "name": "queso crema clasico generico",
+      "kcal_per_100": 250,
+      "protein_per_100": 6,
+      "carbs_per_100": 4,
+      "fats_per_100": 23,
+      "group": "lacteos",
+      "aliases": [
+        "queso crema clasico"
+      ],
+      "variant": "comun",
+      "basis": "reference_estimate",
+      "note": "Promedio ilustrativo, no corresponde a ninguna marca. Verificar etiqueta o receta."
+    },
+    {
+      "name": "queso crema light generico",
+      "kcal_per_100": 150,
+      "protein_per_100": 9,
+      "carbs_per_100": 6,
+      "fats_per_100": 10,
+      "group": "lacteos",
+      "aliases": [
+        "queso crema light"
+      ],
+      "variant": "light_or_reduced",
+      "basis": "reference_estimate",
+      "note": "Promedio ilustrativo, no corresponde a ninguna marca. Verificar etiqueta o receta."
+    },
+    {
+      "name": "ricota entera",
+      "kcal_per_100": 174,
+      "protein_per_100": 11.3,
+      "carbs_per_100": 3,
+      "fats_per_100": 13,
+      "group": "lacteos",
+      "aliases": [
+        "ricota"
+      ],
+      "variant": "comun",
+      "basis": "reference_estimate",
+      "note": ""
+    },
+    {
+      "name": "ricota magra",
+      "kcal_per_100": 138,
+      "protein_per_100": 11.4,
+      "carbs_per_100": 5.1,
+      "fats_per_100": 8,
+      "group": "lacteos",
+      "aliases": [
+        "ricota light"
+      ],
+      "variant": "light_or_reduced",
+      "basis": "reference_estimate",
+      "note": ""
+    },
+    {
+      "name": "queso mozzarella",
+      "kcal_per_100": 280,
+      "protein_per_100": 28,
+      "carbs_per_100": 3.1,
+      "fats_per_100": 17,
+      "group": "lacteos",
+      "aliases": [
+        "muzarella",
+        "mozzarella"
+      ],
+      "variant": "comun",
+      "basis": "reference_estimate",
+      "note": ""
+    },
+    {
+      "name": "queso cremoso",
+      "kcal_per_100": 300,
+      "protein_per_100": 19,
+      "carbs_per_100": 2,
+      "fats_per_100": 24,
+      "group": "lacteos",
+      "aliases": [
+        "queso fresco cremoso"
+      ],
+      "variant": "comun",
+      "basis": "reference_estimate",
+      "note": ""
+    },
+    {
+      "name": "queso port salut",
+      "kcal_per_100": 290,
+      "protein_per_100": 21,
+      "carbs_per_100": 1.5,
+      "fats_per_100": 22,
+      "group": "lacteos",
+      "aliases": [
+        "port salut"
+      ],
+      "variant": "comun",
+      "basis": "reference_estimate",
+      "note": ""
+    },
+    {
+      "name": "queso port salut light",
+      "kcal_per_100": 200,
+      "protein_per_100": 25,
+      "carbs_per_100": 3,
+      "fats_per_100": 10,
+      "group": "lacteos",
+      "aliases": [
+        "port salut light"
+      ],
+      "variant": "light_or_reduced",
+      "basis": "reference_estimate",
+      "note": ""
+    },
+    {
+      "name": "queso rallado parmesano",
+      "kcal_per_100": 431,
+      "protein_per_100": 38,
+      "carbs_per_100": 4.1,
+      "fats_per_100": 29,
+      "group": "lacteos",
+      "aliases": [
+        "parmesano"
+      ],
+      "variant": "comun",
+      "basis": "reference_estimate",
+      "note": ""
+    },
+    {
+      "name": "manteca",
+      "kcal_per_100": 717,
+      "protein_per_100": 0.9,
+      "carbs_per_100": 0.1,
+      "fats_per_100": 81,
+      "group": "grasas",
+      "aliases": [
+        "mantequilla"
+      ],
+      "variant": "comun",
+      "basis": "reference_estimate",
+      "note": ""
+    },
+    {
+      "name": "margarina",
+      "kcal_per_100": 717,
+      "protein_per_100": 0.2,
+      "carbs_per_100": 0.7,
+      "fats_per_100": 80,
+      "group": "grasas",
+      "aliases": [],
+      "variant": "comun",
+      "basis": "reference_estimate",
+      "note": ""
+    },
+    {
+      "name": "aceite de girasol",
+      "kcal_per_100": 884,
+      "protein_per_100": 0,
+      "carbs_per_100": 0,
+      "fats_per_100": 100,
+      "group": "grasas",
+      "aliases": [
+        "aceite"
+      ],
+      "variant": "comun",
+      "basis": "reference_estimate",
+      "note": ""
+    },
+    {
+      "name": "aceite de oliva",
+      "kcal_per_100": 884,
+      "protein_per_100": 0,
+      "carbs_per_100": 0,
+      "fats_per_100": 100,
+      "group": "grasas",
+      "aliases": [],
+      "variant": "comun",
+      "basis": "reference_estimate",
+      "note": ""
+    },
+    {
+      "name": "mayonesa comun",
+      "kcal_per_100": 680,
+      "protein_per_100": 1,
+      "carbs_per_100": 1,
+      "fats_per_100": 75,
+      "group": "aderezos",
+      "aliases": [
+        "mayonesa"
+      ],
+      "variant": "comun",
+      "basis": "reference_estimate",
+      "note": ""
+    },
+    {
+      "name": "mayonesa light generica",
+      "kcal_per_100": 300,
+      "protein_per_100": 1,
+      "carbs_per_100": 8,
+      "fats_per_100": 30,
+      "group": "aderezos",
+      "aliases": [
+        "mayonesa light"
+      ],
+      "variant": "light_or_reduced",
+      "basis": "reference_estimate",
+      "note": ""
+    },
+    {
+      "name": "ketchup",
+      "kcal_per_100": 112,
+      "protein_per_100": 1,
+      "carbs_per_100": 26,
+      "fats_per_100": 0.1,
+      "group": "aderezos",
+      "aliases": [
+        "salsa ketchup"
+      ],
+      "variant": "comun",
+      "basis": "reference_estimate",
+      "note": ""
+    },
+    {
+      "name": "mostaza",
+      "kcal_per_100": 66,
+      "protein_per_100": 4.4,
+      "carbs_per_100": 5.8,
+      "fats_per_100": 4,
+      "group": "aderezos",
+      "aliases": [],
+      "variant": "comun",
+      "basis": "reference_estimate",
+      "note": ""
+    },
+    {
+      "name": "azucar blanca",
+      "kcal_per_100": 387,
+      "protein_per_100": 0,
+      "carbs_per_100": 100,
+      "fats_per_100": 0,
+      "group": "dulces",
+      "aliases": [
+        "azucar"
+      ],
+      "variant": "comun",
+      "basis": "reference_estimate",
+      "note": ""
+    },
+    {
+      "name": "miel",
+      "kcal_per_100": 304,
+      "protein_per_100": 0.3,
+      "carbs_per_100": 82.4,
+      "fats_per_100": 0,
+      "group": "dulces",
+      "aliases": [],
+      "variant": "comun",
+      "basis": "reference_estimate",
+      "note": ""
+    },
+    {
+      "name": "dulce de leche clasico generico",
+      "kcal_per_100": 315,
+      "protein_per_100": 6,
+      "carbs_per_100": 55,
+      "fats_per_100": 8,
+      "group": "dulces",
+      "aliases": [
+        "dulce de leche"
+      ],
+      "variant": "comun",
+      "basis": "reference_estimate",
+      "note": "Promedio ilustrativo, no corresponde a ninguna marca. Verificar etiqueta o receta."
+    },
+    {
+      "name": "dulce de leche light generico",
+      "kcal_per_100": 220,
+      "protein_per_100": 7,
+      "carbs_per_100": 42,
+      "fats_per_100": 3,
+      "group": "dulces",
+      "aliases": [
+        "dulce de leche light"
+      ],
+      "variant": "light_or_reduced",
+      "basis": "reference_estimate",
+      "note": "Promedio ilustrativo, no corresponde a ninguna marca. Verificar etiqueta o receta."
+    },
+    {
+      "name": "mermelada comun",
+      "kcal_per_100": 250,
+      "protein_per_100": 0.3,
+      "carbs_per_100": 65,
+      "fats_per_100": 0.1,
+      "group": "dulces",
+      "aliases": [
+        "mermelada"
+      ],
+      "variant": "comun",
+      "basis": "reference_estimate",
+      "note": ""
+    },
+    {
+      "name": "mermelada light generica",
+      "kcal_per_100": 100,
+      "protein_per_100": 0.3,
+      "carbs_per_100": 25,
+      "fats_per_100": 0.1,
+      "group": "dulces",
+      "aliases": [
+        "mermelada light"
+      ],
+      "variant": "light_or_reduced",
+      "basis": "reference_estimate",
+      "note": ""
+    },
+    {
+      "name": "chocolate con leche",
+      "kcal_per_100": 535,
+      "protein_per_100": 7.7,
+      "carbs_per_100": 59.4,
+      "fats_per_100": 29.7,
+      "group": "dulces",
+      "aliases": [],
+      "variant": "homemade_recipe_estimate",
+      "basis": "reference_estimate",
+      "note": ""
+    },
+    {
+      "name": "chocolate amargo 70 por ciento",
+      "kcal_per_100": 598,
+      "protein_per_100": 7.8,
+      "carbs_per_100": 45.9,
+      "fats_per_100": 42.6,
+      "group": "dulces",
+      "aliases": [
+        "chocolate amargo"
+      ],
+      "variant": "comun",
+      "basis": "reference_estimate",
+      "note": ""
+    },
+    {
+      "name": "helado de crema",
+      "kcal_per_100": 207,
+      "protein_per_100": 3.5,
+      "carbs_per_100": 24,
+      "fats_per_100": 11,
+      "group": "dulces",
+      "aliases": [
+        "helado"
+      ],
+      "variant": "comun",
+      "basis": "reference_estimate",
+      "note": ""
+    },
+    {
+      "name": "gelatina preparada con azucar generica",
+      "kcal_per_100": 65,
+      "protein_per_100": 1.5,
+      "carbs_per_100": 15,
+      "fats_per_100": 0,
+      "group": "postres",
+      "aliases": [
+        "gelatina con azucar",
+        "gelatina de frutilla preparada con azucar"
+      ],
+      "variant": "comun",
+      "basis": "reference_estimate",
+      "note": "La composición depende de receta, dilución y porción; estimación genérica."
+    },
+    {
+      "name": "gelatina preparada sin azucar generica",
+      "kcal_per_100": 8,
+      "protein_per_100": 1.5,
+      "carbs_per_100": 0.4,
+      "fats_per_100": 0,
+      "group": "postres",
+      "aliases": [
+        "gelatina sin azucar",
+        "gelatina light preparada"
+      ],
+      "variant": "light_or_reduced",
+      "basis": "reference_estimate",
+      "note": "La composición depende de receta, dilución y porción; estimación genérica."
+    },
+    {
+      "name": "flan casero con leche entera",
+      "kcal_per_100": 145,
+      "protein_per_100": 5.2,
+      "carbs_per_100": 22,
+      "fats_per_100": 4,
+      "group": "postres",
+      "aliases": [
+        "flan casero"
+      ],
+      "variant": "homemade_recipe_estimate",
+      "basis": "reference_estimate",
+      "note": "La composición depende de receta, dilución y porción; estimación genérica."
+    },
+    {
+      "name": "arroz con leche casero",
+      "kcal_per_100": 130,
+      "protein_per_100": 3.5,
+      "carbs_per_100": 23,
+      "fats_per_100": 2.7,
+      "group": "postres",
+      "aliases": [
+        "arroz con leche"
+      ],
+      "variant": "homemade_recipe_estimate",
+      "basis": "reference_estimate",
+      "note": "La composición depende de receta, dilución y porción; estimación genérica."
+    },
+    {
+      "name": "cafe negro sin azucar",
+      "kcal_per_100": 1,
+      "protein_per_100": 0,
+      "carbs_per_100": 0,
+      "fats_per_100": 0,
+      "group": "bebidas",
+      "aliases": [
+        "cafe solo",
+        "cafe negro"
+      ],
+      "variant": "light_or_reduced",
+      "basis": "reference_estimate",
+      "note": ""
+    },
+    {
+      "name": "te preparado sin azucar",
+      "kcal_per_100": 1,
+      "protein_per_100": 0,
+      "carbs_per_100": 0,
+      "fats_per_100": 0,
+      "group": "bebidas",
+      "aliases": [
+        "te"
+      ],
+      "variant": "light_or_reduced",
+      "basis": "reference_estimate",
+      "note": ""
+    },
+    {
+      "name": "mate cocido sin azucar",
+      "kcal_per_100": 1,
+      "protein_per_100": 0,
+      "carbs_per_100": 0,
+      "fats_per_100": 0,
+      "group": "bebidas",
+      "aliases": [
+        "mate cocido"
+      ],
+      "variant": "light_or_reduced",
+      "basis": "reference_estimate",
+      "note": ""
+    },
+    {
+      "name": "gaseosa comun azucarada",
+      "kcal_per_100": 42,
+      "protein_per_100": 0,
+      "carbs_per_100": 10.6,
+      "fats_per_100": 0,
+      "group": "bebidas",
+      "aliases": [
+        "gaseosa comun"
+      ],
+      "variant": "comun",
+      "basis": "reference_estimate",
+      "note": ""
+    },
+    {
+      "name": "gaseosa sin azucar",
+      "kcal_per_100": 0,
+      "protein_per_100": 0,
+      "carbs_per_100": 0,
+      "fats_per_100": 0,
+      "group": "bebidas",
+      "aliases": [
+        "gaseosa zero",
+        "gaseosa light"
+      ],
+      "variant": "light_or_reduced",
+      "basis": "reference_estimate",
+      "note": ""
+    },
+    {
+      "name": "jugo de naranja exprimido",
+      "kcal_per_100": 45,
+      "protein_per_100": 0.7,
+      "carbs_per_100": 10.4,
+      "fats_per_100": 0.2,
+      "group": "bebidas",
+      "aliases": [
+        "jugo de naranja"
+      ],
+      "variant": "comun",
+      "basis": "reference_estimate",
+      "note": ""
+    },
+    {
+      "name": "mani tostado sin sal",
+      "kcal_per_100": 585,
+      "protein_per_100": 24.4,
+      "carbs_per_100": 21.3,
+      "fats_per_100": 49.7,
+      "group": "frutos_secos",
+      "aliases": [
+        "mani"
+      ],
+      "variant": "comun",
+      "basis": "reference_estimate",
+      "note": ""
+    },
+    {
+      "name": "nuez",
+      "kcal_per_100": 654,
+      "protein_per_100": 15.2,
+      "carbs_per_100": 13.7,
+      "fats_per_100": 65.2,
+      "group": "frutos_secos",
+      "aliases": [
+        "nueces"
+      ],
+      "variant": "comun",
+      "basis": "reference_estimate",
+      "note": ""
+    },
+    {
+      "name": "almendras",
+      "kcal_per_100": 579,
+      "protein_per_100": 21.2,
+      "carbs_per_100": 21.6,
+      "fats_per_100": 49.9,
+      "group": "frutos_secos",
+      "aliases": [
+        "almendra"
+      ],
+      "variant": "comun",
+      "basis": "reference_estimate",
+      "note": ""
+    },
+    {
+      "name": "semillas de chia",
+      "kcal_per_100": 486,
+      "protein_per_100": 16.5,
+      "carbs_per_100": 42.1,
+      "fats_per_100": 30.7,
+      "group": "semillas",
+      "aliases": [
+        "chia"
+      ],
+      "variant": "comun",
+      "basis": "reference_estimate",
+      "note": ""
+    },
+    {
+      "name": "semillas de lino",
+      "kcal_per_100": 534,
+      "protein_per_100": 18.3,
+      "carbs_per_100": 28.9,
+      "fats_per_100": 42.2,
+      "group": "semillas",
+      "aliases": [
+        "lino"
+      ],
+      "variant": "comun",
+      "basis": "reference_estimate",
+      "note": ""
+    },
+    {
+      "name": "semillas de girasol",
+      "kcal_per_100": 584,
+      "protein_per_100": 20.8,
+      "carbs_per_100": 20,
+      "fats_per_100": 51.5,
+      "group": "semillas",
+      "aliases": [],
+      "variant": "comun",
+      "basis": "reference_estimate",
+      "note": ""
+    }
+  ]
+}

@@ -1,0 +1,696 @@
+
+<!DOCTYPE html>
+
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="#F8FAFC" name="theme-color"/>
+<title>CalorieTrack | Tu bienestar, en equilibrio</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=Manrope:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="style.css?v=20261110meals1" rel="stylesheet"/>
+<script defer="" src="https://unpkg.com/html5-qrcode"></script>
+<script defer="" src="script.js?v=20261126speed1"></script>
+<script defer="" src="calendar.js?v=20261109bundle"></script>
+<script defer="" src="coach.js?v=20261111mobilefix3"></script>
+<link href="coach-chat-fix.css?v=20261111mobilefix4" rel="stylesheet"/>
+<link href="calm-fitness.css?v=4" rel="stylesheet"/>
+<script defer="" src="calm-fitness.js?v=5"></script>
+<link rel="stylesheet" href="auth.css?v=2"/>
+<script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script defer src="supabase-config.js"></script>
+<script defer src="auth.js?v=2"></script>
+</head>
+<body>
+<!-- ==========================
+       ENCABEZADO
+  =========================== -->
+<header class="site-header">
+<a aria-label="CalorieTrack, inicio" class="brand" href="#inicio">CalorieTrack.</a>
+<nav aria-label="Navegación principal" class="main-nav">
+<a class="active" href="#inicio">Inicio</a>
+<a href="#progreso">Mi progreso</a>
+<a href="#agua">Mi agua</a>
+<a href="#comidas">Mis comidas</a>
+<a href="#productos">Productos</a>
+<a href="#coach">✦ Coach IA</a>
+<a href="https://whatsapp.com/channel/0029VbDNVad7z4kkLml40j0H" rel="noopener noreferrer" target="_blank">Comunidad</a>
+</nav>
+<a class="ct-community-mobile" hidden="" href="https://whatsapp.com/channel/0029VbDNVad7z4kkLml40j0H" rel="noopener noreferrer" style="display:none!important" target="_blank">Comunidad ↗</a>
+<button aria-label="Mi cuenta" title="Mi cuenta" id="authOpen" class="ct-profile" type="button"><svg aria-hidden="true" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><circle cx="12" cy="9" r="3"></circle><path d="M6 19c0-5 12-5 12 0"></path></svg></button></header>
+<!-- ==========================
+       CONTENIDO PRINCIPAL
+  =========================== -->
+<main class="page-shell" id="inicio">
+<!-- BIENVENIDA -->
+<!-- ==========================
+         RESUMEN DIARIO
+    =========================== -->
+<section aria-labelledby="calendarTitle" class="calendar-section calendar-compact" id="calendario">
+<div class="calendar-header">
+<div><p class="eyebrow">TU HISTORIAL</p><h2 id="calendarTitle">Hoy</h2></div>
+<button aria-controls="calendarExpanded" aria-expanded="false" aria-label="Ver calendario" class="button button-soft" id="calendarToggle" type="button"><svg aria-hidden="true" viewBox="0 0 24 24"><rect height="16" rx="2" width="18" x="3" y="5"></rect><path d="M7 3v4M17 3v4M3 10h18M8 14h2m4 0h2m-8 4h2"></path></svg></button>
+</div>
+<div aria-label="Elegir un día de la semana" class="week-strip" id="weekStrip"></div>
+<div hidden="" id="calendarExpanded">
+<div class="calendar-layout"><div class="calendar-picker-card"><div class="calendar-month-bar"><button aria-label="Mes anterior" id="calendarPrev" type="button">‹</button><strong id="calendarMonth"></strong><button aria-label="Mes siguiente" id="calendarNext" type="button">›</button></div><div aria-hidden="true" class="calendar-weekdays"><span>L</span><span>M</span><span>M</span><span>J</span><span>V</span><span>S</span><span>D</span></div><div aria-label="Elegir día" class="calendar-grid" id="calendarGrid"></div><p class="calendar-legend"><span class="calendar-dot"></span> Días con registros</p><button class="button button-soft" id="calendarToday" type="button">Volver a hoy</button></div>
+<div aria-live="polite" class="calendar-detail-card"><p class="eyebrow">RESUMEN DEL DÍA</p><h3 id="calendarSelectedLabel">Hoy</h3><div class="calendar-metrics"><div><strong id="calendarCalories">0</strong><small>kcal</small></div><div><strong id="calendarProtein">0</strong><small>g proteínas</small></div><div><strong id="calendarWater">0</strong><small>ml agua</small></div></div><h4>Comidas registradas</h4><div class="calendar-meals" id="calendarMeals"></div></div></div>
+</div>
+</section><section class="daily-card" id="progreso">
+<div class="section-heading">
+<div>
+<p class="eyebrow">TU RESUMEN DIARIO</p>
+<h2>Tu día</h2><p class="ct-date" id="ctDate"></p>
+</div>
+<button class="button button-soft" id="openGoalModal" type="button">
+          ⚙ Mi objetivo
+        </button>
+</div>
+<div aria-label="Progreso diario" class="circle-dashboard">
+<article class="circle-stat compact-hero"><div class="hero-info"><h3>Calorías restantes</h3><span class="ct-source" id="dailyRemainingCalories">Te quedan 2000 kcal.</span><small><span id="dailyConsumedCalories">0</span> de <span id="dailyTargetCalories">2000</span> kcal</small><div class="ct-cal-bar"><span></span></div><span aria-hidden="true" id="ctRemainingDisplay"></span></div>
+<div class="circle-progress" id="calorieCircle" style="--circle-color:#43835a;--progress:0%">
+<div class="circle-progress-content"><strong id="caloriePercent">0%</strong><span>Consumido</span></div>
+</div>
+<div hidden="" id="dailyProgress"></div><span hidden="" id="progressGoalLabel"></span><span hidden="" id="todayLabel"></span>
+</article>
+<div class="compact-macros"><article class="circle-stat compact-macro">
+<h3>Proteínas</h3>
+<div class="circle-progress" id="proteinCircle" style="--circle-color:#e4a44d;--progress:0%">
+<div class="circle-progress-content"><strong><span id="totalProtein">0</span> g</strong><span>consumidas</span></div>
+</div>
+<p id="proteinPercent">0%</p><small id="proteinGoalLabel">Meta: 120 g</small>
+</article><article class="circle-stat compact-macro">
+<h3>Carbohidratos</h3>
+<div class="circle-progress" id="carbCircle" style="--circle-color:#8b78d7;--progress:0%"><div class="circle-progress-content"><strong id="totalCarbs">—</strong><span>g registrados</span></div></div>
+<p id="carbPercent">Sin datos</p><small>Meta: <span id="carbGoalLabel">250</span> g</small>
+</article><article class="circle-stat compact-macro">
+<h3>Grasas</h3>
+<div class="circle-progress" id="fatCircle" style="--circle-color:#dd8b63;--progress:0%"><div class="circle-progress-content"><strong id="totalFats">—</strong><span>g registrados</span></div></div>
+<p id="fatPercent">Sin datos</p><small>Meta: <span id="fatGoalLabel">67</span> g</small>
+</article></div><div class="compact-activity"><article class="circle-stat compact-water">
+<h3>Agua</h3>
+<div class="circle-progress" id="waterCircle" style="--circle-color:#4799d3;--progress:0%">
+<div class="circle-progress-content"><strong id="waterCircleTotal">0 ml</strong><span id="ctWaterLiters"></span><span>consumidos</span></div>
+</div>
+<p id="waterCirclePercent">0%</p><small>Referencia: 2 L</small><div class="ct-water-actions"><button data-ct-water="250" type="button">+250 ml</button><button data-ct-water="500" type="button">+500 ml</button></div>
+</article><section aria-labelledby="stepsTitle" class="steps-section" id="pasos">
+<div aria-hidden="true" class="steps-icon" hidden="">👟</div>
+<div class="steps-body">
+<div class="steps-heading"><div><p class="eyebrow" hidden="">ACTIVIDAD OPCIONAL</p><h2 id="stepsTitle">Pasos</h2></div><span class="steps-optional" hidden="">Opcional</span></div>
+<p class="steps-description" hidden="">Si contás tus pasos, podés registrarlos acá. No hace falta hacerlo para usar CalorieTrack.</p>
+<div class="ct-steps-progress"><span id="ctStepsValue">0 pasos</span><small>Referencia: 8.000 pasos</small><progress aria-label="Progreso de pasos" id="ctStepsBar" max="8000" value="0"></progress></div><div aria-live="polite" class="steps-result" id="stepsResult">Todavía no registraste pasos hoy.</div><details class="ct-step-edit"><summary>Registrar pasos</summary><form class="steps-form" id="stepsForm"><label class="sr-only" for="stepsInput">Cantidad de pasos de hoy</label><input id="stepsInput" inputmode="numeric" max="100000" min="0" placeholder="Ej: 7500" step="1" type="number"/><button class="button button-primary" type="submit">Guardar pasos</button></form></details>
+<button class="steps-clear" hidden="" id="stepsClear" type="button">Eliminar registro de hoy</button>
+</div>
+</section></div></div>
+<p class="macro-data-note" id="macroDataNote">Los carbohidratos y las grasas se calculan cuando los alimentos tienen esos datos nutricionales.</p>
+<div class="compact-meals-counter"><span>🍽️ Comidas registradas hoy</span><strong id="totalMeals">0</strong></div>
+</section><section class="meals-section meals-redesign" id="comidas">
+<div class="section-heading meals-heading">
+<div>
+<p class="eyebrow">
+            TU ALIMENTACIÓN
+          </p>
+<h2>Mis comidas</h2>
+<p class="section-subtitle">
+            Cada registro te ayuda a entender
+            mejor tus hábitos.
+          </p>
+</div>
+<button class="button button-primary" id="dashboardAddMeal" type="button">
+          ＋ Registrar comida
+        </button>
+<button class="ct-history" type="button">Ver historial</button></div>
+<div id="ctMealGroups"></div><div class="meal-list ct-meal-details" id="mealList"></div>
+<div aria-live="polite" class="meal-day-summary" id="mealDaySummary"></div>
+</section><section class="welcome-row">
+<div>
+<p class="eyebrow">
+<span class="eyebrow-dot"></span>
+          UN PASO A LA VEZ
+        </p>
+<h1>
+          Tu bienestar,
+          <br/>
+<em>en equilibrio.</em>
+</h1>
+<p class="welcome-copy">
+          Una forma simple y consciente de conocer
+          tu alimentación y mantener hábitos saludables.
+        </p>
+<button aria-label="Agregar una comida nueva" class="button meal-main-action" id="openMealModal" type="button">
+<span aria-hidden="true" class="meal-action-icon">+</span>
+<span class="meal-action-label">Registrar alimento</span>
+<span aria-hidden="true" class="meal-action-arrow">↗</span>
+</button>
+</div>
+<div aria-hidden="true" class="welcome-art">
+<div class="art-circle art-circle-back"></div>
+<div class="art-circle art-circle-front"></div>
+<span class="art-leaf leaf-one">✳</span>
+<span class="art-leaf leaf-two">✿</span>
+<span class="art-fruit">●</span>
+</div>
+</section>
+<!-- ==========================
+         CONTADOR DE AGUA
+    =========================== -->
+<section class="water-section" id="agua">
+<!--
+        El JavaScript actualizado insertará aquí
+        el contador de agua.
+
+        Tendrá:
+        - Total consumido hoy
+        - Cantidad
+        - Vasos de 250 ml
+        - Litros
+        - Mililitros
+        - Historial diario
+        - Opción para eliminar registros
+      -->
+<div id="waterTrackerMount"></div>
+</section>
+<!-- ==========================
+         MIS COMIDAS
+    =========================== -->
+<!-- ==========================
+         CATÁLOGO DE PRODUCTOS
+    =========================== -->
+<section class="meals-section" id="productos">
+<div class="section-heading">
+<div>
+<p class="eyebrow">
+            BASE DE DATOS NUTRICIONAL
+          </p>
+<h2>Buscar alimentos</h2>
+<p class="section-subtitle">
+            Encontrá productos por nombre o marca.
+          </p>
+</div>
+<button class="button button-soft" id="openProductModal" type="button">
+          ＋ Crear producto
+        </button>
+</div>
+<div class="product-search-box">
+<label for="productSearch">
+          Buscar producto
+        </label>
+<div class="product-search-row">
+<input autocomplete="off" id="productSearch" placeholder="Ej: alfajor Milka, yogur Ser, galletitas Oreo" type="search"/>
+<button class="button button-primary" id="searchProductButton" type="button">
+            Buscar
+          </button>
+</div>
+<p aria-live="polite" class="helper-text" id="productSearchStatus"></p>
+<div class="product-results" id="productResults"></div>
+</div>
+<div class="saved-products-section">
+<div class="section-heading">
+<div>
+<h2>Mis productos guardados</h2>
+<p class="section-subtitle">
+              Tus alimentos favoritos en un solo lugar.
+            </p>
+</div>
+</div>
+<div class="product-results" id="savedProductsList"></div>
+</div>
+</section>
+<!-- ==========================
+     COACH IA
+=========================== -->
+<section aria-labelledby="coachTitle" class="coach-section" id="coach">
+<div class="coach-heading">
+<div class="coach-heading-icon">✦</div>
+<div>
+<p class="eyebrow">TU ASISTENTE PERSONAL</p>
+<h2 id="coachTitle">Coach IA</h2>
+<p class="coach-subtitle">
+        Orientación nutricional adaptada a tus objetivos.
+      </p>
+</div>
+</div>
+<div class="coach-card">
+<div class="coach-chat-header">
+<div class="coach-avatar">✦</div>
+<div class="coach-chat-identity">
+<strong>Coach CalorieTrack <span class="coach-ai-tag">IA</span></strong>
+<span class="coach-online"><span class="coach-online-dot"></span> Tu espacio de bienestar</span>
+</div>
+<button class="coach-clear-button" id="coachClear" type="button">
+        Nueva conversación
+      </button>
+</div>
+<div aria-label="Conversación con Coach IA" aria-live="polite" class="coach-messages" id="coachMessages" role="log">
+<div class="coach-message coach-message-ai">
+<div class="coach-message-avatar">✦</div>
+<div class="coach-bubble">
+<strong>¡Hola! Soy tu Coach IA.</strong>
+<p>
+            Puedo ayudarte a entender tu alimentación,
+            revisar tus registros y encontrar ideas
+            de comidas según tus objetivos.
+          </p>
+<p>¿En qué te gustaría que te ayude hoy?</p>
+</div>
+</div>
+</div>
+<div class="coach-suggestions">
+<button class="coach-suggestion" data-coach-prompt="Analizá mi alimentación de hoy y decime qué podría mejorar." type="button">
+        📊 Analizar mi día
+      </button>
+<button class="coach-suggestion" data-coach-prompt="¿Qué podría cenar hoy según mi objetivo calórico?" type="button">
+        🥗 ¿Qué puedo cenar?
+      </button>
+<button class="coach-suggestion" data-coach-prompt="Explicame cómo mantener un déficit calórico saludable." type="button">
+        🎯 Mi déficit calórico
+      </button>
+<button class="coach-suggestion" data-coach-prompt="Dame ideas de comidas con buenas fuentes de proteínas." type="button">
+        ✨ Ideas de comidas
+      </button>
+</div>
+<form class="coach-composer" id="coachForm">
+<label class="sr-only" for="coachInput">
+        Escribí tu pregunta para Coach IA
+      </label>
+<textarea id="coachInput" maxlength="1500" placeholder="Escribí tu mensaje..." required="" rows="1"></textarea>
+<button aria-label="Enviar mensaje" class="coach-send-button" id="coachSend" type="submit">
+        ➤
+      </button>
+</form>
+<p aria-live="polite" class="coach-status" id="coachStatus" role="status"></p>
+<p class="coach-disclaimer">
+      Las respuestas son orientativas y no reemplazan
+      el asesoramiento de un profesional de la salud.
+    </p>
+</div>
+</section>
+<!-- RECORDATORIO -->
+<section class="tip-card">
+<div class="tip-icon">✿</div>
+<div>
+<p class="eyebrow">
+          UN RECORDATORIO
+        </p>
+<h3>
+          La constancia vale más que la perfección.
+        </h3>
+<p>
+          Los valores nutricionales son estimaciones.
+          Usalos como una guía, no como una regla rígida.
+        </p>
+</div>
+</section>
+</main>
+<!-- ==========================
+       PIE DE PÁGINA
+  =========================== -->
+<footer class="site-footer">
+
+    CalorieTrack
+
+    <span>·</span>
+
+    Tu alimentación, bajo control y sin presiones.
+
+  </footer>
+<!-- ==========================
+       MODAL REGISTRAR COMIDA
+  =========================== -->
+<div aria-hidden="true" class="modal" id="mealModal">
+<div class="modal-backdrop" data-close="meal"></div>
+<section aria-labelledby="mealModalTitle" aria-modal="true" class="modal-panel" role="dialog">
+<button aria-label="Cerrar" class="modal-close" data-close="meal" type="button">
+        ×
+      </button>
+<p class="eyebrow">
+        NUEVO REGISTRO
+      </p>
+<h2 id="mealModalTitle">
+        ¿Qué comiste?
+      </h2>
+<p class="modal-intro">
+        Buscá el alimento que consumiste,
+        seleccioná el producto y elegí la cantidad.
+      </p>
+<form id="mealForm">
+<!-- MOMENTO DEL DÍA -->
+<label for="mealType">
+          Momento del día
+        </label>
+<select id="mealType" required="">
+<option value="Desayuno">Desayuno</option>
+<option value="Almuerzo">Almuerzo</option>
+<option value="Merienda">Merienda</option>
+<option value="Cena">Cena</option>
+<option value="Colación">Colación</option>
+</select>
+<!-- BUSCADOR AUTOMÁTICO -->
+<label for="mealDescription">
+          ¿Qué alimento comiste?
+        </label>
+<textarea autocomplete="off" id="mealDescription" placeholder="Ej: alfajor Milka" rows="2"></textarea>
+<div class="voice-entry">
+<button aria-pressed="false" class="button button-outline voice-button" id="voiceMealButton" type="button">
+            🎙 Dictar comida
+          </button>
+<span aria-live="polite" class="helper-text" id="voiceMealStatus" role="status">Podés describir tu comida usando la voz.</span>
+</div>
+<div class="phrase-actions">
+<button class="button button-primary" id="analyzePhraseButton" type="button">✦ Analizar comida completa</button>
+<span class="helper-text">Podés escribir o dictar varios alimentos juntos.</span>
+</div>
+<div class="phrase-actions"><button class="button button-outline" id="analyzeAIButton" type="button">✨ Analizar con IA (marcas y recetas)</button><span class="helper-text">Requiere iniciar el servidor y configurar Gemini.</span></div>
+<div aria-live="polite" class="phrase-analysis" hidden="" id="aiAnalysis"></div>
+<div aria-live="polite" class="phrase-analysis" hidden="" id="phraseAnalysis"></div>
+<!--
+          El JavaScript mostrará aquí los productos
+          que coincidan mientras escribís.
+        -->
+<div aria-live="polite" class="instant-food-results" id="instantFoodResults"></div>
+<!-- PORCIÓN GENERAL -->
+<div class="portion-row">
+<span>Porción general</span>
+<label class="radio-label">
+<input name="portion" type="radio" value="poco"/>
+            Pequeña
+          </label>
+<label class="radio-label">
+<input checked="" name="portion" type="radio" value="normal"/>
+            Normal
+          </label>
+<label class="radio-label">
+<input name="portion" type="radio" value="abundante"/>
+            Abundante
+          </label>
+</div>
+<!-- BÚSQUEDA ADICIONAL -->
+<div class="meal-product-search-section">
+<h3>Buscar productos</h3>
+<p class="helper-text">
+            También podés buscar directamente
+            en la base de datos nutricional.
+          </p>
+<div class="product-search-row">
+<input autocomplete="off" id="mealProductSearch" placeholder="Nombre o marca del producto" type="search"/>
+<button class="button button-outline" id="mealProductSearchButton" type="button">
+              Buscar
+            </button>
+</div>
+<p aria-live="polite" class="helper-text" id="mealProductSearchStatus"></p>
+<div class="product-results" id="mealProductResults"></div>
+</div>
+<!-- PRODUCTO SELECCIONADO -->
+<div class="selected-product-panel" hidden="" id="selectedProductPanel">
+<h3>Producto seleccionado</h3>
+<p id="selectedProductName"></p>
+<label for="selectedProductAmount">
+            Cantidad consumida
+          </label>
+<div class="ct-quantity-controls">
+<select aria-label="Unidad de consumo" id="selectedProductUnit">
+<option value="g">Gramos (g)</option>
+<option value="ml">Mililitros (ml)</option>
+<option value="l">Litros (L)</option>
+<option value="unit">Unidades</option>
+<option value="portion">Porciones</option>
+</select>
+<input id="selectedProductAmount" min="0.1" step="any" type="number" value="100"/>
+</div>
+<div class="ct-unit-weight" hidden="" id="selectedProductWeightGroup">
+<label for="selectedProductWeight">Peso o volumen de una unidad/porción</label>
+<div class="ct-quantity-controls"><input id="selectedProductWeight" min="0.1" placeholder="Ej.: 25" step="any" type="number"/><span id="selectedProductWeightSuffix">g por unidad</span></div>
+<p class="helper-text" id="selectedProductWeightHint">Consultá el envase para saber cuánto pesa cada unidad.</p>
+</div>
+<p class="helper-text" id="selectedProductNutrition"></p>
+<button class="button button-primary" id="addSelectedProduct" type="button">
+            ＋ Agregar alimento
+          </button>
+</div>
+<!-- ESCÁNER -->
+<div class="scanner-tools">
+<button class="button button-outline" id="scanButton" type="button">
+            ▦ Escanear producto
+          </button>
+<span class="helper-text">
+            También podés usar el código de barras.
+          </span>
+</div>
+<div class="scanner-box" hidden="" id="scannerSection">
+<div id="reader"></div>
+<p aria-live="polite" class="helper-text" id="scannerStatus">
+            Preparando cámara...
+          </p>
+<button class="button button-soft" id="stopScanner" type="button">
+            Detener cámara
+          </button>
+</div>
+<div class="scanned-product" hidden="" id="scannedProduct"></div>
+<!-- RESUMEN NUTRICIONAL -->
+<div class="estimate-preview" hidden="" id="estimatePreview">
+<div>
+<span>Calorías estimadas</span>
+<strong id="previewCalories">
+              0 kcal
+            </strong>
+</div>
+<div>
+<span>Proteínas estimadas</span>
+<strong id="previewProtein">
+              0 g
+            </strong>
+</div>
+<p id="previewDetails"></p>
+</div>
+<p class="form-error" id="mealError" role="alert"></p>
+<div class="modal-actions">
+<button class="button button-soft" data-close="meal" type="button">
+            Cancelar
+          </button>
+<button class="button button-primary" type="submit">
+            Guardar comida
+          </button>
+</div>
+</form>
+</section>
+</div>
+<!-- ==========================
+       MODAL OBJETIVO
+  =========================== -->
+<div aria-hidden="true" class="modal" id="goalModal">
+<div class="modal-backdrop" data-close="goal"></div>
+<section aria-labelledby="goalModalTitle" aria-modal="true" class="modal-panel goal-panel" role="dialog">
+<button aria-label="Cerrar" class="modal-close" data-close="goal" type="button">
+        ×
+      </button>
+<p class="eyebrow">
+        TU PLAN PERSONAL
+      </p>
+<h2 id="goalModalTitle">
+        Definí tu objetivo
+      </h2>
+<p class="modal-intro">
+        Completá tus datos para obtener una
+        estimación inicial de tus necesidades energéticas.
+      </p>
+<form class="goal-form" id="goalForm">
+<div class="form-two">
+<div>
+<label for="goalWeight">
+              Peso actual (kg)
+            </label>
+<input id="goalWeight" max="400" min="20" required="" step="0.1" type="number"/>
+</div>
+<div>
+<label for="goalHeight">
+              Altura (cm)
+            </label>
+<input id="goalHeight" max="250" min="100" required="" type="number"/>
+</div>
+</div>
+<div class="form-two">
+<div>
+<label for="goalAge">
+              Edad
+            </label>
+<input id="goalAge" max="110" min="13" required="" type="number"/>
+</div>
+<div>
+<label for="goalSex">
+              Sexo biológico
+            </label>
+<select id="goalSex">
+<option value="male">
+                Masculino
+              </option>
+<option value="female">
+                Femenino
+              </option>
+</select>
+</div>
+</div>
+<label for="goalActivity">
+          Actividad física
+        </label>
+<select id="goalActivity">
+<option value="1.2">
+            Sedentaria
+          </option>
+<option value="1.375">
+            Ligera (1–3 días/semana)
+          </option>
+<option value="1.55">
+            Moderada (3–5 días/semana)
+          </option>
+<option value="1.725">
+            Alta (6–7 días/semana)
+          </option>
+</select>
+<label for="goalType">
+          Objetivo
+        </label>
+<select id="goalType">
+<option value="deficit">
+            Perder peso
+          </option>
+<option value="maintenance">
+            Mantener peso
+          </option>
+<option value="surplus">
+            Ganar peso
+          </option>
+</select>
+<div class="form-two macro-goal-fields">
+<div><label for="goalCarbs">Meta de carbohidratos (g)</label><input id="goalCarbs" max="1500" min="1" placeholder="Opcional" step="1" type="number"/></div>
+<div><label for="goalFats">Meta de grasas (g)</label><input id="goalFats" max="500" min="1" placeholder="Opcional" step="1" type="number"/></div>
+</div>
+<p class="helper-text">Metas iniciales orientativas, editables según tus necesidades.</p>
+<div class="goal-result" hidden="" id="goalResult"></div>
+<p class="form-error" id="goalError" role="alert"></p>
+<div class="modal-actions">
+<button class="button button-soft" data-close="goal" type="button">
+            Cancelar
+          </button>
+<button class="button button-primary" type="submit">
+            Calcular y guardar
+          </button>
+</div>
+</form>
+</section>
+</div>
+<!-- ==========================
+       MODAL CREAR PRODUCTO
+  =========================== -->
+<div aria-hidden="true" class="modal" id="productModal">
+<div class="modal-backdrop" data-close="product"></div>
+<section aria-labelledby="productModalTitle" aria-modal="true" class="modal-panel" role="dialog">
+<button aria-label="Cerrar" class="modal-close" data-close="product" type="button">
+        ×
+      </button>
+<p class="eyebrow">
+        MI CATÁLOGO
+      </p>
+<h2 id="productModalTitle">
+        Crear producto
+      </h2>
+<p class="modal-intro">
+        Registrá manualmente un producto
+        que no aparezca en el buscador.
+      </p>
+<form id="productForm">
+<label for="newProductName">
+          Nombre del producto
+        </label>
+<input id="newProductName" placeholder="Ej: Alfajor de chocolate" required="" type="text"/>
+<label for="newProductBrand">
+          Marca
+        </label>
+<input id="newProductBrand" placeholder="Ej: Milka" type="text"/>
+<label for="newProductBarcode">
+          Código de barras (opcional)
+        </label>
+<input id="newProductBarcode" inputmode="numeric" placeholder="Código del envase" type="text"/>
+<label for="newProductReference">
+          Información nutricional indicada por
+        </label>
+<select id="newProductReference">
+<option value="100">
+            Cada 100 g / 100 ml
+          </option>
+<option value="portion">
+            Por porción
+          </option>
+</select>
+<div hidden="" id="newProductPortionGroup">
+<label for="newProductPortionGrams">
+            Peso o volumen de la porción
+          </label>
+<input id="newProductPortionGrams" min="0.1" placeholder="Ej: 55" step="any" type="number"/>
+</div>
+<div class="form-two">
+<div>
+<label for="newProductCalories">
+              Calorías (kcal)
+            </label>
+<input id="newProductCalories" min="0" required="" step="any" type="number"/>
+</div>
+<div>
+<label for="newProductProtein">
+              Proteínas (g)
+            </label>
+<input id="newProductProtein" min="0" required="" step="any" type="number"/>
+</div>
+</div>
+<div class="form-two macro-product-fields">
+<div><label for="newProductCarbs">Carbohidratos (g, opcional)</label><input id="newProductCarbs" min="0" placeholder="Sin dato" step="any" type="number"/></div>
+<div><label for="newProductFats">Grasas (g, opcional)</label><input id="newProductFats" min="0" placeholder="Sin dato" step="any" type="number"/></div>
+</div>
+<label for="newProductUnit">
+          Unidad de referencia
+        </label>
+<select id="newProductUnit">
+<option value="g">
+            Gramos (g)
+          </option>
+<option value="ml">
+            Mililitros (ml)
+          </option>
+</select>
+<p class="form-error" id="productError" role="alert"></p>
+<div class="modal-actions">
+<button class="button button-soft" data-close="product" type="button">
+            Cancelar
+          </button>
+<button class="button button-primary" type="submit">
+            Guardar producto
+          </button>
+</div>
+</form>
+</section>
+</div>
+<nav aria-label="Navegación principal móvil" class="app-bottom-nav">
+<a data-nav="inicio" href="#inicio"><span class="nav-symbol"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z"></path></svg></span><span>Inicio</span></a>
+<button aria-label="Agregar comida" class="nav-add" hidden="" id="mobileAddMeal" style="display:none!important" type="button"><span class="nav-plus">+</span><span>Agregar</span></button>
+<a data-nav="progreso" href="#progreso"><span class="nav-symbol"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M4 20V11M10 20V4M16 20v-8M22 20v-5"></path></svg></span><span>Progreso</span></a><button id="compactGoal" type="button"><span class="nav-symbol"><svg aria-hidden="true" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><circle cx="12" cy="12" r="5"></circle><circle cx="12" cy="12" r="1"></circle></svg></span><span>Objetivos</span></button>
+<a data-nav="coach" href="#coach">
+<span class="nav-symbol"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="m12 3 2.5 6.5L21 12l-6.5 2.5L12 21l-2.5-6.5L3 12l6.5-2.5Z"></path></svg></span>
+<span>Coach IA</span>
+</a>
+<a href="https://whatsapp.com/channel/0029VbDNVad7z4kkLml40j0H" rel="noopener noreferrer" target="_blank"><span class="nav-symbol"><svg aria-hidden="true" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"></circle><path d="M3 20v-2a6 6 0 0 1 12 0v2M16 5a3 3 0 0 1 0 6m2 3a5 5 0 0 1 3 4v2"></path></svg></span><span>Comunidad</span></a></nav>
+<div id="authModal" class="ct-auth-overlay" hidden>
+<div class="ct-auth-backdrop" data-auth-close></div>
+<section class="ct-auth-panel" role="dialog" aria-modal="true" aria-labelledby="authTitle">
+<button type="button" class="ct-auth-close" data-auth-close aria-label="Cerrar">×</button>
+<h2 id="authTitle">Mi cuenta</h2>
+<div id="authSignedOut"><p class="ct-auth-description">Iniciá sesión o creá tu cuenta en CalorieTrack.</p>
+<div class="ct-auth-tabs"><button type="button" id="authLoginTab" class="is-selected">Iniciar sesión</button><button type="button" id="authRegisterTab">Registrarme</button></div>
+<form id="authForm"><label for="authEmail">Correo electrónico</label><input id="authEmail" type="email" autocomplete="email" required><label for="authPassword">Contraseña</label><input id="authPassword" type="password" autocomplete="current-password" minlength="6" required><button id="authSubmit" class="button button-primary ct-auth-submit" type="submit">Iniciar sesión</button></form>
+<button id="authReset" class="ct-auth-link" type="button">¿Olvidaste tu contraseña?</button></div>
+<div id="authSignedIn" hidden><p>Sesión iniciada como <strong id="authUserEmail"></strong></p><p class="ct-auth-note">La sincronización está desactivada. Los registros de este navegador son locales y no están separados por cuenta.</p><button id="authLogout" type="button" class="button button-primary ct-auth-submit">Cerrar sesión</button></div>
+<form id="authRecovery" hidden><label for="authNewPassword">Nueva contraseña</label><input id="authNewPassword" type="password" autocomplete="new-password" minlength="6" required><button class="button button-primary ct-auth-submit" type="submit">Guardar contraseña</button></form>
+<p id="authMessage" class="ct-auth-message" role="status" aria-live="polite"></p>
+</section></div>
+</body>
+</html>

@@ -1,0 +1,22 @@
+CALORIETRACK — PROYECTO COMPLETO (11/11/2026)
+
+IMPORTANTE: HACE UNA COPIA DE SEGURIDAD DEL REPOSITORIO ANTES DE REEMPLAZAR ARCHIVOS.
+
+GitHub Pages publica el frontend. Render publica server.py y requiere configurar GEMINI_API_KEY.
+No subas tu clave Gemini al repositorio.
+
+1. Descomprimir este ZIP. Abrir la carpeta CalorieTrack_COMPLETO_Movil_2026-11-11.
+2. En GitHub entrar a https://github.com/varnettt/contador-calorias
+3. En la rama publicada (normalmente main), elegir Add file > Upload files.
+4. Arrastrar TODOS los archivos de la carpeta descomprimida (no arrastrar el ZIP ni una carpeta envolvente).
+5. GitHub reemplaza archivos que tengan el MISMO nombre y ubicación. Confirmar con Commit changes.
+6. En Settings > Pages, verificar la rama y la carpeta / (root). Esperar a que Actions termine.
+7. En el celular abrir https://varnettt.github.io/contador-calorias/?v=20261111full2 en incógnito.
+8. Verificar https://varnettt.github.io/contador-calorias/style.css : debe comenzar con :root y NO con <!DOCTYPE html>.
+
+NOTAS:
+- Los datos del usuario se guardan en el localStorage del navegador. No borrar datos del sitio.
+- Los archivos del frontend no actualizan automáticamente el servicio Render. Para cambiar el backend hay que desplegar server.py en Render.
+- El Coach IA depende del backend Render, su API y la clave Gemini. Si falla la respuesta, revisar logs de Render.
+- Si hay archivos antiguos extra en GitHub, no borrarlos a ciegas: revisar referencias antes.
+- No se ha probado la interfaz en tu celular real. Las validaciones locales no sustituyen una prueba en GitHub Pages.

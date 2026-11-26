@@ -1,0 +1,13 @@
+CalorieTrack: sincronización de cuentas (primera versión)
+
+1) ANTES DE REEMPLAZAR: hacé copia de tu proyecto y de los datos locales.
+2) Supabase > SQL Editor > New query: ejecutá PASO_SQL_ADICIONAL.sql.
+3) Copiá index.html, auth.js, script.js y sync.js a tu proyecto, sin borrar el resto.
+4) Conservá auth.css, style.css, calendar.js, coach.js, coach-floating.js, coach-floating.css y mobile-layout-fix.css de tu proyecto. Los archivos del Coach no estaban en tu ZIP.
+5) Abrí con Live Server. Probá con una cuenta nueva y datos de prueba.
+6) Los registros locales anteriores NO se importan automáticamente: esto evita asociarlos a la cuenta equivocada. Guardá una copia; la migración se hará con confirmación explícita.
+7) La cuenta conectada usa un caché local separado por ID y sincroniza comidas, agua, pasos y macros con Supabase. Los productos guardados y campos avanzados de objetivo siguen locales por cuenta.
+8) Si ves un aviso de fallo de sincronización, no borres los datos locales. Revisá la consola y las políticas RLS.
+9) Probá en dos dispositivos y revisá los registros en Supabase antes de usarlo con usuarios reales.
+
+AVISO: no se incluyó supabase-config.js en este ZIP para evitar redistribuir tu clave; conservá el archivo actual.

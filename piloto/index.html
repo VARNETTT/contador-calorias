@@ -1,0 +1,20 @@
+<!doctype html><html lang="es"><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Prueba de sincronización · CalorieTrack</title>
+<style>body{font:1rem system-ui;max-width:48rem;margin:2rem auto;padding:0 1rem}input,button,select{padding:.5rem;margin:.25rem}label{display:block}pre{white-space:pre-wrap;overflow-wrap:anywhere;background:#eef4f4;padding:1rem}</style>
+<h1>Prueba de sincronización</h1>
+<p>Usá dos cuentas ficticias de una copia de Supabase.</p>
+<form id="login"><label>URL de la copia <input id="url" type="url" required></label>
+<label>Clave publicable de la copia <input id="key" required></label>
+<label>Correo de prueba <input id="email" type="email" required></label>
+<label>Contraseña de prueba <input id="pw" type="password" required></label><button>Conectar</button></form>
+<section hidden id="controls">
+<p id="owner"></p><label>Fecha de pasos <input type="date" id="date"></label>
+<label>Pasos u objetivo en kcal <input id="amount" type="number" min="1" step="1" value="300"></label>
+<button id="steps">Guardar pasos</button><button id="goal">Guardar objetivo</button>
+<button id="meal">Agregar comida ficticia</button><button id="water">Agregar agua ficticia</button>
+<label>Registro de prueba <select id="items"></select></label><button id="del">Eliminar seleccionado</button>
+<label><input type="checkbox" id="offline">Simular desconexión de las escrituras</label>
+<label><input type="checkbox" id="lost">Perder la próxima respuesta confirmada y pausar los envíos</label>
+<button id="retry">Reintentar pendientes</button><button id="refresh">Volver a cargar desde el servidor</button>
+<button id="exit">Salir del piloto</button><pre id="state"></pre></section>
+<p role="status" id="msg"></p><script src="../sync.js"></script><script src="piloto.js"></script></html>

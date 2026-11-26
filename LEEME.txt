@@ -1,0 +1,1 @@
+Reemplazá index.html y script.js por estos archivos. style.css conserva Ocean Mint. Los carbohidratos y grasas son opcionales al calcular y guardar el objetivo. Hacé una copia de seguridad antes de reemplazar.

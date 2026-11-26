@@ -1,0 +1,11 @@
+CalorieTrack — versión violeta y registro de agua plegable
+
+1. Hacé una copia de seguridad de tus archivos actuales.
+2. Reemplazá los archivos del proyecto por los de este ZIP (sin borrar datos guardados en el navegador).
+3. Subí los archivos a GitHub; el cambio en server.py requiere un despliegue de Render.
+4. Actualizá la página con Ctrl+F5.
+5. En "Mi agua", tocá "Registro de agua" para abrir/cerrar el panel.
+6. En "Nuevo registro" > "Buscar productos", probá "Milka".
+
+IMPORTANTE: El buscador utiliza Open Food Facts, que puede estar caído, limitar consultas o bloquear temporalmente solicitudes desde Render. El servidor ahora prueba dos rutas de búsqueda y muestra un error explícito si ambas fallan; no garantiza que el servicio externo responda.
+No se verificó la conectividad real desde Render ni el aspecto visual en tu celular. Si sigue fallando, compartí la línea "OFF ..." de los logs de Render.

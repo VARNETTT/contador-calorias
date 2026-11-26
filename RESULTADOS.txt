@@ -1,0 +1,33 @@
+✔ Comí 2 huevos, 2 tostadas y una banana (30.379204ms)
+✔ 0,5 kg de arroz (7.102817ms)
+✔ 0.5 kg de arroz (9.453663ms)
+✔ 250 ml de leche descremada y 40 g de avena (7.453488ms)
+✔ 1,5 litros de leche descremada; dos bananas (7.487159ms)
+✔ un huevo y medio kilo de arroz (11.386875ms)
+✔ 12,5g de avena, 1.5 tostadas (6.883744ms)
+✔ dos huevos,una banana (7.10549ms)
+✔ medio huevo con 125 mililitros de leche descremada (6.751423ms)
+✔ Ruta rápida de IA, edición de porción y conservación de un registro previo (4.763447ms)
+✔ Avisa el ingrediente sin identificar: un huevo y 2 ml de arroz (2.143992ms)
+✔ Avisa el ingrediente sin identificar: un huevo y producto desconocido (1.959843ms)
+✔ Dos análisis en una comida: guardar antes de confirmar la segunda tanda no descarta ingredientes (4.709675ms)
+✔ Editar el texto mientras se analiza invalida la revisión anterior (4.834825ms)
+✔ meals: ACK perdido, borrado desde B, recarga offline en A y reintento antiguo (4.352453ms)
+✔ water: ACK perdido, borrado desde B, recarga offline en A y reintento antiguo (1.932562ms)
+✔ steps: ACK perdido, borrado desde B, recarga offline en A y reintento antiguo (1.440275ms)
+✔ steps: dos ediciones de una revisión, conflicto conserva el intento (2.007356ms)
+✔ goal: dos ediciones de una revisión, conflicto conserva el intento (0.804441ms)
+✔ Dos ediciones offline consecutivas conservan sus revisiones al recargar (0.853725ms)
+✔ La cola y los datos quedan aislados por cuenta (0.640521ms)
+✔ Fallo de almacenamiento al guardar: ni cola ni datos cambian (0.504796ms)
+✔ Se conserva y bloquea una cola antigua sin revisión verificable (0.498847ms)
+✔ Dos dispositivos envían objetivos a la vez: se aplica uno y se conserva el otro (0.75816ms)
+✔ Un registro nuevo en un equipo no borra el alta independiente del otro (0.814907ms)
+ℹ tests 25
+ℹ suites 0
+ℹ pass 25
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 200.453172

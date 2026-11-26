@@ -1,0 +1,10 @@
+CalorieTrack — corrección Coach IA + círculo de calorías en móvil
+
+SUBÍ A LA RAÍZ DE GITHUB TODOS LOS ARCHIVOS DEL ZIP, excepto LEEME_PRIMERO.txt si no lo querés.
+Especialmente: index.html, style.css, coach.js, coach-chat-fix.css y el NUEVO mobile-layout-fix.css.
+No borres tus registros del navegador (localStorage).
+El CSS nuevo se carga al final para evitar conflictos con reglas anteriores.
+Los 5 círculos siguen en una fila y el texto dentro del círculo se compacta.
+El Coach IA tiene un área de mensajes con desplazamiento propio y controles debajo.
+Esperá a que termine GitHub Pages y probá en incógnito.
+No se pudo hacer una prueba visual real en tu celular; si sigue fallando enviá una captura.

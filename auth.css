@@ -1,0 +1,24 @@
+/* CalorieTrack · Cuentas */
+.auth-header-btn{flex-shrink:0;border:1px solid #c9ddce;background:#eaf3e9;color:#276b47;padding:10px 14px;border-radius:13px;font:800 12px Manrope,sans-serif;cursor:pointer;white-space:nowrap}
+.auth-header-btn:hover{background:#dcecdf}
+.ct-auth-overlay[hidden],.ct-auth-panel [hidden]{display:none!important}
+.ct-auth-overlay{position:fixed;inset:0;z-index:110;display:grid;place-items:center;padding:16px}
+.ct-auth-backdrop{position:absolute;inset:0;background:rgba(21,41,29,.55);backdrop-filter:blur(5px)}
+.ct-auth-panel{position:relative;width:min(100%,440px);max-height:92dvh;overflow:auto;border-radius:28px;padding:30px;background:#fffefa;box-shadow:0 30px 80px #142a2040;color:#26382e}
+.ct-auth-panel h2{font:800 28px Manrope,sans-serif;margin:0 0 8px}
+.ct-auth-description,.ct-auth-note{font-size:13px;line-height:1.6;color:#788278}
+.ct-auth-close{position:absolute;right:18px;top:16px;border:0;background:#eef2eb;border-radius:50%;width:34px;height:34px;font-size:24px;color:#365c46;cursor:pointer}
+.ct-auth-tabs{display:grid;grid-template-columns:1fr 1fr;gap:7px;padding:5px;background:#eff3ed;border-radius:14px;margin:20px 0}
+.ct-auth-tabs button{border:0;border-radius:11px;padding:11px 6px;background:transparent;color:#63756a;font-weight:800;cursor:pointer}
+.ct-auth-tabs button.is-selected{background:#fff;box-shadow:0 3px 12px #0000000d;color:#286747}
+#authForm label{display:block;font-weight:700;font-size:12px;margin:15px 0 7px}
+#authForm input{width:100%;border:1px solid #d8e3d8;border-radius:12px;padding:13px 14px;background:#fff;color:#26382e;outline:none}
+#authForm input:focus{border-color:#527b61;box-shadow:0 0 0 3px #e3efe5}
+.ct-auth-submit{width:100%;margin-top:20px}
+.ct-auth-link{display:block;margin:16px auto 0;border:0;background:transparent;color:#286747;font-weight:700;cursor:pointer}
+.ct-auth-message{font-size:13px;line-height:1.5;margin:16px 0 0;min-height:18px;color:#276b47}
+.ct-auth-message.is-error{color:#a43b3b}
+@media(max-width:700px){.site-header{gap:8px}.brand{font-size:17px}.auth-header-btn{padding:9px 10px;font-size:11px}.header-community-mobile{padding:8px!important;font-size:10px!important}.ct-auth-panel{padding:25px 20px;border-radius:22px}}
+@media(max-width:380px){.brand{font-size:15px}.brand-mark{width:29px;height:29px}.auth-header-btn{padding:8px}.header-community-mobile{font-size:9px!important}}
+
+.ct-auth-overlay{z-index:10000}.ct-auth-panel{background:#fff;color:#172c26;font-family:Inter,system-ui,sans-serif}.ct-auth-panel h2{font-family:inherit}.ct-auth-panel input{box-sizing:border-box}.ct-auth-panel .ct-auth-submit{background:#172c26;color:white}.ct-auth-panel #authRecovery input{display:block;width:100%;padding:12px;border:1px solid #d8e3d8;border-radius:12px;margin-top:8px}.ct-auth-panel .ct-auth-description,.ct-auth-panel .ct-auth-note{color:#52645e}

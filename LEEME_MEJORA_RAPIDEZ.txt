@@ -1,0 +1,16 @@
+CALORIETRACK - MOTOR NUTRICIONAL RAPIDO (14/11/2026)
+
+1. Subi a GitHub los archivos index.html, script.js y nutrition_ar.json.
+   El ZIP incluye el proyecto completo para que puedas reemplazarlo si lo preferis.
+2. Conserva GEMINI_API_KEY y GEMINI_MODEL en Render. No pongas claves en GitHub.
+3. Si server.py ya esta actualizado en Render, no hace falta cambiarlo para esta mejora.
+4. Si subis server.py a GitHub, Render puede desplegar automaticamente segun su configuracion.
+5. Recarga la pagina con Ctrl+F5 (en celular, cerra y volve a abrir la pagina).
+6. Proba '2 huevos, 2 tostadas y una banana' en 'Analizar comida (rapido + IA)'.
+   Revisa las cantidades antes de agregar.
+7. Proba 'alfajor Milka': si no hay una coincidencia local completa, consulta Gemini.
+
+IMPORTANTE: la base nutrition_ar.json contiene valores ORIENTATIVOS, no etiquetas
+verificadas. Este motor rapido solo funciona para frases simples y coincidencias
+completas. Las recetas complejas y marcas desconocidas siguen usando Gemini.
+No se ha probado en el servicio desplegado; se valido sintaxis JS/Python localmente.
