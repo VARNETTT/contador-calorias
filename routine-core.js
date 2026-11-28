@@ -1,0 +1,1 @@
+(function(root){const api={remaining:(end,now)=>Math.max(0,Math.ceil((end-now)/1000)),next:(items,i,s)=>s+1<items[i].sets?{i,s:s+1}:i+1<items.length?{i:i+1,s:0}:null};if(typeof module==='object')module.exports=api;else root.CTRoutine=api;})(globalThis);

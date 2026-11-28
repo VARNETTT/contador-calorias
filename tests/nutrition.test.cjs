@@ -177,3 +177,14 @@ test('Editar el texto mientras se analiza invalida la revisión anterior', async
   const [meal] = JSON.parse(app.storage.get(mealsKey));
   assert.deepEqual(meal.products.map(p => p.amount), [500]);
 });
+
+test('Los registros inválidos no reducen el total diario y el botón queda en su columna', () => {
+  const now = new Date();
+  const date = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`;
+  const storage = new Map([[mealsKey, JSON.stringify([{id:'a',date,type:'Desayuno',description:'Prueba',calories:100,protein:5},{id:'b',date,type:'Desayuno',description:'Inválido',calories:-30,protein:-2}])]]);
+  const app = start(storage);
+  assert.equal(app.elements.dailyConsumedCalories.textContent, '100');
+  const cards = app.elements.mealList.flat().filter(e=>e.className==='meal-item meal-card-v2');
+  assert.equal(cards.length,2);
+  for(const card of cards){assert.equal(card.children.length,2);assert.match(card.children[1].className,/meal-card-actions/);assert.match(card.children[1].children[0]['aria-label'],/Eliminar/);}
+});

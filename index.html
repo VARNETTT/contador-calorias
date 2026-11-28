@@ -12,17 +12,19 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=Manrope:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
 <link href="style.css?v=20261110meals1" rel="stylesheet"/>
 <script defer="" src="https://unpkg.com/html5-qrcode"></script>
-<script defer="" src="script.js?v=20261126speed1"></script>
+<script defer="" src="script.js?v=20261126audit1"></script>
 <script defer="" src="calendar.js?v=20261109bundle"></script>
 <script defer="" src="coach.js?v=20261111mobilefix3"></script>
 <link href="coach-chat-fix.css?v=20261111mobilefix4" rel="stylesheet"/>
-<link href="calm-fitness.css?v=4" rel="stylesheet"/>
-<script defer="" src="calm-fitness.js?v=5"></script>
-<link rel="stylesheet" href="auth.css?v=2"/>
-<script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script defer src="supabase-config.js"></script>
-<script defer src="auth.js?v=2"></script>
-</head>
+<link href="calm-fitness.css?v=10" rel="stylesheet"/>
+<script defer="" src="calm-fitness.js?v=7"></script>
+<link href="auth.css?v=2" rel="stylesheet"/>
+<script defer="" src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script defer="" src="supabase-config.js"></script>
+<script defer="" src="auth.js?v=2"></script>
+<link href="floating-panels.css?v=1" rel="stylesheet"/>
+<script defer="" src="floating-panels.js?v=1"></script>
+<link rel="stylesheet" href="training.css?v=2"/><link rel="stylesheet" href="training-library.css?v=2"/><script defer src="training-core.js?v=1"></script><script defer src="training.js?v=2"></script><script defer src="training-library.js?v=2"></script><link rel="stylesheet" href="routine.css?v=1"><script defer src="routine-core.js?v=1"></script><script defer src="routine.js?v=1"></script></head>
 <body>
 <!-- ==========================
        ENCABEZADO
@@ -34,12 +36,12 @@
 <a href="#progreso">Mi progreso</a>
 <a href="#agua">Mi agua</a>
 <a href="#comidas">Mis comidas</a>
-<a href="#productos">Productos</a>
+<a href="#entrenamiento">Entrenamiento</a><a href="#productos">Productos</a>
 <a href="#coach">✦ Coach IA</a>
 <a href="https://whatsapp.com/channel/0029VbDNVad7z4kkLml40j0H" rel="noopener noreferrer" target="_blank">Comunidad</a>
 </nav>
 <a class="ct-community-mobile" hidden="" href="https://whatsapp.com/channel/0029VbDNVad7z4kkLml40j0H" rel="noopener noreferrer" style="display:none!important" target="_blank">Comunidad ↗</a>
-<button aria-label="Mi cuenta" title="Mi cuenta" id="authOpen" class="ct-profile" type="button"><svg aria-hidden="true" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><circle cx="12" cy="9" r="3"></circle><path d="M6 19c0-5 12-5 12 0"></path></svg></button></header>
+<button aria-label="Mi cuenta" class="ct-profile" id="authOpen" title="Mi cuenta" type="button"><svg aria-hidden="true" viewbox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><circle cx="12" cy="9" r="3"></circle><path d="M6 19c0-5 12-5 12 0"></path></svg></button></header>
 <!-- ==========================
        CONTENIDO PRINCIPAL
   =========================== -->
@@ -51,7 +53,7 @@
 <section aria-labelledby="calendarTitle" class="calendar-section calendar-compact" id="calendario">
 <div class="calendar-header">
 <div><p class="eyebrow">TU HISTORIAL</p><h2 id="calendarTitle">Hoy</h2></div>
-<button aria-controls="calendarExpanded" aria-expanded="false" aria-label="Ver calendario" class="button button-soft" id="calendarToggle" type="button"><svg aria-hidden="true" viewBox="0 0 24 24"><rect height="16" rx="2" width="18" x="3" y="5"></rect><path d="M7 3v4M17 3v4M3 10h18M8 14h2m4 0h2m-8 4h2"></path></svg></button>
+<button aria-controls="calendarExpanded" aria-expanded="false" aria-label="Ver calendario" class="button button-soft" id="calendarToggle" type="button"><svg aria-hidden="true" viewbox="0 0 24 24"><rect height="16" rx="2" width="18" x="3" y="5"></rect><path d="M7 3v4M17 3v4M3 10h18M8 14h2m4 0h2m-8 4h2"></path></svg></button>
 </div>
 <div aria-label="Elegir un día de la semana" class="week-strip" id="weekStrip"></div>
 <div hidden="" id="calendarExpanded">
@@ -69,26 +71,23 @@
         </button>
 </div>
 <div aria-label="Progreso diario" class="circle-dashboard">
-<article class="circle-stat compact-hero"><div class="hero-info"><h3>Calorías restantes</h3><span class="ct-source" id="dailyRemainingCalories">Te quedan 2000 kcal.</span><small><span id="dailyConsumedCalories">0</span> de <span id="dailyTargetCalories">2000</span> kcal</small><div class="ct-cal-bar"><span></span></div><span aria-hidden="true" id="ctRemainingDisplay"></span></div>
-<div class="circle-progress" id="calorieCircle" style="--circle-color:#43835a;--progress:0%">
-<div class="circle-progress-content"><strong id="caloriePercent">0%</strong><span>Consumido</span></div>
-</div>
-<div hidden="" id="dailyProgress"></div><span hidden="" id="progressGoalLabel"></span><span hidden="" id="todayLabel"></span>
-</article>
-<div class="compact-macros"><article class="circle-stat compact-macro">
-<h3>Proteínas</h3>
+<div class="compact-macros ct-nutrition-rings"><article class="circle-stat compact-macro ct-calories-ring">
+<div class="circle-progress" id="calorieCircle" style="--progress:0%"><div class="circle-progress-content"><h3>Calorías</h3><strong id="dailyConsumedCalories">0</strong><small>de <span id="dailyTargetCalories">2000</span> kcal</small></div></div>
+<p id="caloriePercent">0%</p><span hidden="" id="dailyRemainingCalories"></span><div hidden="" id="dailyProgress"></div><span hidden="" id="progressGoalLabel"></span><span hidden="" id="todayLabel"></span>
+</article><article class="circle-stat compact-macro">
+
 <div class="circle-progress" id="proteinCircle" style="--circle-color:#e4a44d;--progress:0%">
-<div class="circle-progress-content"><strong><span id="totalProtein">0</span> g</strong><span>consumidas</span></div>
+<div class="circle-progress-content"><h3>Proteínas</h3><strong><span id="totalProtein">0</span> g</strong><span>consumidas</span><small id="proteinGoalLabel">Meta: 120 g</small></div>
 </div>
-<p id="proteinPercent">0%</p><small id="proteinGoalLabel">Meta: 120 g</small>
+<p id="proteinPercent">0%</p>
 </article><article class="circle-stat compact-macro">
-<h3>Carbohidratos</h3>
-<div class="circle-progress" id="carbCircle" style="--circle-color:#8b78d7;--progress:0%"><div class="circle-progress-content"><strong id="totalCarbs">—</strong><span>g registrados</span></div></div>
-<p id="carbPercent">Sin datos</p><small>Meta: <span id="carbGoalLabel">250</span> g</small>
+
+<div class="circle-progress" id="carbCircle" style="--circle-color:#8b78d7;--progress:0%"><div class="circle-progress-content"><h3>Carbohidratos</h3><strong id="totalCarbs">—</strong><span>g registrados</span><small>Meta: <span id="carbGoalLabel">250</span> g</small></div></div>
+<p id="carbPercent">Sin datos</p>
 </article><article class="circle-stat compact-macro">
-<h3>Grasas</h3>
-<div class="circle-progress" id="fatCircle" style="--circle-color:#dd8b63;--progress:0%"><div class="circle-progress-content"><strong id="totalFats">—</strong><span>g registrados</span></div></div>
-<p id="fatPercent">Sin datos</p><small>Meta: <span id="fatGoalLabel">67</span> g</small>
+
+<div class="circle-progress" id="fatCircle" style="--circle-color:#dd8b63;--progress:0%"><div class="circle-progress-content"><h3>Grasas</h3><strong id="totalFats">—</strong><span>g registrados</span><small>Meta: <span id="fatGoalLabel">67</span> g</small></div></div>
+<p id="fatPercent">Sin datos</p>
 </article></div><div class="compact-activity"><article class="circle-stat compact-water">
 <h3>Agua</h3>
 <div class="circle-progress" id="waterCircle" style="--circle-color:#4799d3;--progress:0%">
@@ -122,56 +121,17 @@
           ＋ Registrar comida
         </button>
 <button class="ct-history" type="button">Ver historial</button></div>
-<div id="ctMealGroups"></div><div class="meal-list ct-meal-details" id="mealList"></div>
-<div aria-live="polite" class="meal-day-summary" id="mealDaySummary"></div>
-</section><section class="welcome-row">
-<div>
-<p class="eyebrow">
-<span class="eyebrow-dot"></span>
-          UN PASO A LA VEZ
-        </p>
-<h1>
-          Tu bienestar,
-          <br/>
-<em>en equilibrio.</em>
-</h1>
-<p class="welcome-copy">
-          Una forma simple y consciente de conocer
-          tu alimentación y mantener hábitos saludables.
-        </p>
 <button aria-label="Agregar una comida nueva" class="button meal-main-action" id="openMealModal" type="button">
 <span aria-hidden="true" class="meal-action-icon">+</span>
 <span class="meal-action-label">Registrar alimento</span>
 <span aria-hidden="true" class="meal-action-arrow">↗</span>
 </button>
-</div>
-<div aria-hidden="true" class="welcome-art">
-<div class="art-circle art-circle-back"></div>
-<div class="art-circle art-circle-front"></div>
-<span class="art-leaf leaf-one">✳</span>
-<span class="art-leaf leaf-two">✿</span>
-<span class="art-fruit">●</span>
-</div>
+<div class="meal-list ct-meal-details" id="mealList"></div>
+<div aria-live="polite" class="meal-day-summary" id="mealDaySummary"></div>
 </section>
 <!-- ==========================
          CONTADOR DE AGUA
     =========================== -->
-<section class="water-section" id="agua">
-<!--
-        El JavaScript actualizado insertará aquí
-        el contador de agua.
-
-        Tendrá:
-        - Total consumido hoy
-        - Cantidad
-        - Vasos de 250 ml
-        - Litros
-        - Mililitros
-        - Historial diario
-        - Opción para eliminar registros
-      -->
-<div id="waterTrackerMount"></div>
-</section>
 <!-- ==========================
          MIS COMIDAS
     =========================== -->
@@ -221,72 +181,6 @@
 <!-- ==========================
      COACH IA
 =========================== -->
-<section aria-labelledby="coachTitle" class="coach-section" id="coach">
-<div class="coach-heading">
-<div class="coach-heading-icon">✦</div>
-<div>
-<p class="eyebrow">TU ASISTENTE PERSONAL</p>
-<h2 id="coachTitle">Coach IA</h2>
-<p class="coach-subtitle">
-        Orientación nutricional adaptada a tus objetivos.
-      </p>
-</div>
-</div>
-<div class="coach-card">
-<div class="coach-chat-header">
-<div class="coach-avatar">✦</div>
-<div class="coach-chat-identity">
-<strong>Coach CalorieTrack <span class="coach-ai-tag">IA</span></strong>
-<span class="coach-online"><span class="coach-online-dot"></span> Tu espacio de bienestar</span>
-</div>
-<button class="coach-clear-button" id="coachClear" type="button">
-        Nueva conversación
-      </button>
-</div>
-<div aria-label="Conversación con Coach IA" aria-live="polite" class="coach-messages" id="coachMessages" role="log">
-<div class="coach-message coach-message-ai">
-<div class="coach-message-avatar">✦</div>
-<div class="coach-bubble">
-<strong>¡Hola! Soy tu Coach IA.</strong>
-<p>
-            Puedo ayudarte a entender tu alimentación,
-            revisar tus registros y encontrar ideas
-            de comidas según tus objetivos.
-          </p>
-<p>¿En qué te gustaría que te ayude hoy?</p>
-</div>
-</div>
-</div>
-<div class="coach-suggestions">
-<button class="coach-suggestion" data-coach-prompt="Analizá mi alimentación de hoy y decime qué podría mejorar." type="button">
-        📊 Analizar mi día
-      </button>
-<button class="coach-suggestion" data-coach-prompt="¿Qué podría cenar hoy según mi objetivo calórico?" type="button">
-        🥗 ¿Qué puedo cenar?
-      </button>
-<button class="coach-suggestion" data-coach-prompt="Explicame cómo mantener un déficit calórico saludable." type="button">
-        🎯 Mi déficit calórico
-      </button>
-<button class="coach-suggestion" data-coach-prompt="Dame ideas de comidas con buenas fuentes de proteínas." type="button">
-        ✨ Ideas de comidas
-      </button>
-</div>
-<form class="coach-composer" id="coachForm">
-<label class="sr-only" for="coachInput">
-        Escribí tu pregunta para Coach IA
-      </label>
-<textarea id="coachInput" maxlength="1500" placeholder="Escribí tu mensaje..." required="" rows="1"></textarea>
-<button aria-label="Enviar mensaje" class="coach-send-button" id="coachSend" type="submit">
-        ➤
-      </button>
-</form>
-<p aria-live="polite" class="coach-status" id="coachStatus" role="status"></p>
-<p class="coach-disclaimer">
-      Las respuestas son orientativas y no reemplazan
-      el asesoramiento de un profesional de la salud.
-    </p>
-</div>
-</section>
 <!-- RECORDATORIO -->
 <section class="tip-card">
 <div class="tip-icon">✿</div>
@@ -303,6 +197,13 @@
         </p>
 </div>
 </section>
+</main>
+<main id="entrenamiento" class="page-shell gym-page" hidden>
+<header class="gym-heading"><h1>Entrenamiento</h1><p>Tu última carga y tu progreso, en un solo lugar.</p><button id="gymNew" class="gym-primary" type="button">+ Registrar entrenamiento</button></header>
+<nav class="gym-tabs" aria-label="Secciones de entrenamiento"><button type="button" data-gym-tab="routine" aria-pressed="true">Mi rutina</button><button type="button" data-gym-tab="library" aria-pressed="false">Ejercicios</button><button type="button" data-gym-tab="progress" aria-pressed="false">Progreso</button></nav><section id="gymLibrary" class="gym-card" hidden><h2>Biblioteca de ejercicios</h2><label>Buscar<input id="gymSearch" type="search" placeholder="Ejercicio o máquina"></label><label>Grupo muscular<select id="gymGroup"><option value="">Todos</option></select></label><div id="gymCatalog"></div><div id="gymDetail" hidden></div></section><p id="gymStatus" role="status" aria-live="polite"></p>
+<form id="gymForm" hidden><h2>Sesión de entrenamiento</h2><label>Fecha<input id="gymDate" type="date" required></label><datalist id="gymExercises"></datalist><datalist id="gymMachines"></datalist><div id="gymFields"></div><button type="button" id="gymAddExercise">+ Agregar ejercicio</button><button class="gym-primary" type="submit">Guardar sesión</button><button type="button" id="gymCancel">Cancelar</button></form>
+<section id="gymProgress" class="gym-card" hidden><h2>Tu progreso</h2><label>Ejercicio y máquina<select id="gymSelect"></select></label><div class="gym-filters"><label>Indicador<select id="gymMetric"><option value="max">Peso máximo</option><option value="volume">Volumen por sesión</option></select></label><label>Período<select id="gymRange"><option value="0">Todo el historial</option><option value="1">Último mes</option><option value="3">Últimos tres meses</option></select></label></div><div id="gymChart"></div><p id="gymPoint" aria-live="polite"></p><h3>Historial por fecha</h3><div id="gymHistory"></div></section>
+<section id="gymRoutine" class="gym-card"><div id="gymPlanner"></div><h2>Sesiones recientes</h2><div id="gymRecent"></div></section>
 </main>
 <!-- ==========================
        PIE DE PÁGINA
@@ -671,26 +572,109 @@
 </section>
 </div>
 <nav aria-label="Navegación principal móvil" class="app-bottom-nav">
-<a data-nav="inicio" href="#inicio"><span class="nav-symbol"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z"></path></svg></span><span>Inicio</span></a>
+<a data-nav="inicio" href="#inicio"><span class="nav-symbol"><svg aria-hidden="true" viewbox="0 0 24 24"><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z"></path></svg></span><span>Inicio</span></a>
 <button aria-label="Agregar comida" class="nav-add" hidden="" id="mobileAddMeal" style="display:none!important" type="button"><span class="nav-plus">+</span><span>Agregar</span></button>
-<a data-nav="progreso" href="#progreso"><span class="nav-symbol"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M4 20V11M10 20V4M16 20v-8M22 20v-5"></path></svg></span><span>Progreso</span></a><button id="compactGoal" type="button"><span class="nav-symbol"><svg aria-hidden="true" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><circle cx="12" cy="12" r="5"></circle><circle cx="12" cy="12" r="1"></circle></svg></span><span>Objetivos</span></button>
-<a data-nav="coach" href="#coach">
-<span class="nav-symbol"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="m12 3 2.5 6.5L21 12l-6.5 2.5L12 21l-2.5-6.5L3 12l6.5-2.5Z"></path></svg></span>
+<a data-nav="progreso" href="#progreso"><span class="nav-symbol"><svg aria-hidden="true" viewbox="0 0 24 24"><path d="M4 20V11M10 20V4M16 20v-8M22 20v-5"></path></svg></span><span>Progreso</span></a><button id="compactGoal" type="button"><span class="nav-symbol"><svg aria-hidden="true" viewbox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><circle cx="12" cy="12" r="5"></circle><circle cx="12" cy="12" r="1"></circle></svg></span><span>Objetivos</span></button>
+<a data-nav="entrenamiento" href="#entrenamiento"><span class="nav-symbol"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M6 7v10M3 9v6M18 7v10M21 9v6M6 12h12"/></svg></span><span>Entrenamiento</span></a><a data-nav="coach" href="#coach">
+<span class="nav-symbol"><svg aria-hidden="true" viewbox="0 0 24 24"><path d="m12 3 2.5 6.5L21 12l-6.5 2.5L12 21l-2.5-6.5L3 12l6.5-2.5Z"></path></svg></span>
 <span>Coach IA</span>
 </a>
-<a href="https://whatsapp.com/channel/0029VbDNVad7z4kkLml40j0H" rel="noopener noreferrer" target="_blank"><span class="nav-symbol"><svg aria-hidden="true" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"></circle><path d="M3 20v-2a6 6 0 0 1 12 0v2M16 5a3 3 0 0 1 0 6m2 3a5 5 0 0 1 3 4v2"></path></svg></span><span>Comunidad</span></a></nav>
-<div id="authModal" class="ct-auth-overlay" hidden>
-<div class="ct-auth-backdrop" data-auth-close></div>
-<section class="ct-auth-panel" role="dialog" aria-modal="true" aria-labelledby="authTitle">
-<button type="button" class="ct-auth-close" data-auth-close aria-label="Cerrar">×</button>
+<a href="https://whatsapp.com/channel/0029VbDNVad7z4kkLml40j0H" rel="noopener noreferrer" target="_blank"><span class="nav-symbol"><svg aria-hidden="true" viewbox="0 0 24 24"><circle cx="9" cy="8" r="3"></circle><path d="M3 20v-2a6 6 0 0 1 12 0v2M16 5a3 3 0 0 1 0 6m2 3a5 5 0 0 1 3 4v2"></path></svg></span><span>Comunidad</span></a></nav>
+<div class="ct-auth-overlay" hidden="" id="authModal">
+<div class="ct-auth-backdrop" data-auth-close=""></div>
+<section aria-labelledby="authTitle" aria-modal="true" class="ct-auth-panel" role="dialog">
+<button aria-label="Cerrar" class="ct-auth-close" data-auth-close="" type="button">×</button>
 <h2 id="authTitle">Mi cuenta</h2>
 <div id="authSignedOut"><p class="ct-auth-description">Iniciá sesión o creá tu cuenta en CalorieTrack.</p>
-<div class="ct-auth-tabs"><button type="button" id="authLoginTab" class="is-selected">Iniciar sesión</button><button type="button" id="authRegisterTab">Registrarme</button></div>
-<form id="authForm"><label for="authEmail">Correo electrónico</label><input id="authEmail" type="email" autocomplete="email" required><label for="authPassword">Contraseña</label><input id="authPassword" type="password" autocomplete="current-password" minlength="6" required><button id="authSubmit" class="button button-primary ct-auth-submit" type="submit">Iniciar sesión</button></form>
-<button id="authReset" class="ct-auth-link" type="button">¿Olvidaste tu contraseña?</button></div>
-<div id="authSignedIn" hidden><p>Sesión iniciada como <strong id="authUserEmail"></strong></p><p class="ct-auth-note">La sincronización está desactivada. Los registros de este navegador son locales y no están separados por cuenta.</p><button id="authLogout" type="button" class="button button-primary ct-auth-submit">Cerrar sesión</button></div>
-<form id="authRecovery" hidden><label for="authNewPassword">Nueva contraseña</label><input id="authNewPassword" type="password" autocomplete="new-password" minlength="6" required><button class="button button-primary ct-auth-submit" type="submit">Guardar contraseña</button></form>
-<p id="authMessage" class="ct-auth-message" role="status" aria-live="polite"></p>
+<div class="ct-auth-tabs"><button class="is-selected" id="authLoginTab" type="button">Iniciar sesión</button><button id="authRegisterTab" type="button">Registrarme</button></div>
+<form id="authForm"><label for="authEmail">Correo electrónico</label><input autocomplete="email" id="authEmail" required="" type="email"/><label for="authPassword">Contraseña</label><input autocomplete="current-password" id="authPassword" minlength="6" required="" type="password"/><button class="button button-primary ct-auth-submit" id="authSubmit" type="submit">Iniciar sesión</button></form>
+<button class="ct-auth-link" id="authReset" type="button">¿Olvidaste tu contraseña?</button></div>
+<div hidden="" id="authSignedIn"><p>Sesión iniciada como <strong id="authUserEmail"></strong></p><p class="ct-auth-note">La sincronización está desactivada. Los registros de este navegador son locales y no están separados por cuenta.</p><button class="button button-primary ct-auth-submit" id="authLogout" type="button">Cerrar sesión</button></div>
+<form hidden="" id="authRecovery"><label for="authNewPassword">Nueva contraseña</label><input autocomplete="new-password" id="authNewPassword" minlength="6" required="" type="password"/><button class="button button-primary ct-auth-submit" type="submit">Guardar contraseña</button></form>
+<p aria-live="polite" class="ct-auth-message" id="authMessage" role="status"></p>
 </section></div>
+<dialog aria-labelledby="ctDialogTitle-agua" class="ct-float-dialog" id="ctDialog-agua"><div class="ct-dialog-head"><h2 id="ctDialogTitle-agua">Hidratación</h2><button aria-label="Cerrar Hidratación" data-ct-close="" type="button">×</button></div><section class="water-section" id="agua">
+<!--
+        El JavaScript actualizado insertará aquí
+        el contador de agua.
+
+        Tendrá:
+        - Total consumido hoy
+        - Cantidad
+        - Vasos de 250 ml
+        - Litros
+        - Mililitros
+        - Historial diario
+        - Opción para eliminar registros
+      -->
+<div id="waterTrackerMount"></div>
+</section></dialog>
+<dialog aria-labelledby="ctDialogTitle-coach" class="ct-float-dialog" id="ctDialog-coach"><div class="ct-dialog-head"><h2 id="ctDialogTitle-coach">Coach IA</h2><button aria-label="Cerrar Coach IA" data-ct-close="" type="button">×</button></div><section aria-labelledby="coachTitle" class="coach-section" id="coach">
+<div class="coach-heading">
+<div class="coach-heading-icon">✦</div>
+<div>
+<p class="eyebrow">TU ASISTENTE PERSONAL</p>
+<h2 id="coachTitle">Coach IA</h2>
+<p class="coach-subtitle">
+        Orientación nutricional adaptada a tus objetivos.
+      </p>
+</div>
+</div>
+<div class="coach-card">
+<div class="coach-chat-header">
+<div class="coach-avatar">✦</div>
+<div class="coach-chat-identity">
+<strong>Coach CalorieTrack <span class="coach-ai-tag">IA</span></strong>
+<span class="coach-online"><span class="coach-online-dot"></span> Tu espacio de bienestar</span>
+</div>
+<button class="coach-clear-button" id="coachClear" type="button">
+        Nueva conversación
+      </button>
+</div>
+<div aria-label="Conversación con Coach IA" aria-live="polite" class="coach-messages" id="coachMessages" role="log">
+<div class="coach-message coach-message-ai">
+<div class="coach-message-avatar">✦</div>
+<div class="coach-bubble">
+<strong>¡Hola! Soy tu Coach IA.</strong>
+<p>
+            Puedo ayudarte a entender tu alimentación,
+            revisar tus registros y encontrar ideas
+            de comidas según tus objetivos.
+          </p>
+<p>¿En qué te gustaría que te ayude hoy?</p>
+</div>
+</div>
+</div>
+<div class="coach-suggestions">
+<button class="coach-suggestion" data-coach-prompt="Analizá mi alimentación de hoy y decime qué podría mejorar." type="button">
+        📊 Analizar mi día
+      </button>
+<button class="coach-suggestion" data-coach-prompt="¿Qué podría cenar hoy según mi objetivo calórico?" type="button">
+        🥗 ¿Qué puedo cenar?
+      </button>
+<button class="coach-suggestion" data-coach-prompt="Explicame cómo mantener un déficit calórico saludable." type="button">
+        🎯 Mi déficit calórico
+      </button>
+<button class="coach-suggestion" data-coach-prompt="Dame ideas de comidas con buenas fuentes de proteínas." type="button">
+        ✨ Ideas de comidas
+      </button>
+</div>
+<form class="coach-composer" id="coachForm">
+<label class="sr-only" for="coachInput">
+        Escribí tu pregunta para Coach IA
+      </label>
+<textarea id="coachInput" maxlength="1500" placeholder="Escribí tu mensaje..." required="" rows="1"></textarea>
+<button aria-label="Enviar mensaje" class="coach-send-button" id="coachSend" type="submit">
+        ➤
+      </button>
+</form>
+<p aria-live="polite" class="coach-status" id="coachStatus" role="status"></p>
+<p class="coach-disclaimer">
+      Las respuestas son orientativas y no reemplazan
+      el asesoramiento de un profesional de la salud.
+    </p>
+</div>
+</section></dialog>
+<div aria-label="Accesos rápidos" class="ct-float-actions"><button aria-controls="ctDialog-agua" aria-haspopup="dialog" aria-label="Abrir hidratación" data-ct-panel="agua" type="button"><svg aria-hidden="true" viewbox="0 0 24 24"><path d="M12 3C9 8 5 12 5 16a7 7 0 0 0 14 0c0-4-4-8-7-13Z"></path></svg><span id="ctFloatWater">Agua</span></button><button aria-controls="ctDialog-coach" aria-haspopup="dialog" aria-label="Abrir Coach IA" data-ct-panel="coach" type="button"><svg aria-hidden="true" viewbox="0 0 24 24"><path d="m12 3 2.5 6.5L21 12l-6.5 2.5L12 21l-2.5-6.5L3 12l6.5-2.5Z"></path></svg><span>Coach IA</span></button></div>
 </body>
 </html>

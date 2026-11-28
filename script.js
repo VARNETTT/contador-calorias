@@ -1688,16 +1688,6 @@ productSearchCache.set(cacheKey, { time: Date.now(), products: results });
   function createMealCard(meal) {
     const card = node("article", "meal-item meal-card-v2");
     const typeName = String(meal.type || "Comida");
-    const icons = {Desayuno:"☀", Almuerzo:"☼", Merienda:"◕", Cena:"☾"};
-    const time = meal.timestamp && !Number.isNaN(new Date(meal.timestamp).getTime())
-      ? new Date(meal.timestamp).toLocaleTimeString("es-AR", {hour:"2-digit",minute:"2-digit"}) : "";
-    const category = node("div", "meal-card-category");
-    const symbol = node("span", "meal-card-symbol", icons[typeName] || "✦");
-    symbol.setAttribute("aria-hidden", "true");
-    const catText = node("div", "meal-card-category-text");
-    catText.append(node("strong", "", typeName), node("span", "", time));
-    category.append(symbol, catText);
-
     const main = node("div", "meal-card-main");
     main.append(node("h3", "meal-card-name", meal.description || "Comida registrada"));
     const chips = node("div", "meal-card-macros");
@@ -1714,11 +1704,11 @@ productSearchCache.set(cacheKey, { time: Date.now(), products: results });
     });
     main.append(chips);
     const actions = node("div", "meal-item-actions meal-card-actions");
-    const remove = makeButton("Eliminar", "meal-delete-v2", () => deleteMeal(meal.id));
+    const remove = makeButton("×", "meal-delete-v2", () => deleteMeal(meal.id));
     remove.setAttribute("aria-label", `Eliminar ${meal.description || typeName}`);
-    remove.prepend(node("span", "meal-delete-icon", "♲"));
+    remove.title = "Eliminar registro";
     actions.append(remove);
-    card.append(category, main, actions);
+    card.append(main, actions);
     return card;
   }
 
@@ -1773,39 +1763,31 @@ productSearchCache.set(cacheKey, { time: Date.now(), products: results });
     const todayMeals = getTodayMeals();
     renderMealDaySummary(todayMeals);
 
-    if (!todayMeals.length) {
-      const empty = node(
-        "div",
-        "empty-state"
-      );
-
-      empty.append(
-        node(
-          "h3",
-          "",
-          "Todavía no registraste comidas hoy"
-        ),
-
-        node(
-          "p",
-          "",
-          "Agregá tu primera comida para comenzar " +
-          "a llevar un seguimiento de tu alimentación."
-        )
-      );
-
-      root.append(empty);
-      return;
-    }
-
-    todayMeals
-      .slice()
-      .reverse()
-      .forEach(meal => {
-        root.append(
-          createMealCard(meal)
-        );
+    const groups = [["Desayuno","☕"],["Almuerzo","☀"],["Merienda","◕"],["Cena","☾"]];
+    const primary = new Set(groups.map(([name]) => name));
+    const extra = todayMeals.filter(meal => !primary.has(meal.type));
+    if (extra.length) groups.push(["Colación","◇"]);
+    for (const [name, icon] of groups) {
+      const list = name === "Colación" ? extra : todayMeals.filter(meal => meal.type === name);
+      const group = node("section", "ct-meal-group");
+      group.setAttribute("data-period", name);
+      const row = node("div", "ct-meal-row");
+      const symbol = node("span", "ct-meal-icon", icon);
+      symbol.setAttribute("aria-hidden", "true");
+      const label = node("div", "ct-meal-label");
+      label.append(node("strong", "", name), node("small", "", list.length ? `${list.length} ${list.length === 1 ? "registro" : "registros"}` : "Sin registros"));
+      const total = node("span", "ct-period-total", `${fmt(list.reduce((sum, meal) => sum + (nonnegative(meal.calories) ? num(meal.calories) : 0), 0))} kcal`);
+      const add = makeButton("+", "ct-meal-add", () => {
+        $("openMealModal")?.click();
+        const type = $("mealType");
+        if (type) type.value = name;
       });
+      add.setAttribute("aria-label", `Registrar ${name}`);
+      row.append(symbol, label, total, add);
+      group.append(row);
+      list.slice().reverse().forEach(meal => group.append(createMealCard(meal)));
+      root.append(group);
+    }
   }
 
   /* ============================================
@@ -1817,11 +1799,9 @@ productSearchCache.set(cacheKey, { time: Date.now(), products: results });
 
     return todayMeals.reduce(
       (totals, meal) => {
-        totals.calories += Number(
-          meal.calories || 0
-        );
+        totals.calories += nonnegative(meal.calories) ? num(meal.calories) : 0;
 
-        totals.protein += Number(meal.protein || 0);
+        totals.protein += nonnegative(meal.protein) ? num(meal.protein) : 0;
         if (Array.isArray(meal.products)) {
           for (const item of meal.products) {
             totals.foodCount++;

@@ -122,3 +122,64 @@ html body #progreso .circle-dashboard .compact-macro .circle-progress-content st
 html body #progreso .circle-dashboard .compact-macro .circle-progress-content strong #totalProtein{font-size:var(--macro-size)!important;font-weight:750!important;line-height:1.25!important;font-variant-numeric:tabular-nums!important;color:var(--macro-ink)!important;letter-spacing:0!important;}
 html body #progreso .circle-dashboard .compact-macro .circle-progress::after{height:7px!important;min-height:7px!important;background:linear-gradient(90deg,var(--macro-fill) 0 clamp(0%,var(--progress,0%),100%),var(--macro-track) clamp(0%,var(--progress,0%),100%) 100%)!important;}
 @media(max-width:480px){html body #progreso .circle-dashboard .compact-macro{--macro-size:18px;}html body #progreso .circle-dashboard .compact-macro h3::before{display:none;}}
+
+/* Dashboard spacing and primary meal action */
+html body #comidas .meals-heading{display:flex!important;flex-direction:row!important;align-items:center!important;justify-content:space-between!important;gap:8px!important;margin:0 0 10px!important}
+html body #comidas .meals-heading h2{margin:0!important;line-height:1.25!important}
+html body #comidas #openMealModal{display:flex!important;position:static!important;inset:auto!important;transform:none!important;width:100%!important;max-width:none!important;min-height:48px!important;box-sizing:border-box!important;align-items:center!important;justify-content:center!important;gap:9px!important;margin:0 0 10px!important;padding:10px 14px!important;background:#172c26!important;color:#fff!important;border:0!important;border-radius:12px!important;box-shadow:none!important;font-size:15px!important;font-weight:650!important}
+html body #comidas #openMealModal:hover{background:#245343!important;transform:none!important}
+html body #comidas #openMealModal .meal-action-icon{width:auto!important;height:auto!important;background:transparent!important;font-size:23px!important}
+html body #comidas #openMealModal .meal-action-arrow{display:none!important}
+html body #comidas .ct-meal-row{gap:10px!important;padding:4px 0!important;min-height:48px!important}
+html body #comidas .ct-history{white-space:nowrap;min-height:44px;padding:6px 4px}
+html body #calendario .week-day.selected,html body #calendario .calendar-grid button.selected{background:#d7f3e9!important;color:#14533e!important;box-shadow:inset 0 0 0 1px #a7ddc6!important}
+html body #calendario .week-day.selected span{color:#14533e!important}
+html body #calendario :is(.week-day,.calendar-grid button).selected.has-data::after{background:#16856b!important}
+html body #calendario :is(.week-day,.calendar-grid button):focus-visible,html body #comidas #openMealModal:focus-visible{outline:2px solid #16856b!important;outline-offset:3px!important}
+@media(min-width:1100px){
+ html body .page-shell{gap:16px!important;padding:20px!important}
+ html body .page-shell>#agua{grid-column:1;grid-row:3}
+ html body .page-shell>#productos{grid-column:2;grid-row:3}
+ html body .page-shell>#coach{grid-column:1/-1;grid-row:4}
+ html body .page-shell>.tip-card{grid-column:1/-1;grid-row:5}
+ html body .page-shell>section{padding:20px!important}
+}
+@media(max-width:1099px){html body #comidas{padding-top:10px!important;padding-bottom:14px!important}}
+
+/* Food journal: flat chronological list, no duplicate dashboard totals. */
+html body #comidas #openMealModal,html body #comidas #mealDaySummary{display:none!important}
+html body #comidas #mealList{display:grid!important;grid-template-columns:minmax(0,1fr)!important;gap:0!important;background:transparent!important;padding:0!important}
+html body #comidas .ct-meal-group{border:0!important;border-bottom:1px solid #e2e9e5!important;border-radius:0!important;background:transparent!important;padding:12px 0!important;margin:0!important;box-shadow:none!important}
+html body #comidas .ct-meal-group:last-child{border-bottom:0!important}
+html body #comidas .ct-meal-row{display:grid!important;grid-template-columns:42px minmax(0,1fr) auto 44px!important;gap:10px!important;min-height:48px!important;padding:0!important}
+html body #comidas .ct-meal-icon{width:42px;height:42px;border-radius:50%;background:#f3ebdc;color:#885c25;font-size:21px}
+html body #comidas [data-period="Almuerzo"] .ct-meal-icon{background:#e1f2e9;color:#176b50}
+html body #comidas [data-period="Merienda"] .ct-meal-icon{background:#f9e9df;color:#995b35}
+html body #comidas [data-period="Cena"] .ct-meal-icon{background:#eee9fa;color:#66529a}
+html body #comidas .ct-meal-label strong{font-size:16px;font-weight:700;color:#172c26}
+html body #comidas .ct-period-total{font-size:13px;font-weight:700;color:#172c26;white-space:nowrap;font-variant-numeric:tabular-nums}
+html body #comidas .ct-meal-add{background:#e2f3eb!important;color:#146449!important;border-radius:50%!important;width:44px!important;height:44px!important;padding:0!important;display:grid!important;place-items:center!important;line-height:1!important}
+html body #comidas .ct-meal-group .meal-card-v2{display:grid!important;grid-template-columns:minmax(0,1fr) 44px!important;align-items:center!important;gap:8px!important;width:auto!important;min-width:0!important;margin:8px 0 0 0!important;padding:10px 0 10px 52px!important;border:0!important;border-radius:0!important;background:transparent!important;box-shadow:none!important;box-sizing:border-box!important}
+html body #comidas .ct-meal-group .meal-card-main{grid-column:1!important;min-width:0;overflow-wrap:anywhere}
+html body #comidas .ct-meal-group .meal-card-actions{grid-column:2!important;grid-row:1!important;display:flex!important;justify-content:center!important;align-items:center!important;margin:0!important;padding:0!important}
+html body #comidas .ct-meal-group .meal-card-macros{flex-wrap:wrap!important}
+html body #comidas .ct-meal-add:focus-visible,html body #comidas .meal-delete-v2:focus-visible{outline:2px solid #16856b;outline-offset:2px}
+html body #comidas .meal-card-name{font-size:14px!important;font-weight:600!important;margin:0 0 5px!important;line-height:1.35!important}
+html body #comidas .meal-card-macros{gap:4px 9px!important}
+html body #comidas .meal-macro-chip{background:transparent!important;border:0!important;padding:0!important;box-shadow:none!important;font-size:11px!important;min-height:0!important}
+html body #comidas .meal-macro-icon{display:none!important}
+html body #comidas .meal-delete-v2{background:transparent!important;border:0!important;color:#8b4242!important;font-size:24px!important;padding:0!important;width:44px!important;min-width:44px!important;min-height:44px!important;box-shadow:none!important}
+@media(max-width:380px){html body #comidas .ct-meal-row{grid-template-columns:36px minmax(0,1fr) auto 44px!important;gap:6px!important}html body #comidas .ct-meal-icon{width:36px;height:36px}html body #comidas .ct-meal-group .meal-card-v2{padding-left:0!important}}
+
+/* Unified nutrition grid: four equal rings, independent of activity cards. */
+html body #progreso .circle-dashboard .ct-nutrition-rings{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:clamp(8px,2vw,20px)!important;padding:12px!important;border:1px solid #e5e9e7!important;border-radius:20px!important;align-items:start!important}
+html body #progreso .circle-dashboard .ct-nutrition-rings .compact-macro{align-items:center!important;text-align:center!important;gap:4px!important;--macro-size:clamp(17px,3vw,26px)}
+html body #progreso .circle-dashboard .ct-nutrition-rings .ct-calories-ring{--macro-ink:#16856b;--macro-fill:#16856b;--macro-track:#d7f3e9}
+html body #progreso .circle-dashboard .ct-nutrition-rings .compact-macro .circle-progress{width:100%!important;max-width:190px!important;height:auto!important;aspect-ratio:1!important;position:relative!important;display:grid!important;place-items:center!important;border-radius:50%!important;background:conic-gradient(var(--macro-fill) clamp(0%,var(--progress,0%),100%),var(--macro-track) 0)!important;padding:0!important;overflow:hidden!important}
+html body #progreso .circle-dashboard .ct-nutrition-rings .compact-macro .circle-progress::before{content:"";display:block!important;position:absolute!important;inset:7%!important;border-radius:50%!important;background:#fff!important}
+html body #progreso .circle-dashboard .ct-nutrition-rings .compact-macro .circle-progress::after{display:none!important;content:none!important}
+html body #progreso .circle-dashboard .ct-nutrition-rings .compact-macro .circle-progress-content{position:relative!important;z-index:1;width:86%!important;max-width:86%!important;text-align:center!important;display:grid!important;gap:3px!important;justify-items:center!important}
+html body #progreso .circle-dashboard .ct-nutrition-rings .compact-macro .circle-progress-content strong{font-size:var(--macro-size)!important;text-align:center!important;color:#172c26!important}
+html body #progreso .circle-dashboard .ct-nutrition-rings .compact-macro h3{font-size:clamp(10px,2.5vw,13px)!important;text-align:center!important}
+html body #progreso .circle-dashboard .ct-nutrition-rings .compact-macro h3::before{display:none!important}
+html body #progreso .circle-dashboard .ct-nutrition-rings .compact-macro small{font-size:11px!important;text-align:center!important}

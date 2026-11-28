@@ -1,0 +1,21 @@
+/* Independent floating access; existing trackers remain mounted. */
+html body #progreso .circle-dashboard .compact-water{display:none!important}
+html body #progreso .circle-dashboard .compact-activity{grid-template-columns:minmax(0,1fr)!important}
+.ct-float-actions{position:fixed;right:20px;bottom:24px;z-index:39;display:flex;flex-direction:column;align-items:flex-end;gap:10px}
+.ct-float-actions button{display:flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:10px 16px;border:0;border-radius:999px;color:white;background:#0369a1;box-shadow:0 5px 18px #0f172a26;font:650 14px Inter,system-ui,sans-serif;cursor:pointer}
+.ct-float-actions button[data-ct-panel=coach]{background:#6d48c7}
+.ct-float-actions svg{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linejoin:round}
+.ct-float-actions button:focus-visible,.ct-dialog-head button:focus-visible{outline:3px solid #38bdf8;outline-offset:3px}
+body.modal-open .ct-float-actions,body:has(.ct-auth-overlay:not([hidden])) .ct-float-actions{display:none!important}
+.ct-float-dialog{box-sizing:border-box;width:min(540px,calc(100% - 24px));max-height:calc(100dvh - 24px);padding:16px;border:0;border-radius:20px;background:white;color:#172c26;overflow:auto;overscroll-behavior:contain;box-shadow:0 20px 70px #0f172a40}
+.ct-float-dialog::backdrop{background:#0f172a66}
+body:has(.ct-float-dialog[open]){overflow:hidden!important}
+.ct-dialog-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px;position:sticky;top:0;background:white;z-index:4;padding:4px 0}
+.ct-dialog-head h2{font-size:20px;margin:0}
+.ct-dialog-head button{border:0;border-radius:50%;width:44px;height:44px;background:#edf2f5;color:#172c26;font-size:26px;cursor:pointer}
+.ct-float-dialog #agua,.ct-float-dialog #coach{margin:0!important;padding:0!important;width:100%!important;max-width:none!important;min-width:0!important;border:0!important;background:transparent!important;box-shadow:none!important}
+.ct-float-dialog #coach>.coach-heading{display:none!important}
+.ct-float-dialog #coach .coach-card{margin:0!important;max-width:100%!important}
+.ct-float-dialog #agua .water-card{margin:0!important;box-shadow:none!important}
+@media(min-width:1100px){html body .page-shell>#productos{grid-column:1/-1;grid-row:3}html body .page-shell>.tip-card{grid-row:4}html body .page-shell{padding-bottom:145px!important}}
+@media(max-width:1099px){.ct-float-actions{right:14px;bottom:calc(80px + env(safe-area-inset-bottom,0px))}html body .page-shell{padding-bottom:210px!important}}
