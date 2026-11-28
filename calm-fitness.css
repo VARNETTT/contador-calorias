@@ -183,3 +183,42 @@ html body #progreso .circle-dashboard .ct-nutrition-rings .compact-macro .circle
 html body #progreso .circle-dashboard .ct-nutrition-rings .compact-macro h3{font-size:clamp(10px,2.5vw,13px)!important;text-align:center!important}
 html body #progreso .circle-dashboard .ct-nutrition-rings .compact-macro h3::before{display:none!important}
 html body #progreso .circle-dashboard .ct-nutrition-rings .compact-macro small{font-size:11px!important;text-align:center!important}
+
+/* Mobile nutrition: isolate the four rings from legacy grid placement. */
+@media (max-width: 700px) {
+  html body #progreso .circle-dashboard .ct-nutrition-rings {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    grid-auto-flow: row !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+    gap: 10px !important;
+    padding: 10px !important;
+  }
+  html body #progreso .circle-dashboard .ct-nutrition-rings > .circle-stat.compact-macro {
+    grid-column: auto !important;
+    grid-row: auto !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    align-items: center !important;
+    --macro-size: clamp(18px, 5vw, 26px);
+  }
+  html body #progreso .circle-dashboard .ct-nutrition-rings .compact-macro .circle-progress {
+    width: 100% !important;
+    max-width: 190px !important;
+    height: auto !important;
+    aspect-ratio: 1 / 1 !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
+  }
+  html body #progreso .circle-dashboard .ct-nutrition-rings .compact-macro .circle-progress-content strong #totalProtein {
+    font-size: inherit !important;
+    color: inherit !important;
+  }
+  html body #progreso .circle-dashboard .ct-nutrition-rings .compact-macro > p {
+    display: block !important;
+    text-align: center !important;
+    font-size: 11px !important;
+  }
+}
